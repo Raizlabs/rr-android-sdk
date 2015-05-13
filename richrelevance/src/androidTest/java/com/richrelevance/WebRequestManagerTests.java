@@ -62,9 +62,10 @@ public class WebRequestManagerTests extends TestCase {
         Log.i(getClass().getSimpleName(), resultInfo.getResult().toString());
     }
 
-    private class SimpleTestRequest extends WebRequest<JSONObject> {
+    private class SimpleTestRequest implements WebRequest<JSONObject> {
+
         @Override
-        protected WebRequestBuilder createRequestBuilder() {
+        public WebRequestBuilder getRequestBuilder() {
             return new WebRequestBuilder(HttpMethod.Get, "http://jsonplaceholder.typicode.com/posts/1");
         }
 
