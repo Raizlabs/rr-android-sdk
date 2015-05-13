@@ -1,5 +1,6 @@
 package com.richrelevance.builders;
 
+import com.richrelevance.Placement;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.internal.net.responses.WebResponse;
 
@@ -8,11 +9,11 @@ import java.util.List;
 
 public class PlacementsBuilder extends RequestBuilder<List<Object>> {
 
-    public PlacementsBuilder addPlacements(String... names) {
+    public PlacementsBuilder addPlacements(Placement... placements) {
         return this;
     }
 
-    public PlacementsBuilder addPlacements(Collection<String> names) {
+    public PlacementsBuilder addPlacements(Collection<Placement> placements) {
         return this;
     }
 

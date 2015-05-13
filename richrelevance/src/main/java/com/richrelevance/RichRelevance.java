@@ -51,12 +51,12 @@ public class RichRelevance {
                 .setStrategy(strategy);
     }
 
-    public static PlacementsBuilder buildPlacements(String... placements) {
+    public static PlacementsBuilder buildPlacements(Placement... placements) {
         return new PlacementsBuilder()
                 .addPlacements(placements);
     }
 
-    public static PlacementsBuilder buildPlacements(Collection<String> placements) {
+    public static PlacementsBuilder buildPlacements(Collection<Placement> placements) {
         return new PlacementsBuilder()
                 .addPlacements(placements);
     }
