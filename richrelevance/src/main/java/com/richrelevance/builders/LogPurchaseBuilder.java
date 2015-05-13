@@ -16,7 +16,7 @@ public class LogPurchaseBuilder extends RequestBuilder<Void> {
         return this;
     }
 
-    public LogPurchaseBuilder setOrderNumber(long orderNumber) {
+    public LogPurchaseBuilder setOrderNumber(String orderNumber) {
         return this;
     }
 

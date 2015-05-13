@@ -1,11 +1,12 @@
 package com.richrelevance.builders;
 
+import com.richrelevance.Placement;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.internal.net.responses.WebResponse;
 
 public class ProductViewBuilder extends RequestBuilder<Void> {
 
-    public ProductViewBuilder setStrategy(String name) {
+    public ProductViewBuilder setPlacement(Placement placement) {
         return this;
     }
 

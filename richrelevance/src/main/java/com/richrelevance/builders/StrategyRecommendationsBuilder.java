@@ -4,9 +4,9 @@ import com.richrelevance.RequestBuilder;
 import com.richrelevance.StrategyType;
 import com.richrelevance.internal.net.responses.WebResponse;
 
-public class StrategyBuilder extends RequestBuilder<Object> {
+public class StrategyRecommendationsBuilder extends RequestBuilder<Object> {
 
-    public StrategyBuilder setStrategy(StrategyType strategy) {
+    public StrategyRecommendationsBuilder setStrategy(StrategyType strategy) {
         addParameter("strategyName", strategy.getKey());
         return this;
     }

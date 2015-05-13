@@ -38,8 +38,7 @@ public class SetUserPreferenceBuilder extends RequestBuilder<Void> {
         return this;
     }
 
-    public SetUserPreferenceBuilder setProductId(String productId) {
-        addParameter("p", productId);
+    public SetUserPreferenceBuilder setIds(String... ids) {
         return this;
     }
 
