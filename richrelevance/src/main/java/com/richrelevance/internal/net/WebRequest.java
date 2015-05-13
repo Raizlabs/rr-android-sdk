@@ -10,11 +10,11 @@ import com.richrelevance.internal.net.responses.WebResponse;
 public interface WebRequest<T> {
 
     /**
-     * Called to obtain a {@link RequestBuilder} that contains all the parameters and info needed to
+     * Called to obtain a {@link WebRequestBuilder} that contains all the parameters and info needed to
      * perform the request.
      * @return A request builder representing the contents of the request.
      */
-    public RequestBuilder getRequestBuilder();
+    public WebRequestBuilder getRequestBuilder();
 
     /**
      * Interprets the given response and returns a result.

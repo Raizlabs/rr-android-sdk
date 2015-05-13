@@ -4,7 +4,7 @@ import com.richrelevance.internal.RRLog;
 import com.richrelevance.internal.net.BasicWebResultInfo;
 import com.richrelevance.internal.net.FailedResultInfo;
 import com.richrelevance.internal.net.HttpUtils;
-import com.richrelevance.internal.net.RequestBuilder;
+import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebResultInfo;
 import com.richrelevance.internal.net.responses.HttpURLConnectionResponse;
@@ -34,7 +34,7 @@ public class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Res
 
     @Override
     public WebResultInfo<Result> execute() {
-        RequestBuilder builder = request.getRequestBuilder();
+        WebRequestBuilder builder = request.getRequestBuilder();
         HttpURLConnection connection = getConnection(builder);
 
         if (connection != null) {
@@ -66,7 +66,7 @@ public class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Res
      *
      * @return The connection to use to execute the request.
      */
-    private HttpURLConnection getConnection(RequestBuilder builder) {
+    private HttpURLConnection getConnection(WebRequestBuilder builder) {
         try {
             // Get our current URL
             URL url = new URL(builder.getFullUrl());
@@ -102,7 +102,7 @@ public class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Res
      *
      * @param connection The opened connection.
      */
-    private void onConnected(RequestBuilder builder, HttpURLConnection connection) {
+    private void onConnected(WebRequestBuilder builder, HttpURLConnection connection) {
         Map<String, String> bodyParams = builder.getBodyParams();
         if ((bodyParams != null) && !bodyParams.isEmpty()) {
             // Convert the params to a query string, and write it to the body.

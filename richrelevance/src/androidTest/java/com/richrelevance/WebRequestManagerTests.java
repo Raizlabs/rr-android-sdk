@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.richrelevance.internal.Wrapper;
 import com.richrelevance.internal.net.HttpMethod;
-import com.richrelevance.internal.net.RequestBuilder;
+import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResultInfo;
@@ -64,8 +64,8 @@ public class WebRequestManagerTests extends TestCase {
 
     private class SimpleTestRequest extends WebRequest<JSONObject> {
         @Override
-        protected RequestBuilder createRequestBuilder() {
-            return new RequestBuilder(HttpMethod.Get, "http://jsonplaceholder.typicode.com/posts/1");
+        protected WebRequestBuilder createRequestBuilder() {
+            return new WebRequestBuilder(HttpMethod.Get, "http://jsonplaceholder.typicode.com/posts/1");
         }
 
         @Override

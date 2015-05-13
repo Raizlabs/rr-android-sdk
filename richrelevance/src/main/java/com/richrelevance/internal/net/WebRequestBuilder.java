@@ -1,8 +1,6 @@
 package com.richrelevance.internal.net;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,7 +9,7 @@ import java.util.Map.Entry;
  * Builder class which allows for the construction of a request. This class
  * abstracts the implementation.
  */
-public class RequestBuilder {
+public class WebRequestBuilder {
 
     protected static class ParamLocation {
         private static final int AUTO = 0;
@@ -27,24 +25,24 @@ public class RequestBuilder {
     private int paramLocation = ParamLocation.AUTO;
 
     /**
-     * Constructs a {@link RequestBuilder} using the given {@link HttpMethod}
+     * Constructs a {@link WebRequestBuilder} using the given {@link HttpMethod}
      * and pointing to the given url.
      *
      * @param method The {@link HttpMethod} to use for the request.
      * @param url    The url the request targets.
      */
-    public RequestBuilder(HttpMethod method, String url) {
+    public WebRequestBuilder(HttpMethod method, String url) {
         this(method, URI.create(url));
     }
 
     /**
-     * Constructs a {@link RequestBuilder} using the given {@link HttpMethod}
+     * Constructs a {@link WebRequestBuilder} using the given {@link HttpMethod}
      * and pointing to the given {@link URI}.
      *
      * @param method The {@link HttpMethod} to use for the request.
      * @param uri    The {@link URI} the request targets.
      */
-    public RequestBuilder(HttpMethod method, URI uri) {
+    public WebRequestBuilder(HttpMethod method, URI uri) {
         this.method = method;
         this.uri = uri;
         this.params = new LinkedHashMap<>();
@@ -54,22 +52,22 @@ public class RequestBuilder {
 
 
     /**
-     * Sets the target URL for this {@link RequestBuilder}.
+     * Sets the target URL for this {@link WebRequestBuilder}.
      *
      * @param url The url the request should target.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder setURL(String url) {
+    public WebRequestBuilder setURL(String url) {
         return setURI(URI.create(url));
     }
 
     /**
-     * Sets the target {@link URI} for this {@link RequestBuilder}.
+     * Sets the target {@link URI} for this {@link WebRequestBuilder}.
      *
      * @param uri the {@link URI} the request targets.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder setURI(URI uri) {
+    public WebRequestBuilder setURI(URI uri) {
         this.uri = uri;
         return this;
     }
@@ -79,10 +77,34 @@ public class RequestBuilder {
      *
      * @param key   The parameter key.
      * @param value The parameter value.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder addParam(String key, String value) {
+    public WebRequestBuilder addParam(String key, String value) {
         params.put(key, value);
+        return this;
+    }
+
+    /**
+     * Adds a parameter to this request.
+     *
+     * @param key   The parameter key.
+     * @param value The parameter value.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
+     */
+    public WebRequestBuilder addParam(String key, int value) {
+        params.put(key, Integer.toString(value));
+        return this;
+    }
+
+    /**
+     * Adds a parameter to this request.
+     *
+     * @param key   The parameter key.
+     * @param value The parameter value.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
+     */
+    public WebRequestBuilder addParam(String key, long value) {
+        params.put(key, Long.toString(value));
         return this;
     }
 
@@ -92,9 +114,9 @@ public class RequestBuilder {
      *
      * @param key   The parameter key.
      * @param value The parameter value.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder addParamIfNotNull(String key, String value) {
+    public WebRequestBuilder addParamIfNotNull(String key, String value) {
         if (value != null) {
             addParam(key, value);
         }
@@ -109,9 +131,9 @@ public class RequestBuilder {
      * sent in the body, use {@link #addParamToBodyForced(String, String)}.
      *
      * @param params The {@link Map} of parameters.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder addParams(Map<String, String> params) {
+    public WebRequestBuilder addParams(Map<String, String> params) {
         putEntries(params, this.params);
         return this;
     }
@@ -122,9 +144,9 @@ public class RequestBuilder {
      *
      * @param key   The parameter key.
      * @param value The parameter value.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder addParamToBodyForced(String key, String value) {
+    public WebRequestBuilder addParamToBodyForced(String key, String value) {
         forcedBodyParams.put(key, value);
         return this;
     }
@@ -136,9 +158,9 @@ public class RequestBuilder {
      *
      * @param key   The parameter key.
      * @param value The parameter value.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder addParamToBodyForcedIfNotNull(String key, String value) {
+    public WebRequestBuilder addParamToBodyForcedIfNotNull(String key, String value) {
         if (value != null) {
             addParamToBodyForced(key, value);
         }
@@ -150,9 +172,9 @@ public class RequestBuilder {
      *
      * @param name  The name of the header.
      * @param value The value for the header.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder addHeader(String name, String value) {
+    public WebRequestBuilder addHeader(String name, String value) {
         headers.put(name, value);
         return this;
     }
@@ -162,9 +184,9 @@ public class RequestBuilder {
      * Headers are added in iteration order.
      *
      * @param headers The {@link Map} of header key value pairs to add.
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder addHeaders(Map<String, String> headers) {
+    public WebRequestBuilder addHeaders(Map<String, String> headers) {
         putEntries(headers, this.headers);
         return this;
     }
@@ -194,9 +216,9 @@ public class RequestBuilder {
      * Causes the params set by addParam calls to be sent in the URL of this
      * request.
      *
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder setSendParamsInURL() {
+    public WebRequestBuilder setSendParamsInURL() {
         paramLocation = ParamLocation.URL;
         return this;
     }
@@ -205,9 +227,9 @@ public class RequestBuilder {
      * Causes the params set by addParam calls to be sent in the body of this
      * request.
      *
-     * @return This {@link RequestBuilder} object to allow for chaining of calls.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public RequestBuilder setSendParamsInBody() {
+    public WebRequestBuilder setSendParamsInBody() {
         paramLocation = ParamLocation.BODY;
         return this;
     }
@@ -221,9 +243,9 @@ public class RequestBuilder {
 
 
     /**
-     * Gets the URL that this {@link RequestBuilder} points to.
+     * Gets the URL that this {@link WebRequestBuilder} points to.
      *
-     * @return The URL the {@link RequestBuilder} is pointing to.
+     * @return The URL the {@link WebRequestBuilder} is pointing to.
      */
     public String getFullUrl() {
         String url = uri.toString();
