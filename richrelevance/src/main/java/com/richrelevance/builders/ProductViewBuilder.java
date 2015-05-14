@@ -15,6 +15,11 @@ public class ProductViewBuilder extends RequestBuilder<Void> {
     }
 
     @Override
+    protected String getEndpointPath() {
+        return "/rrPlatform/recsForPlacements";
+    }
+
+    @Override
     protected Void parseResponse(WebResponse response) {
         return null;
     }

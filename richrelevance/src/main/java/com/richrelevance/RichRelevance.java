@@ -9,37 +9,25 @@ import com.richrelevance.builders.SetUserPreferenceBuilder;
 import com.richrelevance.builders.StrategyRecommendationsBuilder;
 import com.richrelevance.builders.UserProfileBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
-import com.richrelevance.internal.net.WebResultInfo;
 
 import java.util.Collection;
 
 public class RichRelevance {
 
-    static String apiKey;
-    static String apiClientKey;
-    static String userId;
-    static String sessionId;
+    private static WebRequestManager webRequestManager = new WebRequestManager();
 
-    public static void setApiKey(String apiKey) {
-        RichRelevance.apiKey = apiKey;
+    private static RichRelevanceClient defaultClient = new RichRelevanceClientImpl();
+
+    static WebRequestManager getWebRequestManager() {
+        return webRequestManager;
     }
 
-    public static void setApiClientKey(String apiClientKey) {
-        RichRelevance.apiClientKey = apiClientKey;
+    public static RichRelevanceClient getDefaultClient() {
+        return RichRelevance.defaultClient;
     }
 
-    public static void setUserId(String userId) {
-        RichRelevance.userId = userId;
-    }
-
-    public static void setSessionId(String sessionId) {
-        RichRelevance.sessionId = sessionId;
-    }
-
-    public static <T> void executeRequest(final RequestBuilder<T> builder) {
-        CallbackWebListener<T> listener = new CallbackWebListener<>(builder.getCallback());
-
-        new WebRequestManager().executeInBackground(builder.getWebRequest(), listener);
+    public static void setDefaultClient(RichRelevanceClient client) {
+        RichRelevance.defaultClient = client;
     }
 
     // region Fetching
@@ -123,20 +111,5 @@ public class RichRelevance {
 
     // endregion Tracking
 
-    private static class CallbackWebListener<T> implements WebRequestManager.WebRequestListener<T> {
 
-        private Callback<T> callback;
-
-        public CallbackWebListener(Callback<T> callback) {
-            this.callback = callback;
-        }
-
-        @Override
-        public void onRequestComplete(WebResultInfo<T> resultInfo) {
-            // TODO - Error states and status verification
-            if (callback != null) {
-                callback.onResult(resultInfo.getResult());
-            }
-        }
-    }
 }

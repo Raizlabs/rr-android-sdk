@@ -5,22 +5,33 @@ import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.responses.WebResponse;
 
+import java.util.Locale;
+
+
 public abstract class RequestBuilder<Result> {
 
+    private RichRelevanceClient richRelevanceClient;
     private WebRequestBuilder webRequestBuilder;
     private Callback<Result> resultCallback;
 
     public RequestBuilder() {
         // TODO
-        webRequestBuilder = new WebRequestBuilder(HttpMethod.Get, "");
-        setApiKey(RichRelevance.apiKey);
-        setApiClientKey(RichRelevance.apiClientKey);
-        setUserId(RichRelevance.userId);
-        setSessionId(RichRelevance.sessionId);
+        webRequestBuilder = new WebRequestBuilder(HttpMethod.Get, getFullUrl());
+        setClient(RichRelevance.getDefaultClient());
+    }
+
+    public void setClient(RichRelevanceClient client) {
+        if ((richRelevanceClient == null) || !richRelevanceClient.equals(client)) {
+            this.richRelevanceClient = client;
+            setApiKey(client.getApiKey());
+            setApiClientKey(client.getApiClientKey());
+            setUserId(client.getUserId());
+            setSessionId(client.getSessionId());
+        }
     }
 
     public void execute() {
-        RichRelevance.executeRequest(this);
+        richRelevanceClient.executeRequest(this);
     }
 
     public RequestBuilder<Result> addParameter(String key, String value) {
@@ -62,6 +73,19 @@ public abstract class RequestBuilder<Result> {
         return webRequestBuilder;
     }
 
+    protected String getFullUrl() {
+        return getFullUrl(getEndpointPath());
+    }
+
+    protected String getFullUrl(String endpointPath) {
+        return String.format(Locale.US, "%s/%s", EndpointHelper.getBaseUrl(), endpointPath);
+    }
+
+    protected void setUrl(String url) {
+        webRequestBuilder.setUrl(url);
+    }
+
+    protected abstract String getEndpointPath();
     protected abstract Result parseResponse(WebResponse response);
 
     WebRequest<Result> getWebRequest() {

@@ -1,10 +1,13 @@
 package com.richrelevance.builders;
 
+import android.net.Uri;
+
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.UserProfileField;
 import com.richrelevance.internal.net.responses.WebResponse;
 
 import java.util.Collection;
+import java.util.Locale;
 
 public class UserProfileBuilder extends RequestBuilder<Object> {
 
@@ -14,6 +17,18 @@ public class UserProfileBuilder extends RequestBuilder<Object> {
 
     public UserProfileBuilder addFields(Collection<UserProfileField> fields) {
         return this;
+    }
+
+    @Override
+    protected RequestBuilder<Object> setUserId(String userId) {
+        String endpointPath = "/user/preference/" + Uri.encode(userId);
+        setUrl(getFullUrl(endpointPath));
+        return this;
+    }
+
+    @Override
+    protected String getEndpointPath() {
+        return null;
     }
 
     @Override

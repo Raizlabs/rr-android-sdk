@@ -1,5 +1,7 @@
 package com.richrelevance.builders;
 
+import android.net.Uri;
+
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.UserPreference;
 import com.richrelevance.internal.net.responses.WebResponse;
@@ -14,6 +16,18 @@ public class GetUserPreferenceBuilder extends RequestBuilder<Object> {
 
     public GetUserPreferenceBuilder addPreferences(Collection<UserPreference> preferences) {
         return this;
+    }
+
+    @Override
+    protected RequestBuilder<Object> setUserId(String userId) {
+        String endpointPath = "/user/preference/" + Uri.encode(userId);
+        setUrl(getFullUrl(endpointPath));
+        return this;
+    }
+
+    @Override
+    protected String getEndpointPath() {
+        return null;
     }
 
     @Override

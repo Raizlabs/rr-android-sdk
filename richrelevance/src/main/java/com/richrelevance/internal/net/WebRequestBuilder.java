@@ -17,7 +17,7 @@ public class WebRequestBuilder {
         private static final int BODY = 20;
     }
 
-    private URI uri;
+    private String url;
     private HttpMethod method;
     private LinkedHashMap<String, String> params;
     private LinkedHashMap<String, String> forcedBodyParams;
@@ -32,7 +32,11 @@ public class WebRequestBuilder {
      * @param url    The url the request targets.
      */
     public WebRequestBuilder(HttpMethod method, String url) {
-        this(method, URI.create(url));
+        setUrl(url);
+        this.method = method;
+        this.params = new LinkedHashMap<>();
+        this.forcedBodyParams = new LinkedHashMap<>();
+        this.headers = new LinkedHashMap<>();
     }
 
     /**
@@ -40,35 +44,21 @@ public class WebRequestBuilder {
      * and pointing to the given {@link URI}.
      *
      * @param method The {@link HttpMethod} to use for the request.
-     * @param uri    The {@link URI} the request targets.
+     * @param url    The url the request targets.
      */
-    public WebRequestBuilder(HttpMethod method, URI uri) {
-        this.method = method;
-        this.uri = uri;
-        this.params = new LinkedHashMap<>();
-        this.forcedBodyParams = new LinkedHashMap<>();
-        this.headers = new LinkedHashMap<>();
+    public WebRequestBuilder(HttpMethod method, URI url) {
+        this(method, url.toString());
     }
 
-
-    /**
-     * Sets the target URL for this {@link WebRequestBuilder}.
-     *
-     * @param url The url the request should target.
-     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
-     */
-    public WebRequestBuilder setURL(String url) {
-        return setURI(URI.create(url));
-    }
 
     /**
      * Sets the target {@link URI} for this {@link WebRequestBuilder}.
      *
-     * @param uri the {@link URI} the request targets.
+     * @param url the url the request targets.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public WebRequestBuilder setURI(URI uri) {
-        this.uri = uri;
+    public WebRequestBuilder setUrl(String url) {
+        this.url = url;
         return this;
     }
 
@@ -248,12 +238,12 @@ public class WebRequestBuilder {
      * @return The URL the {@link WebRequestBuilder} is pointing to.
      */
     public String getFullUrl() {
-        String url = uri.toString();
+        String url = this.url.toString();
 
         // If we should set params in the url and we have params to set, do so
         if ((getParamLocationResolved() == ParamLocation.URL) && (params.size() > 0)) {
             String queryString = "?" + HttpUtils.getQueryString(params);
-            url = String.format("%s%s", uri, queryString);
+            url = String.format("%s%s", this.url, queryString);
         }
 
         return url;
@@ -284,72 +274,4 @@ public class WebRequestBuilder {
     public HttpMethod getMethod() {
         return method;
     }
-
-//    /**
-//     * Gets a {@link HttpURLConnection} which can be used to execute this request.
-//     *
-//     * @return The connection to use to execute the request.
-//     */
-//    public HttpURLConnection getConnection() {
-//        try {
-//            // Get our current URL
-//            URL url = new URL(getUrl());
-//            // "Open" the connection, which really just gives us the object, doesn't
-//            // actually connect
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            // Set the request method appropriately
-//            connection.setRequestMethod(method.getMethodName());
-//
-//            // Add all headers
-//            for (Entry<String, String> entry : headers.entrySet()) {
-//                connection.setRequestProperty(entry.getKey(), entry.getValue());
-//            }
-//
-//            // If we have params and this is a post, we need to do output
-//            // but they will be written later
-//            if ((params.size() > 0 && (getParamLocationResolved() == ParamLocation.BODY)) || (forcedBodyParams.size() > 0)) {
-//                connection.setDoOutput(true);
-//            }
-//
-//            return connection;
-//
-//        } catch (IOException e) {
-//            RRLog.e(getClass().getName(), e.getMessage(), e);
-//        }
-//
-//        return null;
-//    }
-//
-//    /**
-//     * Called once the connection has been established. Should be called after
-//     * {@link #getConnection()} to allow adding the rest of the data.
-//     *
-//     * @param connection The opened connection
-//     */
-//    public void onConnected(HttpURLConnection connection) {
-//        // If we have params and this is a put, we need to write them here
-//        boolean shouldAddNormalParams = (params.size() > 0 && (getParamLocationResolved() == ParamLocation.BODY));
-//        boolean shouldAddForcedBodyParams = (forcedBodyParams.size() > 0);
-//        LinkedHashMap<String, String> bodyParams = null;
-//
-//        if (shouldAddNormalParams && shouldAddForcedBodyParams) {
-//            bodyParams = new LinkedHashMap<>();
-//            bodyParams.putAll(params);
-//            bodyParams.putAll(forcedBodyParams);
-//        } else if (shouldAddNormalParams) {
-//            bodyParams = params;
-//        } else if (shouldAddForcedBodyParams) {
-//            bodyParams = forcedBodyParams;
-//        }
-//
-//        if (bodyParams != null) {
-//            // Convert the params to a query string, and write it to the body.
-//            String query = getQueryString(bodyParams);
-//            try {
-//                connection.getOutputStream().write(query.getBytes());
-//            } catch (IOException e) {
-//                RRLog.e(getClass().getName(), e.getMessage(), e);
-//            }
-//        }
-//    }
 }

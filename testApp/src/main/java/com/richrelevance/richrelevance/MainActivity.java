@@ -16,10 +16,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RichRelevance.buildProductView("productId")
-                .setCallback(new Callback<Void>() {
+        RichRelevance.buildRecommendationsUsingStrategy(StrategyType.SITE_WIDE_BEST_SELLERS)
+                .setCallback(new Callback<Object>() {
                     @Override
-                    public void onResult(Void result) {
+                    public void onResult(Object result) {
 
                     }
 

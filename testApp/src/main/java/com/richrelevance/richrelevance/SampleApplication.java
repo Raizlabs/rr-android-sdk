@@ -10,9 +10,9 @@ public class SampleApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        RichRelevance.setApiKey("myApiKey");
-        RichRelevance.setApiClientKey("myApiClientKey");
-        RichRelevance.setUserId("myUserId");
-        RichRelevance.setSessionId("mySessionId");
+        RichRelevance.setApiKey("showcaseparent");
+        RichRelevance.setApiClientKey("615389034415e91d");
+        RichRelevance.setUserId("androidTest");
+        RichRelevance.setSessionId("093820948123");
     }
 }

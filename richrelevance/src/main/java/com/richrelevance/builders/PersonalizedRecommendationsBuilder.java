@@ -20,6 +20,11 @@ public class PersonalizedRecommendationsBuilder extends RequestBuilder<List<Obje
     }
 
     @Override
+    protected String getEndpointPath() {
+        return "/rrPlatform/personalize";
+    }
+
+    @Override
     protected List<Object> parseResponse(WebResponse response) {
         return null;
     }

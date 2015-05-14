@@ -43,6 +43,11 @@ public class SetUserPreferenceBuilder extends RequestBuilder<Void> {
     }
 
     @Override
+    protected String getEndpointPath() {
+        return "/user/preference";
+    }
+
+    @Override
     protected Void parseResponse(WebResponse response) {
         return null;
     }

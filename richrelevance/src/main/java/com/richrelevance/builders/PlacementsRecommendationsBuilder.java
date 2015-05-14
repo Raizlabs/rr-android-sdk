@@ -34,6 +34,11 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<List<Object
     }
 
     @Override
+    protected String getEndpointPath() {
+        return "/rrPlatform/recsForPlacements";
+    }
+
+    @Override
     protected List<Object> parseResponse(WebResponse response) {
         return null;
     }
