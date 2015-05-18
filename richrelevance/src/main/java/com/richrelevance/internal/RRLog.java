@@ -87,7 +87,6 @@ public class RRLog {
     }
 
 
-
     public static class LogLevel {
         public static final int VERBOSE = Integer.parseInt("000001", 2);
         public static final int DEBUG = Integer.parseInt("000010", 2);

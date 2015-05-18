@@ -54,6 +54,7 @@ public class WebRequestManager {
     /**
      * Constructs a new {@link WebRequestManager} with the given number
      * of maximum concurrent connections.
+     *
      * @param maxConnections The maximum number of concurrent connections.
      */
     public WebRequestManager(int maxConnections) {
@@ -156,7 +157,7 @@ public class WebRequestManager {
         backgroundPoolExecutor.execute(createRequestRunnable(request, listener));
     }
 
-    protected <Result> Runnable createRequestRunnable(final WebRequest<Result> request,  final WebRequestListener<Result> listener) {
+    protected <Result> Runnable createRequestRunnable(final WebRequest<Result> request, final WebRequestListener<Result> listener) {
         return new Runnable() {
             @Override
             public void run() {
@@ -171,6 +172,7 @@ public class WebRequestManager {
     /**
      * Called to get the {@link ThreadPoolExecutor} to use to execute background
      * requests.
+     *
      * @param maxConnections The maximum number of connections allowed.
      * @return The {@link ThreadPoolExecutor} to use to execute background requests.
      */

@@ -1,12 +1,5 @@
 package com.richrelevance.internal.net;
 
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-
 /**
  * Enum which represents each of the Http Methods.
  * Contains some helpers for getting the method name and vice versa.

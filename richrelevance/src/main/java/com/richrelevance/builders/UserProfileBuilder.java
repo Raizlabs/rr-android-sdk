@@ -7,7 +7,6 @@ import com.richrelevance.UserProfileField;
 import com.richrelevance.internal.net.responses.WebResponse;
 
 import java.util.Collection;
-import java.util.Locale;
 
 public class UserProfileBuilder extends RequestBuilder<Object> {
 

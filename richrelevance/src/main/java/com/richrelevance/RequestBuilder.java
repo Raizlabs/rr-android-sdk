@@ -86,6 +86,7 @@ public abstract class RequestBuilder<Result> {
     }
 
     protected abstract String getEndpointPath();
+
     protected abstract Result parseResponse(WebResponse response);
 
     WebRequest<Result> getWebRequest() {

@@ -11,6 +11,7 @@ public interface WebRequestExecutor<Result> {
 
     /**
      * Executes this request and returns the result.
+     *
      * @return A {@link WebResultInfo} containing the result.
      */
     public WebResultInfo<Result> execute();

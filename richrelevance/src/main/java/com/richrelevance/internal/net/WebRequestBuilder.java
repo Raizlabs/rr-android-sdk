@@ -231,7 +231,6 @@ public class WebRequestBuilder {
     }
 
 
-
     /**
      * Gets the URL that this {@link WebRequestBuilder} points to.
      *

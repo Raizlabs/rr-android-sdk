@@ -66,8 +66,7 @@ public enum StrategyType {
         public String getKey() {
             return "BrandTopSellers";
         }
-    },
-    ;
+    },;
 
     public abstract String getKey();
 }

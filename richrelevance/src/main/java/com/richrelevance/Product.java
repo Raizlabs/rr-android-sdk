@@ -1,6 +1,7 @@
 package com.richrelevance;
 
 public class Product {
+
     public Product setId(String id) {
         return this;
     }

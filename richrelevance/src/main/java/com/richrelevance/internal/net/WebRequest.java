@@ -12,12 +12,14 @@ public interface WebRequest<T> {
     /**
      * Called to obtain a {@link WebRequestBuilder} that contains all the parameters and info needed to
      * perform the request.
+     *
      * @return A request builder representing the contents of the request.
      */
     public WebRequestBuilder getRequestBuilder();
 
     /**
      * Interprets the given response and returns a result.
+     *
      * @param response The response to interpret.
      * @return The result that was contained in the response.
      */

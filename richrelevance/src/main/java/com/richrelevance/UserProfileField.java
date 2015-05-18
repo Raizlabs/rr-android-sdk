@@ -8,5 +8,6 @@ public enum UserProfileField {
             return "orders";
         }
     };
+
     public abstract String getKey();
 }

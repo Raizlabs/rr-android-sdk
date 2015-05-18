@@ -1,12 +1,14 @@
 package com.richrelevance.richrelevance;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.richrelevance.*;
+import com.richrelevance.Callback;
 import com.richrelevance.Error;
+import com.richrelevance.RichRelevance;
+import com.richrelevance.StrategyType;
 
 
 public class MainActivity extends ActionBarActivity {

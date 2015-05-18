@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.richrelevance.internal.Wrapper;
 import com.richrelevance.internal.net.HttpMethod;
-import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequest;
+import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResultInfo;
 import com.richrelevance.internal.net.responses.WebResponse;
@@ -73,5 +73,7 @@ public class WebRequestManagerTests extends TestCase {
         public JSONObject translate(WebResponse response) {
             return response.getContentAsJSON();
         }
-    };
+    }
+
+    ;
 }
