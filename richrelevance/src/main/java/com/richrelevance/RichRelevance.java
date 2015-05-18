@@ -30,6 +30,25 @@ public class RichRelevance {
         RichRelevance.defaultClient = client;
     }
 
+    /**
+     * @return False if the app is known to be built configured for debug, true if it is unknown or built for
+     * production.
+     */
+    static boolean isProduction() {
+        // Currently doesn't work in libraries built with Gradle
+        // Leaving for forwards compatibility if this ever gets fixed
+        // This defaults to false, so this is "safe" since we will always assume the worst
+        return !BuildConfig.DEBUG;
+    }
+
+    /**
+     * Manually enables or disables all logging in the SDK.
+     * @param enabled True to enable logging, false to disable it.
+     */
+    public static void setLoggingEnabled(boolean enabled) {
+        Log.setLoggingEnabled(enabled);
+    }
+
     // region Fetching
 
     public static StrategyRecommendationsBuilder buildRecommendationsUsingStrategy(StrategyType strategy) {
