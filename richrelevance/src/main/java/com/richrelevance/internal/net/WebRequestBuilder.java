@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Builder class which allows for the construction of a request. This class
- * abstracts the implementation.
+ * Builder class which allows for the construction of a request. This class abstracts the
+ * implementation and allows definition of all the properties of HTTP requests.
  */
 public class WebRequestBuilder {
 
-    protected static class ParamLocation {
+    static class ParamLocation {
         private static final int AUTO = 0;
         private static final int URL = 10;
         private static final int BODY = 20;

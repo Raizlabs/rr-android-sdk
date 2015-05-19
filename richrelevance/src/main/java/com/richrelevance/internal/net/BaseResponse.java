@@ -1,4 +1,4 @@
-package com.richrelevance.internal.net.responses;
+package com.richrelevance.internal.net;
 
 import android.text.TextUtils;
 
@@ -15,7 +15,7 @@ import java.io.InputStream;
 /**
  * Abstract class which does some of the generic work for a response.
  */
-public abstract class BaseResponse implements WebResponse {
+abstract class BaseResponse implements WebResponse {
 
     @Override
     public String getContentAsString() {

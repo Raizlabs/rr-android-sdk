@@ -1,9 +1,7 @@
 package com.richrelevance.internal.net;
 
 import android.os.Process;
-
-import com.richrelevance.internal.net.executors.WebRequestExecutor;
-import com.richrelevance.internal.net.executors.WebRequestExecutorFactory;
+import android.support.annotation.Nullable;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -12,7 +10,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * Class which is responsible for managing and executing web requests.
+ */
 public class WebRequestManager {
 
     // region Constants
@@ -26,8 +26,18 @@ public class WebRequestManager {
 
     // region Interfaces
 
-    public interface WebRequestListener<Request> {
-        public void onRequestComplete(WebResultInfo<Request> resultInfo);
+    /**
+     * Interface which responds to the completion of a web request.
+     *
+     * @param <Result> The result type of the web request.
+     */
+    public interface WebRequestListener<Result> {
+        /**
+         * Called when the web request completes successfully or unsuccessfully.
+         *
+         * @param resultInfo An object containing information about the result of the request.
+         */
+        public void onRequestComplete(WebResultInfo<Result> resultInfo);
     }
 
     // endregion Interfaces
@@ -71,7 +81,7 @@ public class WebRequestManager {
     /**
      * @return The current maximum number of allowed connections.
      */
-    public int getMaxConnection() {
+    public int getMaxConnections() {
         return maxConnections;
     }
 
@@ -129,7 +139,7 @@ public class WebRequestManager {
     }
 
     /**
-     * Sets teh timeout for establishing a connection. Setting this to zero
+     * Sets the timeout for establishing a connection. Setting this to zero
      * means a timeout is not used.
      *
      * @param timeoutMillis The timeout value in milliseconds.
@@ -142,6 +152,13 @@ public class WebRequestManager {
 
     // region Methods
 
+    /**
+     * Executes the given request synchronously and returns the result.
+     *
+     * @param request  The request to execute.
+     * @param <Result> The result type of the request.
+     * @return An object containing the information about the result of the web request.
+     */
     public <Result> WebResultInfo<Result> execute(WebRequest<Result> request) {
         WebRequestExecutorFactory executorFactory = WebRequestExecutorFactory.getInstance();
         WebRequestExecutor<Result> executor = executorFactory.create(request, getConnectionTimeout(), getReadTimeout());
@@ -153,12 +170,19 @@ public class WebRequestManager {
         return result;
     }
 
-    public <Result> void executeInBackground(WebRequest<Result> request, WebRequestListener<Result> listener) {
+    /**
+     * Executes the given request in the background and calls the listener when the request finishes.
+     *
+     * @param request  The request to execute.
+     * @param listener The listener to call with results, or null.
+     * @param <Result> The result type of the request.
+     */
+    public <Result> void executeInBackground(WebRequest<Result> request, @Nullable WebRequestListener<Result> listener) {
         backgroundPoolExecutor.execute(createRequestRunnable(request, listener));
     }
 
     protected <Result> Runnable createRequestRunnable(final WebRequest<Result> request, final WebRequestListener<Result> listener) {
-        return new Runnable() {
+        return new DownloadRunnable() {
             @Override
             public void run() {
                 WebResultInfo<Result> result = WebRequestManager.this.execute(request);
@@ -204,4 +228,27 @@ public class WebRequestManager {
     }
 
     // endregion Methods
+
+    // region Inner Classes
+
+    private static abstract class DownloadRunnable implements
+            Comparable<DownloadRunnable>, Runnable {
+
+        private int priority;
+
+        public DownloadRunnable() {
+            this.priority = 0;
+        }
+
+        public DownloadRunnable(int priority) {
+            this.priority = priority;
+        }
+
+        @Override
+        public int compareTo(DownloadRunnable another) {
+            return this.priority - another.priority;
+        }
+    }
+
+    // endregion Inner Classes
 }

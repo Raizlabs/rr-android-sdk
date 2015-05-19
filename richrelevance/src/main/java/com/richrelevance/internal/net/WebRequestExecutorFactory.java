@@ -1,6 +1,4 @@
-package com.richrelevance.internal.net.executors;
-
-import com.richrelevance.internal.net.WebRequest;
+package com.richrelevance.internal.net;
 
 /**
  * Class which provides {@link WebRequestExecutor}s.

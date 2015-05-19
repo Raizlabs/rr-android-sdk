@@ -1,4 +1,4 @@
-package com.richrelevance.internal;
+package com.richrelevance;
 
 /**
  * Class which is a simple wrapper of an object of another type, allowing this
@@ -6,7 +6,7 @@ package com.richrelevance.internal;
  *
  * @param <T> The type to be wrapped.
  */
-public class Wrapper<T> {
+class Wrapper<T> {
     private T value;
 
     /**

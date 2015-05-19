@@ -8,6 +8,11 @@ package com.richrelevance.internal.net;
 public interface WebResultInfo<Result> {
 
     /**
+     * Response code which represents a failure.
+     */
+    public static final int RESPONSE_CODE_FAILED = -1;
+
+    /**
      * @return The time that the response was received in milliseconds.
      */
     public long getResponseTimestamp();

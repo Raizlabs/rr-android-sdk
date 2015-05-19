@@ -1,7 +1,7 @@
 package com.richrelevance.builders;
 
 import com.richrelevance.RequestBuilder;
-import com.richrelevance.internal.net.responses.WebResponse;
+import com.richrelevance.internal.net.WebResponse;
 
 public class SetUserPreferenceBuilder extends RequestBuilder<Void> {
 

@@ -1,7 +1,5 @@
 package com.richrelevance.internal.net;
 
-import com.richrelevance.internal.net.responses.WebResponse;
-
 /**
  * Class which contains the logic of how to make a web request and interpret the response.
  *

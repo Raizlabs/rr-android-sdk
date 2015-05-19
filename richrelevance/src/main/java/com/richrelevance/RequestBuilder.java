@@ -3,7 +3,7 @@ package com.richrelevance;
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
-import com.richrelevance.internal.net.responses.WebResponse;
+import com.richrelevance.internal.net.WebResponse;
 
 import java.util.Locale;
 

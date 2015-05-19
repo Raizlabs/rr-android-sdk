@@ -6,7 +6,7 @@ package com.richrelevance.internal.net;
  *
  * @param <Result> The type of the result which will be returned
  */
-public class FailedResultInfo<Result> implements WebResultInfo<Result> {
+class FailedResultInfo<Result> implements WebResultInfo<Result> {
 
     private long timestamp;
 
@@ -26,7 +26,7 @@ public class FailedResultInfo<Result> implements WebResultInfo<Result> {
 
     @Override
     public int getResponseCode() {
-        return -1;
+        return RESPONSE_CODE_FAILED;
     }
 
     @Override

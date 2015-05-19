@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.StrategyType;
-import com.richrelevance.internal.net.responses.WebResponse;
+import com.richrelevance.internal.net.WebResponse;
 
 public class StrategyRecommendationsBuilder extends RequestBuilder<Object> {
 

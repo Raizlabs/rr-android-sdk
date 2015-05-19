@@ -1,8 +1,6 @@
-package com.richrelevance.internal.net.responses;
+package com.richrelevance.internal.net;
 
 import android.text.TextUtils;
-
-import com.richrelevance.internal.net.HttpMethod;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +9,7 @@ import java.net.HttpURLConnection;
 /**
  * {@link WebResponse} implementation which wraps an {@link HttpURLConnection}.
  */
-public class HttpURLConnectionResponse extends BaseResponse {
+class HttpURLConnectionResponse extends BaseResponse {
     private HttpURLConnection connection;
 
     /**

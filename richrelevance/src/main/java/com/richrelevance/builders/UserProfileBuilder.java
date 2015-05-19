@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.UserProfileField;
-import com.richrelevance.internal.net.responses.WebResponse;
+import com.richrelevance.internal.net.WebResponse;
 
 import java.util.Collection;
 

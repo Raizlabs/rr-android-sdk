@@ -7,9 +7,9 @@ import java.util.Map;
 /**
  * Class of helper utilities for HTTP.
  */
-public class HttpUtils {
+class HttpUtils {
 
-    public static String getQueryString(Map<String, String> map) {
+    static String getQueryString(Map<String, String> map) {
         StringBuilder queryBuilder = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, String> entry : map.entrySet()) {

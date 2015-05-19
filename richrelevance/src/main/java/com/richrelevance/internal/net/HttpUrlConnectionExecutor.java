@@ -1,14 +1,6 @@
-package com.richrelevance.internal.net.executors;
+package com.richrelevance.internal.net;
 
 import com.richrelevance.internal.RRLog;
-import com.richrelevance.internal.net.BasicWebResultInfo;
-import com.richrelevance.internal.net.FailedResultInfo;
-import com.richrelevance.internal.net.HttpUtils;
-import com.richrelevance.internal.net.WebRequest;
-import com.richrelevance.internal.net.WebRequestBuilder;
-import com.richrelevance.internal.net.WebResultInfo;
-import com.richrelevance.internal.net.responses.HttpURLConnectionResponse;
-import com.richrelevance.internal.net.responses.WebResponse;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -21,7 +13,7 @@ import java.util.Map;
  *
  * @param <Result> The type of the result that will be returned.
  */
-public class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
+class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
 
     private WebRequest<Result> request;
     private int connectionTimeout;

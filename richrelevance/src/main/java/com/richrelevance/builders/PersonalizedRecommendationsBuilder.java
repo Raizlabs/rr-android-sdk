@@ -2,7 +2,7 @@ package com.richrelevance.builders;
 
 import com.richrelevance.Placement;
 import com.richrelevance.RequestBuilder;
-import com.richrelevance.internal.net.responses.WebResponse;
+import com.richrelevance.internal.net.WebResponse;
 
 import java.util.Collection;
 import java.util.List;

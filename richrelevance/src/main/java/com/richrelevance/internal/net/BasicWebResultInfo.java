@@ -7,11 +7,11 @@ import java.io.IOException;
  *
  * @param <Result> The type of the result which will be returned
  */
-public class BasicWebResultInfo<Result> implements WebResultInfo<Result> {
+class BasicWebResultInfo<Result> implements WebResultInfo<Result> {
     private Result result;
 
     private long timestamp;
-    private int responseCode = -1;
+    private int responseCode = RESPONSE_CODE_FAILED;
     private String responseMessage;
 
     /**

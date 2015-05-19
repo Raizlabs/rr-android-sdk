@@ -1,6 +1,4 @@
-package com.richrelevance.internal.net.executors;
-
-import com.richrelevance.internal.net.WebResultInfo;
+package com.richrelevance.internal.net;
 
 /**
  * Defines a mechanism for executing a web request and retrieving a result.

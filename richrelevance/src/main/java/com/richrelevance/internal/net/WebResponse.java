@@ -1,6 +1,4 @@
-package com.richrelevance.internal.net.responses;
-
-import com.richrelevance.internal.net.HttpMethod;
+package com.richrelevance.internal.net;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Interface for a web response which abstracts the underlying implementation.
+ * Interface for a web response, allowing access to the different returned values and fields.
  */
 public interface WebResponse {
     /**
