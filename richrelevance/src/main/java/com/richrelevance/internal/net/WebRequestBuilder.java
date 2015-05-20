@@ -237,15 +237,15 @@ public class WebRequestBuilder {
      * @return The URL the {@link WebRequestBuilder} is pointing to.
      */
     public String getFullUrl() {
-        String url = this.url.toString();
+        String fullUrl = this.url;
 
         // If we should set params in the url and we have params to set, do so
         if ((getParamLocationResolved() == ParamLocation.URL) && (params.size() > 0)) {
             String queryString = "?" + HttpUtils.getQueryString(params);
-            url = String.format("%s%s", this.url, queryString);
+            fullUrl = String.format("%s%s", this.url, queryString);
         }
 
-        return url;
+        return fullUrl;
     }
 
     /**
@@ -272,5 +272,39 @@ public class WebRequestBuilder {
      */
     public HttpMethod getMethod() {
         return method;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+
+        result = mergeHashes(result, url.hashCode(), method.hashCode());
+        result = mergeHashes(result, params.hashCode(), forcedBodyParams.hashCode(), headers.hashCode());
+        result = mergeHashes(result, paramLocation);
+        return result;
+    }
+
+    private int mergeHashes(int current, int... addends) {
+        for (int addend : addends) {
+            current = 37 * current + addend;
+        }
+
+        return current;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof WebRequestBuilder) {
+            WebRequestBuilder other = (WebRequestBuilder) o;
+
+            return url.equals(other.url) &&
+                    method.equals(other.method) &&
+                    paramLocation == other.paramLocation &&
+                    params.equals(other.params) &&
+                    forcedBodyParams.equals(other.forcedBodyParams) &&
+                    headers.equals(other.headers);
+        }
+
+        return super.equals(o);
     }
 }

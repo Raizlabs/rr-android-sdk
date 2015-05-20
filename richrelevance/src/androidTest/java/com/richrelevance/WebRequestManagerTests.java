@@ -109,16 +109,9 @@ public class WebRequestManagerTests extends TestCase {
         assertNotNull(resultInfo.getResult());
     }
 
-    private class SimpleTestRequest implements WebRequest<JSONObject> {
-
-        @Override
-        public WebRequestBuilder getRequestBuilder() {
-            return new WebRequestBuilder(HttpMethod.Get, "http://jsonplaceholder.typicode.com/posts/1");
-        }
-
-        @Override
-        public JSONObject translate(WebResponse response) {
-            return response.getContentAsJSON();
+    private class SimpleTestRequest extends SimpleJsonRequest {
+        public SimpleTestRequest() {
+            super("http://jsonplaceholder.typicode.com/posts/1");
         }
     }
 

@@ -1,4 +1,4 @@
-package com.richrelevance.internal.io;
+package com.richrelevance.internal.net;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 /**
  * Class of helper utilities for dealing with IO
  */
-public class IOUtils {
+class IOUtils {
 
     /**
      * Utility method for pulling plain text from an InputStream object
@@ -17,7 +17,7 @@ public class IOUtils {
      * @param in InputStream object retrieved from an HttpResponse
      * @return String contents of stream
      */
-    public static String readStream(InputStream in) {
+    static String readStream(InputStream in) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder sb = new StringBuilder();
         String line = null;
@@ -40,7 +40,7 @@ public class IOUtils {
      *
      * @param closeable The {@link Closeable} to close.
      */
-    public static void safeClose(Closeable closeable) {
+    static void safeClose(Closeable closeable) {
         if (closeable != null) {
             try {
                 closeable.close();

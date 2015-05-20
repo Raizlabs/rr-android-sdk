@@ -50,6 +50,8 @@ public class WebRequestManager {
     private int maxConnections;
     private int connectionTimeout, readTimeout;
 
+    private WebRequestExecutorFactory executorFactory;
+
     // endregion Members
 
     // region Constructors
@@ -72,6 +74,7 @@ public class WebRequestManager {
         setMaxConnections(maxConnections);
         setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
         setReadTimeout(DEFAULT_READ_TIMEOUT);
+        executorFactory = HttpUrlConnectionExecutor.FACTORY;
     }
 
     // endregion Constructors
@@ -148,6 +151,10 @@ public class WebRequestManager {
         readTimeout = timeoutMillis;
     }
 
+    public void setExecutorFactory(WebRequestExecutorFactory factory) {
+        this.executorFactory = factory;
+    }
+
     // endregion Accessors
 
     // region Methods
@@ -160,7 +167,6 @@ public class WebRequestManager {
      * @return An object containing the information about the result of the web request.
      */
     public <Result> WebResultInfo<Result> execute(WebRequest<Result> request) {
-        WebRequestExecutorFactory executorFactory = WebRequestExecutorFactory.getInstance();
         WebRequestExecutor<Result> executor = executorFactory.create(request, getConnectionTimeout(), getReadTimeout());
 
         beginConnection();

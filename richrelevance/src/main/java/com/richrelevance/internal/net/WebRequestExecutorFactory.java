@@ -1,15 +1,9 @@
 package com.richrelevance.internal.net;
 
 /**
- * Class which provides {@link WebRequestExecutor}s.
+ * Interface which provides {@link WebRequestExecutor}s.
  */
-public class WebRequestExecutorFactory {
-
-    private static final WebRequestExecutorFactory INSTANCE = new WebRequestExecutorFactory();
-
-    public static WebRequestExecutorFactory getInstance() {
-        return INSTANCE;
-    }
+public interface WebRequestExecutorFactory {
 
     /**
      * Gets a {@link WebRequestExecutor} which executes the given request.
@@ -19,7 +13,5 @@ public class WebRequestExecutorFactory {
      * @param readTimeout    The read timeout to set on the request.
      * @return An executor to execute the given request.
      */
-    public <Result> WebRequestExecutor<Result> create(WebRequest<Result> request, int connectTimeout, int readTimeout) {
-        return new HttpUrlConnectionExecutor<>(request, connectTimeout, readTimeout);
-    }
+    public <Result> WebRequestExecutor<Result> create(WebRequest<Result> request, int connectTimeout, int readTimeout);
 }

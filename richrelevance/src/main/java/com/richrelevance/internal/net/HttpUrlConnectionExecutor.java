@@ -108,4 +108,10 @@ class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
         }
     }
 
+    public static final WebRequestExecutorFactory FACTORY = new WebRequestExecutorFactory() {
+        @Override
+        public <T> WebRequestExecutor<T> create(WebRequest<T> request, int connectTimeout, int readTimeout) {
+            return new HttpUrlConnectionExecutor<T>(request, connectTimeout, readTimeout);
+        }
+    };
 }
