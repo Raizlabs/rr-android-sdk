@@ -16,6 +16,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * {@link WebResponse} which returns the contents of a mocked response.
+ */
 class MockWebResponse implements WebResponse {
 
     private Context context;

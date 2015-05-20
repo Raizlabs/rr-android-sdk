@@ -9,6 +9,9 @@ import com.richrelevance.internal.net.WebResultInfo;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class which maintains a set of mocked responses.
+ */
 public class MockResponseManager {
 
     private static final MockResponseManager INSTANCE = new MockResponseManager();
@@ -28,6 +31,12 @@ public class MockResponseManager {
         this.context = context.getApplicationContext();
     }
 
+    /**
+     * Gets a mocked result which corresponds to the given request or a failure if none is found.
+     * @param request The request to get a response for.
+     * @param <T> The result type of the request.
+     * @return The mocked result of the request.
+     */
     public <T> WebResultInfo<T> getResult(WebRequest<T> request) {
         MockWebResponse response = responseMap.get(request.getRequestBuilder());
 
@@ -38,6 +47,12 @@ public class MockResponseManager {
         return new MockWebResultInfo<>(WebResultInfo.RESPONSE_CODE_FAILED, null);
     }
 
+    /**
+     * Stores the given response as the response to the given request. All requests with an equivalent request builder
+     * will be responded to using the given response.
+     * @param requestBuilder The request builder to test for equality against future requests.
+     * @param response The response to return if a matching request is sent.
+     */
     public void putResponse(WebRequestBuilder requestBuilder, ResponseBuilder response) {
         responseMap.put(requestBuilder, new MockWebResponse(requestBuilder, response, context));
     }
