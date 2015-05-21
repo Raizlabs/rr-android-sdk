@@ -1,6 +1,5 @@
 package com.richrelevance;
 
-import com.richrelevance.internal.RRLog;
 
 /**
  * Class which helps with assertions

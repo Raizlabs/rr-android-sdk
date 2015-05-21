@@ -3,7 +3,7 @@ package com.richrelevance.mocking;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.richrelevance.internal.RRLog;
+import com.richrelevance.RRLog;
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.IOUtilities;
 import com.richrelevance.internal.net.WebRequestBuilder;

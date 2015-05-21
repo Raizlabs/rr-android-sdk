@@ -1,6 +1,7 @@
 package com.richrelevance.internal.net;
 
-import com.richrelevance.internal.RRLog;
+
+import com.richrelevance.RRLog;
 
 import java.io.Closeable;
 import java.io.IOException;
