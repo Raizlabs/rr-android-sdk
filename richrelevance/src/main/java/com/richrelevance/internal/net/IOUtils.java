@@ -1,10 +1,10 @@
 package com.richrelevance.internal.net;
 
-import java.io.BufferedReader;
+import com.richrelevance.internal.RRLog;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * Class of helper utilities for dealing with IO
@@ -18,19 +18,20 @@ class IOUtils {
      * @return String contents of stream
      */
     static String readStream(InputStream in) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder sb = new StringBuilder();
-        String line = null;
+
+        byte[] buffer = new byte[8192];
+        int count;
         try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+            while ((count = in.read(buffer)) > 0) {
+                sb.append(new String(buffer, 0, count));
             }
         } catch (Exception ex) {
-
+            RRLog.w(IOUtils.class.getSimpleName(), "Error reading stream", ex);
         } finally {
             safeClose(in);
-            safeClose(reader);
         }
+
         return sb.toString();
     }
 

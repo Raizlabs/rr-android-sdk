@@ -1,62 +1,36 @@
 package com.richrelevance;
 
+import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResultInfo;
 
-public class RichRelevanceClientImpl implements RichRelevanceClient {
+/**
+ * Implementation of {@link RichRelevanceClient}.
+ */
+class RichRelevanceClientImpl implements RichRelevanceClient {
 
-    private String apiKey;
-    private String apiClientKey;
-    private String userId;
-    private String sessionId;
+    private ClientConfiguration configuration;
 
     @Override
-    public String getApiKey() {
-        return apiKey;
+    public ClientConfiguration getConfiguration() {
+        return configuration;
     }
 
     @Override
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public void setConfiguration(ClientConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
-    public String getApiClientKey() {
-        return apiClientKey;
-    }
+    public <T> void executeRequest(RequestBuilder<T> request) {
+        request.setClient(this);
 
-    @Override
-    public void setApiClientKey(String apiClientKey) {
-        this.apiClientKey = apiClientKey;
-    }
+        CallbackWebListener<T> listener = new CallbackWebListener<>(request.getCallback());
 
-    @Override
-    public String getUserId() {
-        return userId;
-    }
-
-    @Override
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    @Override
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    @Override
-    public <T> void executeRequest(RequestBuilder<T> builder) {
-        builder.setClient(this);
-
-        CallbackWebListener<T> listener = new CallbackWebListener<>(builder.getCallback());
-
-        RichRelevance.getWebRequestManager().executeInBackground(builder.getWebRequest(), listener);
+        WebRequest<T> webRequest = request.getWebRequest();
+        if (webRequest != null) {
+            RichRelevance.getWebRequestManager().executeInBackground(webRequest, listener);
+        }
     }
 
     // region Inner Classes

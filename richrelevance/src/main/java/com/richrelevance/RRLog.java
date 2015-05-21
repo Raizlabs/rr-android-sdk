@@ -4,16 +4,26 @@ package com.richrelevance;
  * Class which mirrors the default Android {@link android.util.Log}, but allows enabling and disabling. All Rich
  * Relevance logging will go through here such that logging may be globally disabled in the SDK.
  */
-class Log {
+public class RRLog {
 
-    private static boolean loggingEnabled = !RichRelevance.isProduction();
+    private static Boolean manualLoggingEnabled = null;
+
+    static boolean isLoggingEnabled() {
+        // If it has been set manually, use it
+        if (manualLoggingEnabled != null) {
+            return manualLoggingEnabled;
+        } else {
+            // Otherwise default to production
+            return !RichRelevance.isProduction();
+        }
+    }
 
     /**
      * Sets whether logging is enabled.
      * @param enabled True to enable logging, false to disable it.
      */
     static void setLoggingEnabled(boolean enabled) {
-        loggingEnabled = enabled;
+        manualLoggingEnabled = enabled;
     }
 
     public static void v(String tag, String message) {
@@ -77,6 +87,6 @@ class Log {
     }
 
     private static boolean isLoggable(String tag, int level) {
-        return loggingEnabled;
+        return isLoggingEnabled();
     }
 }

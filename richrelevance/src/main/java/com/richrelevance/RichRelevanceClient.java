@@ -1,21 +1,26 @@
 package com.richrelevance;
 
+/**
+ * Interface which is used to submit Rich Relevance requests. A {@link ClientConfiguration} is used to apply shared
+ * properties to requests when they are sent.
+ */
 public interface RichRelevanceClient {
-    public String getApiKey();
 
-    public void setApiKey(String apiKey);
+    /**
+     * @return The configuration being used on requests.
+     */
+    public ClientConfiguration getConfiguration();
 
-    public String getApiClientKey();
+    /**
+     * Sets the configuration to use on requests.
+     * @param configuration The configuration to use on requests.
+     */
+    public void setConfiguration(ClientConfiguration configuration);
 
-    public void setApiClientKey(String apiClientKey);
-
-    public String getUserId();
-
-    public void setUserId(String userId);
-
-    public String getSessionId();
-
-    public void setSessionId(String sessionId);
-
-    public <T> void executeRequest(RequestBuilder<T> builder);
+    /**
+     * Executes the given request using the current configuration.
+     * @param request The request to execute.
+     * @param <T> The result type of the request.
+     */
+    public <T> void executeRequest(RequestBuilder<T> request);
 }

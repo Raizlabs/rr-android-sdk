@@ -2,7 +2,7 @@ package com.richrelevance.internal.net;
 
 import android.text.TextUtils;
 
-import com.richrelevance.internal.RRLog;
+import com.richrelevance.RRLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;

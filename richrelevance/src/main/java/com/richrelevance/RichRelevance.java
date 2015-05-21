@@ -16,18 +16,38 @@ public class RichRelevance {
 
     private static WebRequestManager webRequestManager = new WebRequestManager();
 
-    private static RichRelevanceClient defaultClient = new RichRelevanceClientImpl();
+    private static RichRelevanceClient defaultClient = newClient();
+
+    // Currently doesn't work in libraries built with Gradle
+    // Leaving for forwards compatibility if this ever gets fixed
+    // This defaults to false, so this is "safe" since we will always assume the worst
+    private static boolean isProduction = !BuildConfig.DEBUG;
 
     static WebRequestManager getWebRequestManager() {
         return webRequestManager;
     }
 
+    /**
+     * @return The default client used for requests.
+     */
     public static RichRelevanceClient getDefaultClient() {
         return RichRelevance.defaultClient;
     }
 
+    /**
+     * Sets the default {@link RichRelevanceClient} to use for requests.
+     * @param client The default client to use for requests.
+     */
     public static void setDefaultClient(RichRelevanceClient client) {
         RichRelevance.defaultClient = client;
+    }
+
+    /**
+     * Creates a new {@link RichRelevanceClient}.
+     * @return A new client.
+     */
+    public static RichRelevanceClient newClient() {
+        return new RichRelevanceClientImpl();
     }
 
     /**
@@ -35,10 +55,15 @@ public class RichRelevance {
      * production.
      */
     static boolean isProduction() {
-        // Currently doesn't work in libraries built with Gradle
-        // Leaving for forwards compatibility if this ever gets fixed
-        // This defaults to false, so this is "safe" since we will always assume the worst
-        return !BuildConfig.DEBUG;
+        return isProduction;
+    }
+
+    /**
+     *
+     * @param isProduction
+     */
+    public static void setIsProduction(boolean isProduction) {
+        RichRelevance.isProduction = isProduction;
     }
 
     /**
@@ -46,7 +71,7 @@ public class RichRelevance {
      * @param enabled True to enable logging, false to disable it.
      */
     public static void setLoggingEnabled(boolean enabled) {
-        Log.setLoggingEnabled(enabled);
+        RRLog.setLoggingEnabled(enabled);
     }
 
     // region Fetching
