@@ -50,6 +50,7 @@ public class RichRelevance {
         return new RichRelevanceClientImpl();
     }
 
+    // TODO - If isProduction() is just for logging, we might as well remove it since logging can already be configured manually.
     /**
      * @return False if the app is known to be built configured for debug, true if it is unknown or built for
      * production.
@@ -59,8 +60,8 @@ public class RichRelevance {
     }
 
     /**
-     *
-     * @param isProduction
+     * Manually sets the configuration to act like this is a production build.
+     * @param isProduction True to act like a production build, false not to.
      */
     public static void setIsProduction(boolean isProduction) {
         RichRelevance.isProduction = isProduction;
