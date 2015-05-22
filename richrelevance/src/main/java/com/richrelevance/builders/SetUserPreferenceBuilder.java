@@ -29,12 +29,12 @@ public class SetUserPreferenceBuilder extends RequestBuilder<Void> {
     }
 
     public SetUserPreferenceBuilder setTargetType(TargetType target) {
-        addParameter("targetType", target.getKey());
+        setParameter("targetType", target.getKey());
         return this;
     }
 
     public SetUserPreferenceBuilder setActionType(ActionType action) {
-        addParameter("actionType", action.getKey());
+        setParameter("actionType", action.getKey());
         return this;
     }
 

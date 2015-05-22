@@ -36,7 +36,6 @@ public class ClientTests extends TestCase {
         RichRelevance.getDefaultClient().setConfiguration(config1);
 
         WebRequestBuilder webRequestBuilder = builder.build();
-        webRequestBuilder.setSendParamsInBody();
 
         assertTrue(webRequestBuilder.getFullUrl().contains(VALUE_CONFIG1));
         assertTrue(webRequestBuilder.getFullUrl().startsWith("http:"));
@@ -69,11 +68,10 @@ public class ClientTests extends TestCase {
     }
 
     private void assertConfigurationValues(WebRequestBuilder builder, String value) {
-        builder.setSendParamsInBody();
-        assertEquals(value, builder.getBodyParams().get("apiKey"));
-        assertEquals(value, builder.getBodyParams().get("apiClientKey"));
-        assertEquals(value, builder.getBodyParams().get("userId"));
-        assertEquals(value, builder.getBodyParams().get("sessionId"));
+        assertEquals(value, builder.getParam("apiKey"));
+        assertEquals(value, builder.getParam("apiClientKey"));
+        assertEquals(value, builder.getParam("userId"));
+        assertEquals(value, builder.getParam("sessionId"));
     }
 
     private static class TestRequestBuilder extends RequestBuilder<Void> {

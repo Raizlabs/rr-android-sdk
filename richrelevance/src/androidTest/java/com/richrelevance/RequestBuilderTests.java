@@ -14,11 +14,10 @@ public class RequestBuilderTests extends TestCase {
     public void testRequestBuilder() {
 
         TestBuilder builder = new TestBuilder();
-        builder.addParameter(TEST_KEY, TEST_VALUE);
+        builder.setParameter(TEST_KEY, TEST_VALUE);
 
         WebRequestBuilder webRequest = builder.build();
-        webRequest.setSendParamsInBody();
-        assertEquals(TEST_VALUE, webRequest.getBodyParams().get(TEST_KEY));
+        assertEquals(TEST_VALUE, webRequest.getParam(TEST_KEY));
         assertTrue(webRequest.getFullUrl().contains(TEST_ENDPOINT_PATH));
     }
 

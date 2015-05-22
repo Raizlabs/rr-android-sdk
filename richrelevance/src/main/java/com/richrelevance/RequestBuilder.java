@@ -1,12 +1,15 @@
 package com.richrelevance;
 
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
 
 /**
@@ -14,6 +17,8 @@ import java.util.Locale;
  * @param <Result> The type of the result that this request will return.
  */
 public abstract class RequestBuilder<Result> {
+
+    private static final String LIST_DELIMITER = "|";
 
     private RichRelevanceClient client;
     private WebRequestBuilder webRequestBuilder;
@@ -41,33 +46,107 @@ public abstract class RequestBuilder<Result> {
     }
 
     /**
-     * Adds the given arbitrary parameter to this builder.
+     * Sets the given arbitrary parameter in this builder.
      * @param key The key of the parameter to set.
      * @param value The value to set the parameter to.
      * @return This builder for chaining method calls.
      */
-    public RequestBuilder<Result> addParameter(String key, String value) {
+    public RequestBuilder<Result> setParameter(String key, String value) {
         webRequestBuilder.addParam(key, value);
         return this;
     }
 
+    /**
+     * Sets the given arbitrary parameter in this builder.
+     * @param key The key of the parameter to set.
+     * @param value The value to set the parameter to.
+     * @return This builder for chaining method calls.
+     */
+    public RequestBuilder<Result> setParameter(String key, boolean value) {
+        webRequestBuilder.addParam(key, value);
+        return this;
+    }
+
+    /**
+     * Sets the given arbitrary parameter in this builder.
+     * @param key The key of the parameter to set.
+     * @param value The value to set the parameter to.
+     * @return This builder for chaining method calls.
+     */
+    public RequestBuilder<Result> setParameter(String key, int value) {
+        webRequestBuilder.addParam(key, value);
+        return this;
+    }
+
+    /**
+     * Sets the given arbitrary parameter in this builder.
+     * @param key The key of the parameter to set.
+     * @param value The value to set the parameter to.
+     * @return This builder for chaining method calls.
+     */
+    public RequestBuilder<Result> setParameter(String key, long value) {
+        webRequestBuilder.addParam(key, value);
+        return this;
+    }
+
+    public RequestBuilder<Result> addListParameters(String key, String... values) {
+        return addListParameters(key, Arrays.asList(values));
+    }
+
+    public RequestBuilder<Result> addListParameters(String key, Collection<String> values) {
+        // Short circuit
+        if ((values == null) || values.isEmpty()) {
+            return this;
+        }
+
+        String existingValue = webRequestBuilder.getParam(key);
+
+        boolean hasValue = !TextUtils.isEmpty(existingValue);
+
+        StringBuilder valueBuilder = new StringBuilder(existingValue);
+        for (String value : values) {
+            if (!TextUtils.isEmpty(value)) {
+                if (hasValue) {
+                    valueBuilder.append(LIST_DELIMITER);
+                }
+
+                valueBuilder.append(value);
+                hasValue = true;
+            }
+        }
+
+        setParameter(key, valueBuilder.toString());
+
+        return this;
+    }
+
+    public RequestBuilder<Result> setListParameter(String key, String...values) {
+        setParameter(key, StringUtils.join(LIST_DELIMITER, values));
+        return this;
+    }
+
+    public RequestBuilder<Result> setListParameter(String key, Collection<String> values) {
+        setParameter(key, StringUtils.join(LIST_DELIMITER, values));
+        return this;
+    }
+
     protected RequestBuilder<Result> setApiKey(String apiKey) {
-        addParameter("apiKey", apiKey);
+        setParameter("apiKey", apiKey);
         return this;
     }
 
     protected RequestBuilder<Result> setApiClientKey(String apiClientKey) {
-        addParameter("apiClientKey", apiClientKey);
+        setParameter("apiClientKey", apiClientKey);
         return this;
     }
 
     protected RequestBuilder<Result> setUserId(String userId) {
-        addParameter("userId", userId);
+        setParameter("userId", userId);
         return this;
     }
 
     protected RequestBuilder<Result> setSessionId(String sessionId) {
-        addParameter("sessionId", sessionId);
+        setParameter("sessionId", sessionId);
         return this;
     }
 

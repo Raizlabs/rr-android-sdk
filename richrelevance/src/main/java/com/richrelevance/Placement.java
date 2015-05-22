@@ -61,7 +61,7 @@ public class Placement {
         this.name = name;
     }
 
-    String getApiValue() {
+    public String getApiValue() {
         return String.format(Locale.US, "%s.%s", pageType.getKey(), name);
     }
 }

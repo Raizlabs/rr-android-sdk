@@ -9,7 +9,7 @@ import com.richrelevance.internal.net.WebResponse;
 public class StrategyRecommendationsBuilder extends RequestBuilder<Object> {
 
     public StrategyRecommendationsBuilder setStrategy(StrategyType strategy) {
-        addParameter("strategyName", strategy.getKey());
+        setParameter("strategyName", strategy.getKey());
         return this;
     }
 

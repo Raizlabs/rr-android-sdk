@@ -81,6 +81,18 @@ public class WebRequestBuilder {
      * @param value The parameter value.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
+    public WebRequestBuilder addParam(String key, boolean value) {
+        params.put(key, Boolean.toString(value));
+        return this;
+    }
+
+    /**
+     * Adds a parameter to this request.
+     *
+     * @param key   The parameter key.
+     * @param value The parameter value.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
+     */
     public WebRequestBuilder addParam(String key, int value) {
         params.put(key, Integer.toString(value));
         return this;
@@ -126,6 +138,15 @@ public class WebRequestBuilder {
     public WebRequestBuilder addParams(Map<String, String> params) {
         putEntries(params, this.params);
         return this;
+    }
+
+    /**
+     * Gets the current value for the given key.
+     * @param key The key to get the value of.
+     * @return The current value of the key.
+     */
+    public String getParam(String key) {
+        return params.get(key);
     }
 
     /**
