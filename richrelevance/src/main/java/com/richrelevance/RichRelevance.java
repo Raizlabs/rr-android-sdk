@@ -77,7 +77,7 @@ public class RichRelevance {
 
     // region Fetching
 
-    public static StrategyRecommendationsBuilder buildRecommendationsUsingStrategy(StrategyType strategy) {
+    public static StrategyRecommendationsBuilder buildRecommendationsUsingStrategy(Strategy strategy) {
         return new StrategyRecommendationsBuilder()
                 .setStrategy(strategy);
     }

@@ -7,6 +7,7 @@ import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.utils.ValueMap;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +20,8 @@ import java.util.Locale;
 public abstract class RequestBuilder<Result> {
 
     private static final String LIST_DELIMITER = "|";
+    private static final String VALUE_MAP_VALUE_DELIMITER = ";";
+    private static final String VALUE_MAP_VALUE_ASSIGNMENT = ":";
 
     private RichRelevanceClient client;
     private WebRequestBuilder webRequestBuilder;
@@ -89,11 +92,16 @@ public abstract class RequestBuilder<Result> {
         return this;
     }
 
-    public RequestBuilder<Result> addListParameters(String key, String... values) {
+    public RequestBuilder<Result> removeParameter(String key) {
+        webRequestBuilder.removeParam(key);
+        return this;
+    }
+
+    public RequestBuilder<Result> addListParameters(String key, Object... values) {
         return addListParameters(key, Arrays.asList(values));
     }
 
-    public RequestBuilder<Result> addListParameters(String key, Collection<String> values) {
+    public RequestBuilder<Result> addListParameters(String key, Collection<?> values) {
         // Short circuit
         if ((values == null) || values.isEmpty()) {
             return this;
@@ -104,14 +112,17 @@ public abstract class RequestBuilder<Result> {
         boolean hasValue = !TextUtils.isEmpty(existingValue);
 
         StringBuilder valueBuilder = new StringBuilder(existingValue);
-        for (String value : values) {
-            if (!TextUtils.isEmpty(value)) {
-                if (hasValue) {
-                    valueBuilder.append(LIST_DELIMITER);
-                }
+        for (Object value : values) {
+            if (value != null) {
+                String stringValue = value.toString();
+                if (!TextUtils.isEmpty(stringValue)) {
+                    if (hasValue) {
+                        valueBuilder.append(LIST_DELIMITER);
+                    }
 
-                valueBuilder.append(value);
-                hasValue = true;
+                    valueBuilder.append(stringValue);
+                    hasValue = true;
+                }
             }
         }
 
@@ -125,8 +136,20 @@ public abstract class RequestBuilder<Result> {
         return this;
     }
 
-    public RequestBuilder<Result> setListParameter(String key, Collection<String> values) {
+    public RequestBuilder<Result> setListParameter(String key, Collection<?> values) {
         setParameter(key, StringUtils.join(LIST_DELIMITER, values));
+        return this;
+    }
+
+    public RequestBuilder<Result> setValueMapParameter(String key, ValueMap<?> values) {
+        String value = StringUtils.join(values, LIST_DELIMITER, VALUE_MAP_VALUE_DELIMITER, VALUE_MAP_VALUE_ASSIGNMENT);
+        setParameter(key, value);
+        return this;
+    }
+
+    public RequestBuilder<Result> setValueMapParameterFlat(String key, ValueMap<?> values) {
+        String value = StringUtils.joinFlat(values, LIST_DELIMITER, VALUE_MAP_VALUE_ASSIGNMENT);
+        setParameter(key, value);
         return this;
     }
 

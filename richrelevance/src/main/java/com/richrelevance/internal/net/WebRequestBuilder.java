@@ -150,6 +150,17 @@ public class WebRequestBuilder {
     }
 
     /**
+     * Removes a parameter from the request.
+     *
+     * @param key   The parameter key.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
+     */
+    public WebRequestBuilder removeParam(String key) {
+        params.remove(key);
+        return this;
+    }
+
+    /**
      * Adds a parameter to this request that will be sent only as part of
      * the request's body.
      *

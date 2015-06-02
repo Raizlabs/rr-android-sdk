@@ -3,12 +3,12 @@ package com.richrelevance.builders;
 import android.util.Log;
 
 import com.richrelevance.RequestBuilder;
-import com.richrelevance.StrategyType;
+import com.richrelevance.Strategy;
 import com.richrelevance.internal.net.WebResponse;
 
 public class StrategyRecommendationsBuilder extends RequestBuilder<Object> {
 
-    public StrategyRecommendationsBuilder setStrategy(StrategyType strategy) {
+    public StrategyRecommendationsBuilder setStrategy(Strategy strategy) {
         setParameter("strategyName", strategy.getKey());
         return this;
     }
