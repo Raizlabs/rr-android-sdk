@@ -77,7 +77,7 @@ public class RichRelevance {
 
     // region Fetching
 
-    public static StrategyRecommendationsBuilder buildRecommendationsUsingStrategy(Strategy strategy) {
+    public static StrategyRecommendationsBuilder buildRecommendationsUsingStrategy(StrategyType strategy) {
         return new StrategyRecommendationsBuilder()
                 .setStrategy(strategy);
     }
@@ -89,7 +89,7 @@ public class RichRelevance {
 
     public static PlacementsRecommendationsBuilder buildRecommendationsForPlacements(Collection<Placement> placements) {
         return new PlacementsRecommendationsBuilder()
-                .addPlacements(placements);
+                .setPlacements(placements);
     }
 
     public static PersonalizedRecommendationsBuilder buildPersonalizedRecommendations(Placement... placements) {
