@@ -608,6 +608,17 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<List<Object
      * @param ranges The ranges that the products should belong to in cents.
      * @return This builder for chaining method calls.
      */
+    public PlacementsRecommendationsBuilder setPriceRanges(Range... ranges) {
+        return setPriceRanges(Arrays.asList(ranges));
+    }
+
+    /**
+     * Search & Browse only. Filter based on price ranges that the products should belong to in cents. N/A for clients
+     * with localized product prices.
+     *
+     * @param ranges The ranges that the products should belong to in cents.
+     * @return This builder for chaining method calls.
+     */
     public PlacementsRecommendationsBuilder setPriceRanges(Collection<Range> ranges) {
         List<String> stringRanges = new ArrayList<>(ranges.size());
         for (Range range : ranges) {
