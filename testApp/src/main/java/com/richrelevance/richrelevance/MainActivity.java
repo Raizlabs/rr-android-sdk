@@ -7,8 +7,15 @@ import android.view.MenuItem;
 
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
+import com.richrelevance.Placement;
+import com.richrelevance.Product;
+import com.richrelevance.Range;
 import com.richrelevance.RichRelevance;
 import com.richrelevance.StrategyType;
+import com.richrelevance.utils.ValueMap;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -17,6 +24,28 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RichRelevance.buildRecommendationsForPlacements(
+                new Placement(Placement.PlacementPageType.ADD_TO_CART, "thing"),
+                new Placement(Placement.PlacementPageType.CATEGORY, "other thing")
+        )
+                .addPlacements(new Placement(Placement.PlacementPageType.ITEM, "another one"))
+                .setCount(50)
+                .addPurchasedProducts(
+                        new Product("product1", 2093, 902),
+                        new Product("product2", 3920, 298)
+                )
+                .setUserAttributes(
+                        new ValueMap<String>()
+                                .add("attr", "val", "val2")
+                                .add("otherAtt", "val", "val2")
+                                .add("otherAttr", "val", "val2")
+                )
+                .setPriceRanges(
+                        new Range(100, 10000),
+                        new Range(Range.NONE, 200000)
+                )
+                .execute();
 
         RichRelevance.buildRecommendationsUsingStrategy(StrategyType.SITE_WIDE_BEST_SELLERS)
                 .setCallback(new Callback<Object>() {
