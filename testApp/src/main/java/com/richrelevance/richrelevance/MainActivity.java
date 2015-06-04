@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.RichRelevance;
-import com.richrelevance.Strategy;
+import com.richrelevance.StrategyType;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -18,7 +18,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RichRelevance.buildRecommendationsUsingStrategy(Strategy.SITE_WIDE_BEST_SELLERS)
+        RichRelevance.buildRecommendationsUsingStrategy(StrategyType.SITE_WIDE_BEST_SELLERS)
                 .setCallback(new Callback<Object>() {
                     @Override
                     public void onResult(Object result) {
