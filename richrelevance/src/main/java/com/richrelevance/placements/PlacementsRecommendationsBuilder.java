@@ -1,21 +1,23 @@
-package com.richrelevance.builders;
+package com.richrelevance.placements;
 
-import com.richrelevance.Placement;
-import com.richrelevance.Product;
-import com.richrelevance.RRLog;
-import com.richrelevance.Range;
-import com.richrelevance.RequestBuilder;
-import com.richrelevance.StrategyType;
-import com.richrelevance.Utils;
+import com.richrelevance.*;
+import com.richrelevance.Error;
+import com.richrelevance.internal.json.JSONArrayParserDelegate;
+import com.richrelevance.internal.json.JSONHelper;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.utils.ParsingUtils;
+import com.richrelevance.utils.Utils;
 import com.richrelevance.utils.ValueMap;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class PlacementsRecommendationsBuilder extends RequestBuilder<List<Object>> {
+public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementResponseInfo> {
 
     private static class Keys {
         private static final String PLACEMENTS = "placements";
@@ -651,7 +653,12 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<List<Object
     }
 
     @Override
-    protected List<Object> parseResponse(WebResponse response) {
-        return null;
+    protected PlacementResponseInfo createNewResult() {
+        return new PlacementResponseInfo();
+    }
+
+    @Override
+    protected void populateResponse(WebResponse response, JSONObject json, PlacementResponseInfo result) {
+        PlacementsParser.parsePlacementResponseInfo(json, result);
     }
 }

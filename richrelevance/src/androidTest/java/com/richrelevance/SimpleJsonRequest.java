@@ -1,5 +1,7 @@
 package com.richrelevance;
 
+import android.support.annotation.NonNull;
+
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
@@ -21,7 +23,7 @@ public class SimpleJsonRequest implements WebRequest<JSONObject> {
     }
 
     @Override
-    public JSONObject translate(WebResponse response) {
-        return response.getContentAsJSON();
+    public void translate(WebResponse response, @NonNull ResultCallback<JSONObject> resultCallback) {
+        resultCallback.onSuccess(response.getContentAsJSON());
     }
 }

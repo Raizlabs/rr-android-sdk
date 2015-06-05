@@ -1,10 +1,12 @@
-package com.richrelevance;
+package com.richrelevance.placements;
+
+import android.text.TextUtils;
 
 import java.util.Locale;
 
 public class Placement {
 
-    public enum PlacementPageType {
+    public enum PlacementType {
 
         HOME {
             @Override
@@ -53,12 +55,18 @@ public class Placement {
         abstract String getKey();
     }
 
-    private PlacementPageType pageType;
+    private PlacementType pageType;
     private String name;
 
-    public Placement(PlacementPageType pageType, String name) {
+    public Placement(PlacementType pageType, String name) {
         this.pageType = pageType;
         this.name = name;
+    }
+
+    public Placement(String apiValue) {
+        if (!TextUtils.isEmpty(apiValue)) {
+
+        }
     }
 
     public String getApiValue() {

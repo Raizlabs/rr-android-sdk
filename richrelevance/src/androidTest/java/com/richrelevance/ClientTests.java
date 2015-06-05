@@ -1,6 +1,5 @@
 package com.richrelevance;
 
-import com.richrelevance.builders.PlacementsRecommendationsBuilder;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResponse;
@@ -75,7 +74,12 @@ public class ClientTests extends TestCase {
         assertEquals(value, builder.getParam("sessionId"));
     }
 
-    private static class TestRequestBuilder extends RequestBuilder<Void> {
+    private static class TestRequestBuilder extends RequestBuilder<ResponseInfo> {
+
+        @Override
+        protected ResponseInfo createNewResult() {
+            return new ResponseInfo() {};
+        }
 
         @Override
         protected String getEndpointPath() {
@@ -83,8 +87,8 @@ public class ClientTests extends TestCase {
         }
 
         @Override
-        protected Void parseResponse(WebResponse response) {
-            return null;
+        protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
+
         }
     }
 }

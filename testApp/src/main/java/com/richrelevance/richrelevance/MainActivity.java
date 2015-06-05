@@ -7,15 +7,12 @@ import android.view.MenuItem;
 
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
-import com.richrelevance.Placement;
+import com.richrelevance.placements.Placement;
 import com.richrelevance.Product;
 import com.richrelevance.Range;
 import com.richrelevance.RichRelevance;
 import com.richrelevance.StrategyType;
 import com.richrelevance.utils.ValueMap;
-
-import java.util.Arrays;
-import java.util.LinkedList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -26,10 +23,10 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         RichRelevance.buildRecommendationsForPlacements(
-                new Placement(Placement.PlacementPageType.ADD_TO_CART, "thing"),
-                new Placement(Placement.PlacementPageType.CATEGORY, "other thing")
+                new Placement(Placement.PlacementType.ADD_TO_CART, "thing"),
+                new Placement(Placement.PlacementType.CATEGORY, "other thing")
         )
-                .addPlacements(new Placement(Placement.PlacementPageType.ITEM, "another one"))
+                .addPlacements(new Placement(Placement.PlacementType.ITEM, "another one"))
                 .setCount(50)
                 .addPurchasedProducts(
                         new Product("product1", 2093, 902),

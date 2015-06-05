@@ -1,9 +1,12 @@
 package com.richrelevance.builders;
 
 import com.richrelevance.RequestBuilder;
+import com.richrelevance.ResponseInfo;
 import com.richrelevance.internal.net.WebResponse;
 
-public class SetUserPreferenceBuilder extends RequestBuilder<Void> {
+import org.json.JSONObject;
+
+public class SetUserPreferenceBuilder extends RequestBuilder<ResponseInfo> {
 
     public enum TargetType {
         Product {
@@ -48,7 +51,12 @@ public class SetUserPreferenceBuilder extends RequestBuilder<Void> {
     }
 
     @Override
-    protected Void parseResponse(WebResponse response) {
+    protected ResponseInfo createNewResult() {
         return null;
+    }
+
+    @Override
+    protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
+
     }
 }

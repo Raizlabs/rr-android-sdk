@@ -1,15 +1,18 @@
 package com.richrelevance.builders;
 
-import com.richrelevance.Placement;
+import com.richrelevance.ResponseInfo;
+import com.richrelevance.placements.Placement;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
+
+import org.json.JSONObject;
 
 import java.util.Collection;
 import java.util.List;
 
 // TODO - This may be able to be merged into {@link PersonalizedRecommendationsBuilder} if the
 // response is similar enough
-public class PersonalizedRecommendationsBuilder extends RequestBuilder<List<Object>> {
+public class PersonalizedRecommendationsBuilder extends RequestBuilder<ResponseInfo> {
 
     public PersonalizedRecommendationsBuilder addPlacements(Placement... placements) {
         return this;
@@ -25,7 +28,13 @@ public class PersonalizedRecommendationsBuilder extends RequestBuilder<List<Obje
     }
 
     @Override
-    protected List<Object> parseResponse(WebResponse response) {
+    protected ResponseInfo createNewResult() {
+        // TODO
         return null;
+    }
+
+    @Override
+    protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
+        // TODO
     }
 }

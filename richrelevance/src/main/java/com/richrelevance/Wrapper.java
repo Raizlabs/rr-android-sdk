@@ -6,7 +6,7 @@ package com.richrelevance;
  *
  * @param <T> The type to be wrapped.
  */
-class Wrapper<T> {
+public class Wrapper<T> {
     private T value;
 
     /**

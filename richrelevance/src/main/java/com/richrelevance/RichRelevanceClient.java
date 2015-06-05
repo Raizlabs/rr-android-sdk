@@ -22,5 +22,5 @@ public interface RichRelevanceClient {
      * @param request The request to execute.
      * @param <T> The result type of the request.
      */
-    public <T> void executeRequest(RequestBuilder<T> request);
+    public <T extends ResponseInfo> void executeRequest(RequestBuilder<T> request);
 }

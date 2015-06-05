@@ -1,5 +1,7 @@
 package com.richrelevance.internal.net;
 
+import com.richrelevance.Error;
+
 /**
  * {@link WebResultInfo} implementation for a request that totally failed and doesn't
  * have any sort of response. Useful for connection failures, invalid parameters, etc.
@@ -9,9 +11,11 @@ package com.richrelevance.internal.net;
 class FailedResultInfo<Result> implements WebResultInfo<Result> {
 
     private long timestamp;
+    private Error error;
 
-    public FailedResultInfo(long timestamp) {
+    public FailedResultInfo(long timestamp, Error error) {
         this.timestamp = timestamp;
+        this.error = error;
     }
 
     @Override
@@ -22,6 +26,11 @@ class FailedResultInfo<Result> implements WebResultInfo<Result> {
     @Override
     public Result getResult() {
         return null;
+    }
+
+    @Override
+    public Error getError() {
+        return error;
     }
 
     @Override

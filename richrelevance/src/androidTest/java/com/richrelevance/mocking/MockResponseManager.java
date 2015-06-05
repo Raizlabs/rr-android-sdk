@@ -2,9 +2,11 @@ package com.richrelevance.mocking;
 
 import android.content.Context;
 
+import com.richrelevance.internal.net.SimpleResultCallback;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResultInfo;
+import com.richrelevance.Error;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,10 +43,13 @@ public class MockResponseManager {
         MockWebResponse response = responseMap.get(request.getRequestBuilder());
 
         if (response != null) {
-            return new MockWebResultInfo<>(response.getResponseCode(), request.translate(response));
+            SimpleResultCallback<T> callback = new SimpleResultCallback<>();
+            request.translate(response, callback);
+            return new MockWebResultInfo<>(response.getResponseCode(), callback.getResult(), callback.getError());
+        } else {
+            Error notFoundError = new Error(Error.ErrorType.Unknown, "No mocked response found");
+            return new MockWebResultInfo<>(WebResultInfo.RESPONSE_CODE_FAILED, null, notFoundError);
         }
-
-        return new MockWebResultInfo<>(WebResultInfo.RESPONSE_CODE_FAILED, null);
     }
 
     /**
@@ -62,11 +67,13 @@ public class MockResponseManager {
         private int responseCode;
         private Result result;
         private long timestamp;
+        private Error error;
 
-        public MockWebResultInfo(int responseCode, Result result) {
+        public MockWebResultInfo(int responseCode, Result result, Error error) {
             this.responseCode = responseCode;
             this.result = result;
             this.timestamp = System.currentTimeMillis();
+            this.error = error;
         }
 
         @Override
@@ -77,6 +84,11 @@ public class MockResponseManager {
         @Override
         public Result getResult() {
             return result;
+        }
+
+        @Override
+        public Error getError() {
+            return error;
         }
 
         public void setResult(Result result) {

@@ -1,5 +1,6 @@
 package com.richrelevance;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.richrelevance.internal.net.HttpMethod;
@@ -61,8 +62,8 @@ public class WebRequestManagerTests extends TestCase {
             }
 
             @Override
-            public Void translate(WebResponse response) {
-                return null;
+            public void translate(WebResponse response, @NonNull ResultCallback<Void> resultCallback) {
+
             }
         });
         assertNotNull(resultInfo);
@@ -125,11 +126,10 @@ public class WebRequestManagerTests extends TestCase {
         }
 
         @Override
-        public Void translate(WebResponse response) {
+        public void translate(WebResponse response, @NonNull ResultCallback<Void> resultCallback) {
             lock.waitUntilUnlocked();
 
             Log.w(getClass().getSimpleName(), "Completed");
-            return null;
         }
 
         public void unblock() {

@@ -1,11 +1,21 @@
 package com.richrelevance.internal.net;
 
+import android.support.annotation.NonNull;
+
+import com.richrelevance.Error;
+
 /**
  * Class which contains the logic of how to make a web request and interpret the response.
  *
  * @param <T> The type of data that will be returned as the response to the request.
  */
 public interface WebRequest<T> {
+
+    public interface ResultCallback<T> {
+        public void onSuccess(T result);
+
+        public void onError(Error error);
+    }
 
     /**
      * Called to obtain a {@link WebRequestBuilder} that contains all the parameters and info needed to
@@ -16,10 +26,10 @@ public interface WebRequest<T> {
     public WebRequestBuilder getRequestBuilder();
 
     /**
-     * Interprets the given response and returns a result.
+     * Interprets the given response and obtains the result.
      *
-     * @param response The response to interpret.
-     * @return The result that was contained in the response.
+     * @param response       The response to interpret.
+     * @param resultCallback The callback to send results to.
      */
-    public T translate(WebResponse response);
+    public void translate(WebResponse response, @NonNull ResultCallback<T> resultCallback);
 }

@@ -5,6 +5,8 @@ import com.richrelevance.internal.net.WebResponse;
 
 import junit.framework.TestCase;
 
+import org.json.JSONObject;
+
 public class RequestBuilderTests extends TestCase {
 
     private static final String TEST_KEY = "TestKey";
@@ -21,7 +23,12 @@ public class RequestBuilderTests extends TestCase {
         assertTrue(webRequest.getFullUrl().contains(TEST_ENDPOINT_PATH));
     }
 
-    private static class TestBuilder extends RequestBuilder<Void> {
+    private static class TestBuilder extends RequestBuilder<ResponseInfo> {
+
+        @Override
+        protected ResponseInfo createNewResult() {
+            return new ResponseInfo() { };
+        }
 
         @Override
         protected String getEndpointPath() {
@@ -29,8 +36,9 @@ public class RequestBuilderTests extends TestCase {
         }
 
         @Override
-        protected Void parseResponse(WebResponse response) {
-            return null;
+        protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
+
         }
+
     }
 }

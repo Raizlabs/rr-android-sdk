@@ -1,5 +1,6 @@
 package com.richrelevance.internal.net;
 
+import com.richrelevance.Error;
 import com.richrelevance.RRLog;
 
 import java.io.IOException;
@@ -38,9 +39,13 @@ class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
                 onConnected(builder, connection);
 
                 WebResponse response = new HttpURLConnectionResponse(connection);
-                Result result = request.translate(response);
+                SimpleResultCallback<Result> callback = new SimpleResultCallback<>();
+
+                request.translate(response, callback);
+
                 return new BasicWebResultInfo<>(
-                        result,
+                        callback.getResult(),
+                        callback.getError(),
                         System.currentTimeMillis(),
                         response.getResponseCode(),
                         response.getResponseMessage());
@@ -51,7 +56,7 @@ class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
             }
         }
 
-        return new FailedResultInfo<>(System.currentTimeMillis());
+        return new FailedResultInfo<>(System.currentTimeMillis(), new Error(Error.ErrorType.HttpError, "Connection failure"));
     }
 
     /**

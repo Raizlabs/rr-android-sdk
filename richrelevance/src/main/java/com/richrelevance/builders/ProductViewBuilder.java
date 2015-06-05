@@ -1,10 +1,13 @@
 package com.richrelevance.builders;
 
-import com.richrelevance.Placement;
 import com.richrelevance.RequestBuilder;
+import com.richrelevance.ResponseInfo;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.placements.Placement;
 
-public class ProductViewBuilder extends RequestBuilder<Void> {
+import org.json.JSONObject;
+
+public class ProductViewBuilder extends RequestBuilder<ResponseInfo> {
 
     public ProductViewBuilder setPlacement(Placement placement) {
         return this;
@@ -20,7 +23,13 @@ public class ProductViewBuilder extends RequestBuilder<Void> {
     }
 
     @Override
-    protected Void parseResponse(WebResponse response) {
+    protected ResponseInfo createNewResult() {
+        // TODO
         return null;
+    }
+
+    @Override
+    protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
+        // TODO
     }
 }

@@ -3,7 +3,8 @@ package com.richrelevance;
 import com.richrelevance.builders.GetUserPreferenceBuilder;
 import com.richrelevance.builders.LogPurchaseBuilder;
 import com.richrelevance.builders.PersonalizedRecommendationsBuilder;
-import com.richrelevance.builders.PlacementsRecommendationsBuilder;
+import com.richrelevance.placements.Placement;
+import com.richrelevance.placements.PlacementsRecommendationsBuilder;
 import com.richrelevance.builders.ProductViewBuilder;
 import com.richrelevance.builders.SetUserPreferenceBuilder;
 import com.richrelevance.builders.StrategyRecommendationsBuilder;
@@ -126,7 +127,7 @@ public class RichRelevance {
 
     // region Tracking
 
-    public static RequestBuilder<Void> buildProductView(Placement placement, String productId) {
+    public static RequestBuilder<ResponseInfo> buildProductView(Placement placement, String productId) {
         return new ProductViewBuilder()
                 .setProductId(productId);
     }
@@ -147,7 +148,7 @@ public class RichRelevance {
                 .setTargetType(target);
     }
 
-    public static RequestBuilder<Void> buildProductLike(String... productIds) {
+    public static RequestBuilder<?> buildProductLike(String... productIds) {
         return buildTrackUserPreference(
                 SetUserPreferenceBuilder.ActionType.Like,
                 SetUserPreferenceBuilder.TargetType.Product,

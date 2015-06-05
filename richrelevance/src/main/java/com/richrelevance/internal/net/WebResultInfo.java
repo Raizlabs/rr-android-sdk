@@ -1,5 +1,7 @@
 package com.richrelevance.internal.net;
 
+import com.richrelevance.Error;
+
 /**
  * Interface which provides information about the result of a web request.
  *
@@ -21,6 +23,11 @@ public interface WebResultInfo<Result> {
      * @return The result of the request, or null if it failed.
      */
     public Result getResult();
+
+    /**
+     * @return Any resulting error from the request.
+     */
+    public Error getError();
 
     /**
      * @return The response code from the request, or -1 if it failed.
