@@ -52,7 +52,7 @@ public class PlacementsParser {
         product.setNumReviews(json.optLong("numReviews"));
         product.setRegionalProductSku(json.optString("regionalProductSku"));
         product.setCategoryIds(JSONHelper.parseStrings(json, "categoryIds"));
-        product.setImageUrl(json.optString("imageUrl"));
+        product.setImageUrl(json.optString("imageURL"));
         product.setIsRecommendable(json.optBoolean("isRecommendable"));
 
         product.setPriceCents(json.optInt("priceCents"));
@@ -68,7 +68,7 @@ public class PlacementsParser {
             }
         }
 
-        product.setClickUrl(json.optString("clickUrl"));
+        product.setClickUrl(json.optString("clickURL"));
 
         product.setAttributes(ParsingUtils.optValueMap(json, "attributes"));
         product.setCategories(JSONHelper.parseJSONArray(json, "categories", categoryParserDelegate));

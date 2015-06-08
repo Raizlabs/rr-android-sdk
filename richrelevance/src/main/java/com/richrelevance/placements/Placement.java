@@ -53,6 +53,16 @@ public class Placement {
 
 
         public abstract String getKey();
+
+        public static PlacementType fromKey(String key) {
+            for (PlacementType type : PlacementType.values()) {
+                if (type.getKey().equals(key)) {
+                    return type;
+                }
+            }
+
+            return null;
+        }
     }
 
     private PlacementType pageType;
@@ -65,7 +75,11 @@ public class Placement {
 
     public Placement(String apiValue) {
         if (!TextUtils.isEmpty(apiValue)) {
-
+            String[] values = apiValue.split(".");
+            if (values.length == 2) {
+                this.pageType = PlacementType.fromKey(values[0]);
+                this.name = values[1];
+            }
         }
     }
 

@@ -45,9 +45,12 @@ class RichRelevanceClientImpl implements RichRelevanceClient {
 
         @Override
         public void onRequestComplete(WebResultInfo<T> resultInfo) {
-            // TODO - Error states and status verification
             if (callback != null) {
-                callback.onResult(resultInfo.getResult());
+                if (resultInfo.getError() != null) {
+                    callback.onError(resultInfo.getError());
+                } else {
+                    callback.onResult(resultInfo.getResult());
+                }
             }
         }
     }

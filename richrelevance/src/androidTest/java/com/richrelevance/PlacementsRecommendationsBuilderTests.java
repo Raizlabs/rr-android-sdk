@@ -1,14 +1,10 @@
 package com.richrelevance;
 
-import android.text.TextUtils;
-
 import com.richrelevance.placements.Placement;
 import com.richrelevance.placements.PlacementsRecommendationsBuilder;
 import com.richrelevance.utils.ValueMap;
 
-import junit.framework.TestCase;
-
-public class PlacementsRecommendationsBuilderTests extends TestCase {
+public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
 
     public void testPlacementTypeConstants() {
         assertEquals(Placement.PlacementType.HOME.getKey(), "home_page");
@@ -388,18 +384,5 @@ public class PlacementsRecommendationsBuilderTests extends TestCase {
         assertEquals(
                 "age:30|gender:female|hair_color:red;blonde",
                 accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.FILTER_ATTRIBUTES));
-    }
-
-    protected void assertEmpty(String str) {
-        assertTrue(TextUtils.isEmpty(str));
-    }
-
-    protected void assertNonEmpty(String str) {
-        assertTrue(!TextUtils.isEmpty(str));
-    }
-
-    protected void assertJoined(String source, String... values) {
-        String joined = StringUtils.join(RequestBuilder.LIST_DELIMITER, values);
-        assertEquals(joined, source);
     }
 }

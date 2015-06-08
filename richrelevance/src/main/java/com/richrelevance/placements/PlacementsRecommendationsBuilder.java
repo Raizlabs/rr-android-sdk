@@ -696,7 +696,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     @Override
     protected String getEndpointPath() {
-        return "/rrPlatform/recsForPlacements";
+        return "rrPlatform/recsForPlacements";
     }
 
     @Override
