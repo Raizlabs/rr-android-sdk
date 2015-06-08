@@ -24,9 +24,9 @@ import java.util.Locale;
  */
 public abstract class RequestBuilder<Result extends ResponseInfo> {
 
-    private static final String LIST_DELIMITER = "|";
-    private static final String VALUE_MAP_VALUE_DELIMITER = ";";
-    private static final String VALUE_MAP_VALUE_ASSIGNMENT = ":";
+    static final String LIST_DELIMITER = "|";
+    static final String VALUE_MAP_VALUE_DELIMITER = ";";
+    static final String VALUE_MAP_VALUE_ASSIGNMENT = ":";
 
     private RichRelevanceClient client;
     private WebRequestBuilder webRequestBuilder;
@@ -121,7 +121,11 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
 
         boolean hasValue = !TextUtils.isEmpty(existingValue);
 
-        StringBuilder valueBuilder = new StringBuilder(existingValue);
+        StringBuilder valueBuilder = new StringBuilder();
+        if (hasValue) {
+            valueBuilder.append(existingValue);
+        }
+
         for (Object value : values) {
             if (value != null) {
                 String stringValue = value.toString();
@@ -207,10 +211,21 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
     WebRequestBuilder build() {
         if (assertConfiguration()) {
             applyConfiguration(getConfiguration());
+            onBuild(webRequestBuilder);
             return webRequestBuilder;
         }
 
         return null;
+    }
+
+    /**
+     * Hook to allow subclasses to modify the underlying web request in any way they may need prior to the builder
+     * being provided for execution.
+     *
+     * @param builder The builder to be executed.
+     */
+    protected void onBuild(WebRequestBuilder builder) {
+
     }
 
     protected void applyConfiguration(ClientConfiguration configuration) {
@@ -260,7 +275,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
     /**
      * Called to parse the given web response into the appropriate result type.
      *
-     * @param response     The response to process.
+     * @param response       The response to process.
      * @param resultCallback An error handler to pass any errors to.
      */
     protected void parseResponse(WebResponse response, WebRequest.ResultCallback<Result> resultCallback) {
@@ -303,9 +318,9 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * Called to parse the given response data into the appropriate result type after it has been determined to be a
      * successful request.
      *
-     * @param response     The response to parse.
-     * @param json         The JSON content of the response.
-     * @param result       The result to populate.
+     * @param response The response to parse.
+     * @param json     The JSON content of the response.
+     * @param result   The result to populate.
      */
     protected abstract void populateResponse(WebResponse response, JSONObject json, Result result);
 

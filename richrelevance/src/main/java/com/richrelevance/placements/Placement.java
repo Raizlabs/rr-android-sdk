@@ -52,7 +52,7 @@ public class Placement {
         };
 
 
-        abstract String getKey();
+        public abstract String getKey();
     }
 
     private PlacementType pageType;

@@ -1,15 +1,15 @@
 package com.richrelevance.placements;
 
-import com.richrelevance.*;
-import com.richrelevance.Error;
-import com.richrelevance.internal.json.JSONArrayParserDelegate;
-import com.richrelevance.internal.json.JSONHelper;
+import com.richrelevance.Product;
+import com.richrelevance.RRLog;
+import com.richrelevance.Range;
+import com.richrelevance.RequestBuilder;
+import com.richrelevance.StrategyType;
+import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
-import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.Utils;
 import com.richrelevance.utils.ValueMap;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -19,52 +19,56 @@ import java.util.List;
 
 public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementResponseInfo> {
 
-    private static class Keys {
-        private static final String PLACEMENTS = "placements";
+    public static class Keys {
+        public static final String PLACEMENTS = "placements";
 
-        private static final String TIMESTAMP = "ts";
+        public static final String TIMESTAMP = "ts";
 
-        private static final String BRAND_FILTER = "filbr";
-        private static final String BRAND_INCLUDE_FILTERED = "includeBrandFilteredProducts";
-        private static final String PAGE_FEATURED_BRAND = "fpb";
+        public static final String BRAND_FILTER = "filbr";
+        public static final String BRAND_INCLUDE_FILTERED = "includeBrandFilteredProducts";
+        public static final String PAGE_FEATURED_BRAND = "fpb";
 
-        private static final String PRICE_FILTER_MIN = "minPriceFilter";
-        private static final String PRICE_FILTER_MAX = "maxPriceFilter";
-        private static final String PRICE_FILTER_INCLUDE = "includePriceFilteredProducts";
+        public static final String PRICE_FILTER_MIN = "minPriceFilter";
+        public static final String PRICE_FILTER_MAX = "maxPriceFilter";
+        public static final String PRICE_FILTER_INCLUDE = "includePriceFilteredProducts";
 
-        private static final String EXCLUDE_HTML = "excludeHtml";
-        private static final String EXCLUDE_ITEM_ATTRIBUTES = "excludeItemAttributes";
-        private static final String EXCLUDE_RECOMMENDED_ITEMS = "excludeRecItems";
-        private static final String MINIMAL_RECOMMENDED_ITEM_DATA = "returnMinimalRecItemData";
-        private static final String INCLUDE_CATEGORY_DATA = "categoryData";
-        private static final String EXCLUDE_PRODUCT_IDS = "bi";
+        public static final String EXCLUDE_HTML = "excludeHtml";
+        public static final String EXCLUDE_ITEM_ATTRIBUTES = "excludeItemAttributes";
+        public static final String EXCLUDE_RECOMMENDED_ITEMS = "excludeRecItems";
+        public static final String MINIMAL_RECOMMENDED_ITEM_DATA = "returnMinimalRecItemData";
+        public static final String INCLUDE_CATEGORY_DATA = "categoryData";
+        public static final String EXCLUDE_PRODUCT_IDS = "bi";
 
-        private static final String USER_ATTRIBUTES = "userAttribute";
-        private static final String REFERRER = "pref";
+        public static final String USER_ATTRIBUTES = "userAttribute";
+        public static final String REFINEMENTS = "rfm";
+        public static final String REFERRER = "pref";
 
-        private static final String PRODUCT_ID = "productId";
-        private static final String PRODUCT_QUANTITIES = "q";
-        private static final String PRODUCT_PRICES_DOLLARS = "pp";
-        private static final String PRODUCT_PRICES_CENTS = "ppc";
+        public static final String PRODUCT_ID = "productId";
+        public static final String PRODUCT_QUANTITIES = "q";
+        public static final String PRODUCT_PRICES_DOLLARS = "pp";
+        public static final String PRODUCT_PRICES_CENTS = "ppc";
 
-        private static final String CATEGORY_ID = "categoryId";
-        private static final String CATEGORY_HINT_IDS = "chi";
-        private static final String SEARCH_TERM = "searchTerm";
-        private static final String ORDER_ID = "o";
-        private static final String REGISTRY_ID = "rg";
-        private static final String REGISTRY_TYPE_ID = "rgt";
-        private static final String ALREADY_ADDED_REGISTRY_ITEMS = "aari";
-        private static final String STRATEGY_SET = "strategySet";
+        public static final String CATEGORY_ID = "categoryId";
+        public static final String CATEGORY_HINT_IDS = "chi";
+        public static final String SEARCH_TERM = "searchTerm";
+        public static final String ORDER_ID = "o";
+        public static final String USER_SEGMENTS = "sgs";
+        public static final String REGISTRY_ID = "rg";
+        public static final String REGISTRY_TYPE_ID = "rgt";
+        public static final String ALREADY_ADDED_REGISTRY_ITEMS = "aari";
+        public static final String STRATEGY_SET = "strategySet";
 
-        private static final String REGION_ID = "rid";
-        private static final String VIEWED_PRODUCTS = "viewed";
-        private static final String PURCHASED_PRODUCTS = "purchased";
+        public static final String REGION_ID = "rid";
+        public static final String VIEWED_PRODUCTS = "viewed";
+        public static final String PURCHASED_PRODUCTS = "purchased";
 
-        private static final String COUNT = "count";
-        private static final String START = "st";
-        private static final String PRICE_RANGES = "priceRanges";
-        private static final String FILTER_ATTRIBUTES = "filterAtr";
+        public static final String COUNT = "count";
+        public static final String START = "st";
+        public static final String PRICE_RANGES = "priceRanges";
+        public static final String FILTER_ATTRIBUTES = "filterAtr";
     }
+
+    private boolean addTimestampEnabled = true;
 
     /**
      * Adds to the list of placements. Each identifier consists of a page type (see valid page types below) and a
@@ -131,12 +135,23 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
+     * Sets whether to add a timestamp for cache busting. Highly recommended. If excluded, you may see cached responses. Default is true.
+     *
+     * @param enabled True to enable automatic timestamping, false to disable it.
+     * @return This builder for chaining method calls.
+     */
+    public PlacementsRecommendationsBuilder setAddTimestampEnabled(boolean enabled) {
+        this.addTimestampEnabled = enabled;
+        return this;
+    }
+
+    /**
      * For cache busting. Highly recommended. If excluded, you may see cached responses.
      *
      * @param timestamp The timestamp to set.
      * @return This builder for chaining method calls.
      */
-    public PlacementsRecommendationsBuilder setTimestamp(long timestamp) {
+    protected PlacementsRecommendationsBuilder setTimestamp(long timestamp) {
         setParameter(Keys.TIMESTAMP, timestamp);
         return this;
     }
@@ -308,6 +323,18 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
+     * If set to true, reduces the information about the recommended items down to external ID and click URL.
+     * Default = false.
+     *
+     * @param minimal True to return minimal recommended item data.
+     * @return This builder for chaining method calls.
+     */
+    public PlacementsRecommendationsBuilder setReturnMinimalRecommendedItemData(boolean minimal) {
+        setParameter(Keys.MINIMAL_RECOMMENDED_ITEM_DATA, minimal);
+        return this;
+    }
+
+    /**
      * If set to false, omits category data in the response. If true, categoryIds and categories are returned in the
      * response. Default state: true.
      *
@@ -361,7 +388,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setRefinements(ValueMap<String> refinements) {
-        setValueMapParameterFlat(Keys.USER_ATTRIBUTES, refinements);
+        setValueMapParameterFlat(Keys.REFINEMENTS, refinements);
         return this;
     }
 
@@ -438,6 +465,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     /**
      * Adds {@link Product}s for purchase tracking.
+     *
      * @param products The products to track.
      * @return This builder for chaining method calls.
      */
@@ -447,6 +475,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     /**
      * Adds {@link Product}s for purchase tracking.
+     *
      * @param products The products to track.
      * @return This builder for chaining method calls.
      */
@@ -470,6 +499,16 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
         addListParameters(Keys.PRODUCT_PRICES_CENTS, productPriceCents);
         addListParameters(Keys.PRODUCT_PRICES_DOLLARS, productPriceDollars);
 
+        return this;
+    }
+
+    /**
+     * To supply user segments. Should be passed in to have a segment targeted campaign work correctly.
+     * @param segments The user segments to set.
+     * @return This builder for chaining method calls.
+     */
+    public PlacementsRecommendationsBuilder setUserSegments(ValueMap<String> segments) {
+        setValueMapParameter(Keys.USER_SEGMENTS, segments);
         return this;
     }
 
@@ -645,6 +684,14 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     public PlacementsRecommendationsBuilder setFilterAttributes(ValueMap<String> attributes) {
         setValueMapParameter(Keys.FILTER_ATTRIBUTES, attributes);
         return this;
+    }
+
+    @Override
+    protected void onBuild(WebRequestBuilder builder) {
+        super.onBuild(builder);
+        if (addTimestampEnabled) {
+            builder.addParam(Keys.TIMESTAMP, System.currentTimeMillis());
+        }
     }
 
     @Override
