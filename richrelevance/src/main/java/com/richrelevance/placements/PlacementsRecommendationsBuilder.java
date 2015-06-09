@@ -70,6 +70,10 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     private boolean addTimestampEnabled = true;
 
+    public PlacementsRecommendationsBuilder() {
+        excludeHtml(true);
+    }
+
     /**
      * Adds to the list of placements. Each identifier consists of a page type (see valid page types below) and a
      * placement name.
@@ -289,7 +293,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     /**
      * If set to true, omits the HTML returned in the Relevance Cloud server response. If false, the response includes
-     * the HTML for the placement, which is set in the layout, in the html field. Default = false.
+     * the HTML for the placement, which is set in the layout, in the html field. Default = true.
      *
      * @param exclude True to omit the returned HTML.
      * @return This builder for chaining method calls.

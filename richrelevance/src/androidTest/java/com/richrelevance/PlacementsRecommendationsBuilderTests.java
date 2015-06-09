@@ -111,10 +111,10 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
         PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
 
-        assertEmpty(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.EXCLUDE_HTML));
-
-        builder.excludeHtml(true);
         assertEquals("true", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.EXCLUDE_HTML));
+
+        builder.excludeHtml(false);
+        assertEquals("false", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.EXCLUDE_HTML));
     }
 
     public void testExcludeRecommendedItems() {
