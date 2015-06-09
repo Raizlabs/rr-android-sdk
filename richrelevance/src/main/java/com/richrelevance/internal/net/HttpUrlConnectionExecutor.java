@@ -79,12 +79,6 @@ class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
                 connection.setRequestProperty(entry.getKey(), entry.getValue());
             }
 
-            // If we have params and this is a post, we need to do output
-            // but they will be written later
-            if (builder.getBodyParams().size() > 0) {
-                connection.setDoOutput(true);
-            }
-
             return connection;
 
         } catch (IOException e) {
@@ -101,16 +95,6 @@ class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
      * @param connection The opened connection.
      */
     private void onConnected(WebRequestBuilder builder, HttpURLConnection connection) {
-        Map<String, String> bodyParams = builder.getBodyParams();
-        if ((bodyParams != null) && !bodyParams.isEmpty()) {
-            // Convert the params to a query string, and write it to the body.
-            String query = HttpUtils.getQueryString(bodyParams);
-            try {
-                connection.getOutputStream().write(query.getBytes());
-            } catch (IOException e) {
-                RRLog.e(getClass().getName(), e.getMessage(), e);
-            }
-        }
     }
 
     public static final WebRequestExecutorFactory FACTORY = new WebRequestExecutorFactory() {
