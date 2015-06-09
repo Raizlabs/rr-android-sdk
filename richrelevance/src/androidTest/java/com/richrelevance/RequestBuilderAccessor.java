@@ -1,5 +1,8 @@
 package com.richrelevance;
 
+import com.richrelevance.internal.net.WebRequest;
+import com.richrelevance.internal.net.WebResponse;
+
 import java.util.List;
 
 public class RequestBuilderAccessor {
@@ -15,5 +18,9 @@ public class RequestBuilderAccessor {
 
     public List<String> getAllParamValues(String key) {
         return builder.getWebRequest().getRequestBuilder().getAllParamValues(key);
+    }
+
+    public void parseResponse(WebResponse response, WebRequest.ResultCallback<ResponseInfo> callback) {
+        builder.parseResponse(response, callback);
     }
 }

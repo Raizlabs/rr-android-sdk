@@ -69,9 +69,4 @@ class HttpURLConnectionResponse extends BaseResponse {
     public InputStream getContentStream() throws IOException {
         return connection == null ? null : connection.getInputStream();
     }
-
-    @Override
-    public HttpMethod getRequestMethod() {
-        return connection == null ? null : HttpMethod.fromName(connection.getRequestMethod());
-    }
 }

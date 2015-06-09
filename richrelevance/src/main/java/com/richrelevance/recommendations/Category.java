@@ -21,7 +21,7 @@ public class Category {
         this.name = name;
     }
 
-    public boolean isHasChildren() {
+    public boolean hasChildren() {
         return hasChildren;
     }
 

@@ -69,12 +69,6 @@ public interface WebResponse {
     public InputStream getContentStream() throws IOException;
 
     /**
-     * @return The {@link HttpMethod} that was used to get this
-     * {@link WebResponse}.
-     */
-    public HttpMethod getRequestMethod();
-
-    /**
      * Gets the content of this {@link WebResponse} by parsing it
      * into a string.
      *

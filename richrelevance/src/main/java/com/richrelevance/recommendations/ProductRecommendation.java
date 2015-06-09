@@ -8,6 +8,7 @@ import java.util.List;
 public class ProductRecommendation {
     private String id;
     private String name;
+    private String brand;
     private String genre;
     private double rating;
     private long numReviews;
@@ -40,6 +41,14 @@ public class ProductRecommendation {
 
     void setName(String name) {
         this.name = name;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getGenre() {

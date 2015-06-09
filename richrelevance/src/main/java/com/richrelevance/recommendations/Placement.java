@@ -75,7 +75,7 @@ public class Placement {
 
     public Placement(String apiValue) {
         if (!TextUtils.isEmpty(apiValue)) {
-            String[] values = apiValue.split(".");
+            String[] values = apiValue.split("\\.");
             if (values.length == 2) {
                 this.pageType = PlacementType.fromKey(values[0]);
                 this.name = values[1];
@@ -85,5 +85,13 @@ public class Placement {
 
     public String getApiValue() {
         return String.format(Locale.US, "%s.%s", pageType.getKey(), name);
+    }
+
+    public PlacementType getPageType() {
+        return pageType;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -12,7 +12,6 @@ import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.ValueMap;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -293,7 +292,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @param response       The response to process.
      * @param resultCallback An error handler to pass any errors to.
      */
-    protected void parseResponse(WebResponse response, WebRequest.ResultCallback<Result> resultCallback) {
+    protected void parseResponse(WebResponse response, WebRequest.ResultCallback<? super Result> resultCallback) {
         if (response.getResponseCode() >= 400) {
             resultCallback.onError(new Error(Error.ErrorType.HttpError, response.getResponseMessage()));
         } else {

@@ -19,13 +19,12 @@ import java.io.InputStream;
 /**
  * {@link WebResponse} which returns the contents of a mocked response.
  */
-class MockWebResponse implements WebResponse {
+public class MockWebResponse implements WebResponse {
 
     private Context context;
     private ResponseBuilder response;
-    private WebRequestBuilder request;
 
-    public MockWebResponse(WebRequestBuilder requestBuilder, ResponseBuilder responseBuilder, Context context) {
+    public MockWebResponse(ResponseBuilder responseBuilder, Context context) {
         this.context = context;
         this.response = responseBuilder;
     }
@@ -77,11 +76,6 @@ class MockWebResponse implements WebResponse {
     @Override
     public InputStream getContentStream() throws IOException {
         return context.getAssets().open(response.getContentAssetPath());
-    }
-
-    @Override
-    public HttpMethod getRequestMethod() {
-        return request.getMethod();
     }
 
     @Override

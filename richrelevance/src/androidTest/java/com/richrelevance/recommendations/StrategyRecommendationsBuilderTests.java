@@ -1,5 +1,8 @@
-package com.richrelevance;
+package com.richrelevance.recommendations;
 
+import com.richrelevance.BaseTestCase;
+import com.richrelevance.RequestBuilderAccessor;
+import com.richrelevance.StrategyType;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.utils.ValueMap;
 

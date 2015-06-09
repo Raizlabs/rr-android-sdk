@@ -1,10 +1,9 @@
 package com.richrelevance;
 
+import android.test.AndroidTestCase;
 import android.text.TextUtils;
 
-import junit.framework.TestCase;
-
-public class BaseTestCase extends TestCase {
+public class BaseAndroidTestCase extends AndroidTestCase {
 
     protected void assertEmpty(String str) {
         assertTrue(TextUtils.isEmpty(str));

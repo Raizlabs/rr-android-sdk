@@ -59,7 +59,7 @@ public class MockResponseManager {
      * @param response The response to return if a matching request is sent.
      */
     public void putResponse(WebRequestBuilder requestBuilder, ResponseBuilder response) {
-        responseMap.put(requestBuilder, new MockWebResponse(requestBuilder, response, context));
+        responseMap.put(requestBuilder, new MockWebResponse(response, context));
     }
 
     private static class MockWebResultInfo<Result> implements WebResultInfo<Result> {

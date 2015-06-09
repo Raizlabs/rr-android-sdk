@@ -62,6 +62,7 @@ public class RecommendationsParser {
         ProductRecommendation product = new ProductRecommendation();
         product.setId(json.optString("id"));
         product.setName(json.optString("name"));
+        product.setBrand(json.optString("brand"));
         product.setGenre(json.optString("genre"));
         product.setRating(json.optDouble("rating"));
         product.setNumReviews(json.optLong("numReviews"));
