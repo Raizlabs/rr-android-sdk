@@ -351,7 +351,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * List of product IDs that should not be recommended in this response. Separate each product with a pipe.
+     * List of product IDs that should not be recommended in this response.
      *
      * @param productIds The product IDs not to recommend.
      * @return This builder for chaining method calls.
@@ -362,7 +362,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * List of product IDs that should not be recommended in this response. Separate each product with a pipe.
+     * List of product IDs that should not be recommended in this response.
      *
      * @param productIds The product IDs not to recommend.
      * @return This builder for chaining method calls.
@@ -694,7 +694,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     protected void onBuild(WebRequestBuilder builder) {
         super.onBuild(builder);
         if (addTimestampEnabled) {
-            builder.addParam(Keys.TIMESTAMP, System.currentTimeMillis());
+            builder.setParam(Keys.TIMESTAMP, System.currentTimeMillis());
         }
     }
 

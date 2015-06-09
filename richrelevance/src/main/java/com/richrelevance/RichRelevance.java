@@ -7,7 +7,7 @@ import com.richrelevance.placements.Placement;
 import com.richrelevance.placements.PlacementsRecommendationsBuilder;
 import com.richrelevance.builders.ProductViewBuilder;
 import com.richrelevance.builders.SetUserPreferenceBuilder;
-import com.richrelevance.builders.StrategyRecommendationsBuilder;
+import com.richrelevance.strategy.StrategyRecommendationsBuilder;
 import com.richrelevance.builders.UserProfileBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 

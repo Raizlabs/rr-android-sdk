@@ -62,7 +62,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public RequestBuilder<Result> setParameter(String key, String value) {
-        webRequestBuilder.addParam(key, value);
+        webRequestBuilder.setParam(key, value);
         return this;
     }
 
@@ -74,7 +74,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public RequestBuilder<Result> setParameter(String key, boolean value) {
-        webRequestBuilder.addParam(key, value);
+        webRequestBuilder.setParam(key, value);
         return this;
     }
 
@@ -86,7 +86,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public RequestBuilder<Result> setParameter(String key, int value) {
-        webRequestBuilder.addParam(key, value);
+        webRequestBuilder.setParam(key, value);
         return this;
     }
 
@@ -98,7 +98,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public RequestBuilder<Result> setParameter(String key, long value) {
-        webRequestBuilder.addParam(key, value);
+        webRequestBuilder.setParam(key, value);
         return this;
     }
 
@@ -152,6 +152,20 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
 
     public RequestBuilder<Result> setListParameter(String key, Collection<?> values) {
         setParameter(key, StringUtils.join(LIST_DELIMITER, values));
+        return this;
+    }
+
+    public RequestBuilder<Result> setListParameterFlat(String key, String... values) {
+        for (String value : values) {
+            webRequestBuilder.addParam(key, value);
+        }
+        return this;
+    }
+
+    public RequestBuilder<Result> setListParameterFlat(String key, Collection<String> values) {
+        for (String value : values) {
+            webRequestBuilder.addParam(key, value);
+        }
         return this;
     }
 

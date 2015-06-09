@@ -1,7 +1,10 @@
 package com.richrelevance.internal.net;
 
+import android.util.Pair;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,23 +12,23 @@ import java.util.Map;
  */
 class HttpUtils {
 
-    static String getQueryString(Map<String, String> map) {
+    static String getQueryString(List<Pair<String, String>> pairs) {
         StringBuilder queryBuilder = new StringBuilder();
         boolean first = true;
-        for (Map.Entry<String, String> entry : map.entrySet()) {
+        for (Pair<String, String> pair : pairs) {
             // This will throw a NullPointerException if you call URLEncoder.encode(null).
             // Instead caught & thrown with description above.
-            String value = entry.getValue();
+            String value = pair.second;
             if (value == null) {
                 // Can't be more specific without jeopardizing security.
                 throw new NullPointerException("Malformed Request. Entry has null value for key: "
-                        + entry.getKey());
+                        + pair.first);
             }
 
             if (!first) {
                 queryBuilder.append("&");
             }
-            queryBuilder.append(entry.getKey());
+            queryBuilder.append(pair.first);
             queryBuilder.append("=");
             try {
                 queryBuilder.append(URLEncoder.encode(value, "UTF-8"));

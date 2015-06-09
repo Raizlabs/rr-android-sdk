@@ -1,7 +1,11 @@
 package com.richrelevance.internal.net;
 
+import android.util.Pair;
+
 import java.net.URI;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,18 +15,10 @@ import java.util.Map.Entry;
  */
 public class WebRequestBuilder {
 
-    static class ParamLocation {
-        private static final int AUTO = 0;
-        private static final int URL = 10;
-        private static final int BODY = 20;
-    }
-
     private String url;
     private HttpMethod method;
-    private LinkedHashMap<String, String> params;
-    private LinkedHashMap<String, String> forcedBodyParams;
+    private List<Pair<String, String>> params;
     private LinkedHashMap<String, String> headers;
-    private int paramLocation = ParamLocation.AUTO;
 
     /**
      * Constructs a {@link WebRequestBuilder} using the given {@link HttpMethod}
@@ -34,8 +30,7 @@ public class WebRequestBuilder {
     public WebRequestBuilder(HttpMethod method, String url) {
         setUrl(url);
         this.method = method;
-        this.params = new LinkedHashMap<>();
-        this.forcedBodyParams = new LinkedHashMap<>();
+        this.params = new LinkedList<>();
         this.headers = new LinkedHashMap<>();
     }
 
@@ -63,50 +58,64 @@ public class WebRequestBuilder {
     }
 
     /**
-     * Adds a parameter to this request.
+     * Adds the given parameter. If this key is already included, it will be added a second time - this is not standard
+     * behavior - see {@link #setParam(String, String)}.
      *
      * @param key   The parameter key.
      * @param value The parameter value.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
     public WebRequestBuilder addParam(String key, String value) {
-        params.put(key, value);
+        params.add(new Pair<>(key, value));
         return this;
     }
 
     /**
-     * Adds a parameter to this request.
+     * Sets a parameter in this request, overriding any previous value.
      *
      * @param key   The parameter key.
      * @param value The parameter value.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public WebRequestBuilder addParam(String key, boolean value) {
-        params.put(key, Boolean.toString(value));
+    public WebRequestBuilder setParam(String key, String value) {
+        removeParam(key);
+        addParam(key, value);
         return this;
     }
 
     /**
-     * Adds a parameter to this request.
+     * Sets a parameter in this request, overriding any previous value.
      *
      * @param key   The parameter key.
      * @param value The parameter value.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public WebRequestBuilder addParam(String key, int value) {
-        params.put(key, Integer.toString(value));
+    public WebRequestBuilder setParam(String key, boolean value) {
+        setParam(key, Boolean.toString(value));
         return this;
     }
 
     /**
-     * Adds a parameter to this request.
+     * Sets a parameter in this request, overriding any previous value.
      *
      * @param key   The parameter key.
      * @param value The parameter value.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
-    public WebRequestBuilder addParam(String key, long value) {
-        params.put(key, Long.toString(value));
+    public WebRequestBuilder setParam(String key, int value) {
+        setParam(key, Integer.toString(value));
+        return this;
+    }
+
+    /**
+     * Sets a parameter in this request, overriding any previous value.
+     *
+     * @param key   The parameter key.
+     * @param value The parameter value.
+     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
+     */
+    public WebRequestBuilder setParam(String key, long value) {
+        setParam(key, Long.toString(value));
         return this;
     }
 
@@ -120,74 +129,63 @@ public class WebRequestBuilder {
      */
     public WebRequestBuilder addParamIfNotNull(String key, String value) {
         if (value != null) {
-            addParam(key, value);
+            setParam(key, value);
         }
         return this;
     }
 
     /**
      * Adds a {@link Map} of parameter key value pairs as parameters of this
-     * request. Parameters are added in iteration order. Params added through this
-     * method will adhere to settings {@link #setSendParamsInBody()} or
-     * {@link #setSendParamsInURL()}. If you would like to force params to be
-     * sent in the body, use {@link #addParamToBodyForced(String, String)}.
+     * request. Parameters are added in iteration order.
      *
      * @param params The {@link Map} of parameters.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
     public WebRequestBuilder addParams(Map<String, String> params) {
-        putEntries(params, this.params);
+        for (Entry<String, String> entry : params.entrySet()) {
+            addParam(entry.getKey(), entry.getValue());
+        }
         return this;
     }
 
     /**
-     * Gets the current value for the given key.
+     * Gets the first value for the given key.
+     *
      * @param key The key to get the value of.
      * @return The current value of the key.
      */
     public String getParam(String key) {
-        return params.get(key);
+        if (key != null) {
+            for (Pair<String, String> param : params) {
+                if (key.equals(param.first)) {
+                    return param.second;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
      * Removes a parameter from the request.
      *
-     * @param key   The parameter key.
+     * @param key The parameter key.
      * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
      */
     public WebRequestBuilder removeParam(String key) {
-        params.remove(key);
-        return this;
-    }
+        if (key != null) {
+            List<Pair<String, String>> toRemove = new LinkedList<>();
+            for (Pair<String, String> pair : params) {
+                if (key.equals(pair.first)) {
+                    toRemove.add(pair);
+                }
+            }
 
-    /**
-     * Adds a parameter to this request that will be sent only as part of
-     * the request's body.
-     *
-     * @param key   The parameter key.
-     * @param value The parameter value.
-     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
-     */
-    public WebRequestBuilder addParamToBodyForced(String key, String value) {
-        forcedBodyParams.put(key, value);
-        return this;
-    }
-
-    /**
-     * Adds a parameter to this request that will be sent only as part of
-     * the request's body. This is added only if the value is not null. See also:
-     * {@link #addParamToBodyForced(String, String)}.
-     *
-     * @param key   The parameter key.
-     * @param value The parameter value.
-     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
-     */
-    public WebRequestBuilder addParamToBodyForcedIfNotNull(String key, String value) {
-        if (value != null) {
-            addParamToBodyForced(key, value);
+            params.removeAll(toRemove);
         }
         return this;
     }
+
 
     /**
      * Adds a header to this request with the given name and value.
@@ -213,49 +211,6 @@ public class WebRequestBuilder {
         return this;
     }
 
-
-    /**
-     * Resolves where parameters should be sent and returns the value. This
-     * will resolve automatic detection and return the final endpoint instead
-     * of {@link ParamLocation#AUTO}
-     *
-     * @return One of the values defined in {@link ParamLocation} where params
-     * should be sent
-     */
-    protected int getParamLocationResolved() {
-        if (paramLocation == ParamLocation.AUTO) {
-            if (method == HttpMethod.Post) {
-                return ParamLocation.BODY;
-            } else {
-                return ParamLocation.URL;
-            }
-        } else {
-            return paramLocation;
-        }
-    }
-
-    /**
-     * Causes the params set by addParam calls to be sent in the URL of this
-     * request.
-     *
-     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
-     */
-    public WebRequestBuilder setSendParamsInURL() {
-        paramLocation = ParamLocation.URL;
-        return this;
-    }
-
-    /**
-     * Causes the params set by addParam calls to be sent in the body of this
-     * request.
-     *
-     * @return This {@link WebRequestBuilder} object to allow for chaining of calls.
-     */
-    public WebRequestBuilder setSendParamsInBody() {
-        paramLocation = ParamLocation.BODY;
-        return this;
-    }
-
     private void putEntries(Map<String, String> entries, Map<String, String> map) {
         for (Entry<String, String> entry : entries.entrySet()) {
             map.put(entry.getKey(), entry.getValue());
@@ -272,7 +227,7 @@ public class WebRequestBuilder {
         String fullUrl = this.url;
 
         // If we should set params in the url and we have params to set, do so
-        if ((getParamLocationResolved() == ParamLocation.URL) && (params.size() > 0)) {
+        if (params.size() > 0) {
             String queryString = "?" + HttpUtils.getQueryString(params);
             fullUrl = String.format("%s%s", this.url, queryString);
         }
@@ -288,18 +243,6 @@ public class WebRequestBuilder {
     }
 
     /**
-     * @return The params that are currently set to be put in the body.
-     */
-    public Map<String, String> getBodyParams() {
-        Map<String, String> bodyParms = new LinkedHashMap<>(forcedBodyParams);
-        if (getParamLocationResolved() == ParamLocation.BODY) {
-            bodyParms.putAll(params);
-        }
-
-        return bodyParms;
-    }
-
-    /**
      * @return The http method to be used for this request.
      */
     public HttpMethod getMethod() {
@@ -311,8 +254,6 @@ public class WebRequestBuilder {
         int result = 0;
 
         result = mergeHashes(result, url.hashCode(), method.hashCode());
-        result = mergeHashes(result, params.hashCode(), forcedBodyParams.hashCode(), headers.hashCode());
-        result = mergeHashes(result, paramLocation);
         return result;
     }
 
@@ -331,9 +272,7 @@ public class WebRequestBuilder {
 
             return url.equals(other.url) &&
                     method.equals(other.method) &&
-                    paramLocation == other.paramLocation &&
                     params.equals(other.params) &&
-                    forcedBodyParams.equals(other.forcedBodyParams) &&
                     headers.equals(other.headers);
         }
 
