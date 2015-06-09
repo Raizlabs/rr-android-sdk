@@ -24,7 +24,7 @@ public class ApiIntegrationTests extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        ClientConfiguration config = new ClientConfiguration("showcaseparent", "bccfa17d092268c0");
+        ClientConfiguration config = new ClientConfiguration(Constants.TestApiKeys.API_KEY, Constants.TestApiKeys.API_CLIENT_KEY);
         config.setEndpoint(Endpoints.PRODUDCTION, false);
         config.setUserId("AndroidTestUser");
         config.setSessionId(UUID.randomUUID().toString());
