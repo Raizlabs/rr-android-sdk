@@ -3,11 +3,13 @@ package com.richrelevance;
 import android.util.Log;
 
 import com.richrelevance.internal.net.WebResponse;
-import com.richrelevance.placements.Placement;
-import com.richrelevance.placements.PlacementResponse;
-import com.richrelevance.placements.PlacementResponseInfo;
-import com.richrelevance.placements.PlacementsRecommendationsBuilder;
-import com.richrelevance.placements.ProductRecommendation;
+import com.richrelevance.recommendations.Placement;
+import com.richrelevance.recommendations.PlacementResponse;
+import com.richrelevance.recommendations.PlacementResponseInfo;
+import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
+import com.richrelevance.recommendations.ProductRecommendation;
+import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
+import com.richrelevance.recommendations.StrategyResponseInfo;
 import com.richrelevance.utils.ParsingUtils;
 
 import org.json.JSONObject;
@@ -50,6 +52,14 @@ public class ApiIntegrationTests extends BaseTestCase {
         };
 
         BuilderExecutorHelper<ResponseInfo> helper = new BuilderExecutorHelper<>(client, builder);
+        helper.execute();
+        helper.waitUntilCompleted();
+        assertNotNull(helper.getResult());
+    }
+
+    public void testRecommendationsForStrategy() {
+        StrategyRecommendationsBuilder builder = RichRelevance.buildRecommendationsUsingStrategy(StrategyType.SITE_WIDE_BEST_SELLERS);
+        BuilderExecutorHelper<StrategyResponseInfo> helper = new BuilderExecutorHelper<>(client, builder);
         helper.execute();
         helper.waitUntilCompleted();
         assertNotNull(helper.getResult());

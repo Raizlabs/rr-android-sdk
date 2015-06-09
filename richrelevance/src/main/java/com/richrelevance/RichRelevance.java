@@ -3,11 +3,11 @@ package com.richrelevance;
 import com.richrelevance.builders.GetUserPreferenceBuilder;
 import com.richrelevance.builders.LogPurchaseBuilder;
 import com.richrelevance.builders.PersonalizedRecommendationsBuilder;
-import com.richrelevance.placements.Placement;
-import com.richrelevance.placements.PlacementsRecommendationsBuilder;
+import com.richrelevance.recommendations.Placement;
+import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.builders.ProductViewBuilder;
 import com.richrelevance.builders.SetUserPreferenceBuilder;
-import com.richrelevance.strategy.StrategyRecommendationsBuilder;
+import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.builders.UserProfileBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 

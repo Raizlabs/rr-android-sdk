@@ -167,6 +167,25 @@ public class WebRequestBuilder {
     }
 
     /**
+     * Gets all the values for the given key.
+     * @param key The key to get the values of.
+     * @return The current values of the key.
+     */
+    public List<String> getAllParamValues(String key) {
+        if (key != null) {
+            List<String> values = new LinkedList<>();
+            for (Pair<String, String> param : params) {
+                if (key.equals(param.first)) {
+                    values.add(param.second);
+                }
+            }
+
+            return values;
+        }
+        return null;
+    }
+
+    /**
      * Removes a parameter from the request.
      *
      * @param key The parameter key.

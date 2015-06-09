@@ -12,6 +12,7 @@ import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.ValueMap;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -304,7 +305,8 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
 
             Result result = createNewResult();
             result.setStatus(ParsingUtils.getStatus(json));
-            if (!result.isStatusOk()) {
+            result.setErrorMessage(ParsingUtils.getErrorMessage(json));
+            if (!result.isStatusOk() || result.hasErrorMessage()) {
                 resultCallback.onError(new com.richrelevance.Error(Error.ErrorType.ApiError, "Status was: " + result.getStatus()));
                 return;
             }

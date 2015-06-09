@@ -1,5 +1,7 @@
 package com.richrelevance;
 
+import java.util.List;
+
 public class RequestBuilderAccessor {
     private RequestBuilder<?> builder;
 
@@ -9,5 +11,9 @@ public class RequestBuilderAccessor {
 
     public String getParamValue(String key) {
         return builder.getWebRequest().getRequestBuilder().getParam(key);
+    }
+
+    public List<String> getAllParamValues(String key) {
+        return builder.getWebRequest().getRequestBuilder().getAllParamValues(key);
     }
 }

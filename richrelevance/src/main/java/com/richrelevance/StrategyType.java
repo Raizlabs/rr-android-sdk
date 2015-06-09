@@ -69,4 +69,14 @@ public enum StrategyType {
     },;
 
     public abstract String getKey();
+
+    public static StrategyType fromKey(String key) {
+        for (StrategyType type : StrategyType.values()) {
+            if (type.getKey().equals(key)) {
+                return type;
+            }
+        }
+
+        return null;
+    }
 }

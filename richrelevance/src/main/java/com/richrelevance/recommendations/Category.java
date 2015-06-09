@@ -1,4 +1,4 @@
-package com.richrelevance.placements;
+package com.richrelevance.recommendations;
 
 public class Category {
     private String id;

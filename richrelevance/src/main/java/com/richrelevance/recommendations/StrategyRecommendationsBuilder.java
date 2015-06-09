@@ -1,4 +1,4 @@
-package com.richrelevance.strategy;
+package com.richrelevance.recommendations;
 
 import android.util.Log;
 
@@ -6,13 +6,14 @@ import com.richrelevance.RequestBuilder;
 import com.richrelevance.ResponseInfo;
 import com.richrelevance.StrategyType;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.ValueMap;
 
 import org.json.JSONObject;
 
 import java.util.Collection;
 
-public class StrategyRecommendationsBuilder extends RequestBuilder<ResponseInfo> {
+public class StrategyRecommendationsBuilder extends RequestBuilder<StrategyResponseInfo> {
 
     public static class Keys {
         public static final String STRATEGY_NAME = "strategyName";
@@ -172,14 +173,12 @@ public class StrategyRecommendationsBuilder extends RequestBuilder<ResponseInfo>
     }
 
     @Override
-    protected ResponseInfo createNewResult() {
-        // TODO
-        return null;
+    protected StrategyResponseInfo createNewResult() {
+        return new StrategyResponseInfo();
     }
 
     @Override
-    protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
-        // TODO
-        Log.i(getClass().getSimpleName(), "Response: " + response.getResponseCode() + " : " + response.getContentAsString());
+    protected void populateResponse(WebResponse response, JSONObject json, StrategyResponseInfo responseInfo) {
+        RecommendationsParser.parseStrategyResponseInfo(json, responseInfo);
     }
 }

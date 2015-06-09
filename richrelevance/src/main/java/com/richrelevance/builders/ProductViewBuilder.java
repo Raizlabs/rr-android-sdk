@@ -3,7 +3,7 @@ package com.richrelevance.builders;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.ResponseInfo;
 import com.richrelevance.internal.net.WebResponse;
-import com.richrelevance.placements.Placement;
+import com.richrelevance.recommendations.Placement;
 
 import org.json.JSONObject;
 

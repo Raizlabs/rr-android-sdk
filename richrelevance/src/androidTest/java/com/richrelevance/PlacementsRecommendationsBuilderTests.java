@@ -1,7 +1,7 @@
 package com.richrelevance;
 
-import com.richrelevance.placements.Placement;
-import com.richrelevance.placements.PlacementsRecommendationsBuilder;
+import com.richrelevance.recommendations.Placement;
+import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.utils.ValueMap;
 
 public class PlacementsRecommendationsBuilderTests extends BaseTestCase {

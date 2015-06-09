@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
-import com.richrelevance.placements.Placement;
+import com.richrelevance.recommendations.Placement;
 import com.richrelevance.Product;
 import com.richrelevance.Range;
 import com.richrelevance.RichRelevance;

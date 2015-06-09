@@ -1,6 +1,7 @@
-package com.richrelevance.placements;
+package com.richrelevance.recommendations;
 
 import com.richrelevance.Range;
+import com.richrelevance.StrategyType;
 import com.richrelevance.internal.json.JSONArrayParserDelegate;
 import com.richrelevance.internal.json.JSONHelper;
 import com.richrelevance.utils.ParsingUtils;
@@ -9,7 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PlacementsParser {
+public class RecommendationsParser {
+
+    private static final String KEY_RECOMMENDED_PRODUCTS = "recommendedProducts";
 
     static void parsePlacementResponseInfo(JSONObject json, PlacementResponseInfo responseInfo) {
         if (json == null || responseInfo == null) {
@@ -19,6 +22,18 @@ public class PlacementsParser {
         responseInfo.setViewGuid(json.optString("viewGuid"));
 
         responseInfo.setPlacements(JSONHelper.parseJSONArray(json, "placements", placementResponseParserDelegate));
+    }
+
+    static void parseStrategyResponseInfo(JSONObject json, StrategyResponseInfo responseInfo) {
+        if (json == null || responseInfo == null) {
+            return;
+        }
+
+        responseInfo.setRequestId(json.optString("requestId"));
+        responseInfo.setStrategyType(StrategyType.fromKey(json.optString("strategyName")));
+        responseInfo.setMessage(json.optString("message"));
+
+        responseInfo.setProducts(JSONHelper.parseJSONArray(json, KEY_RECOMMENDED_PRODUCTS, productRecommendationParserDelegate));
     }
 
     static PlacementResponse parsePlacementResponse(JSONObject json) {
@@ -34,7 +49,7 @@ public class PlacementsParser {
         response.setHtml(json.optString("html"));
 
         response.setRecommendedProducts(
-                JSONHelper.parseJSONArray(json, "recommendedProducts", productRecommendationParserDelegate));
+                JSONHelper.parseJSONArray(json, KEY_RECOMMENDED_PRODUCTS, productRecommendationParserDelegate));
 
         return response;
     }

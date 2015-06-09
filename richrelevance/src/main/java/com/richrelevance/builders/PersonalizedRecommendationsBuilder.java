@@ -1,14 +1,13 @@
 package com.richrelevance.builders;
 
 import com.richrelevance.ResponseInfo;
-import com.richrelevance.placements.Placement;
+import com.richrelevance.recommendations.Placement;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
 
 import org.json.JSONObject;
 
 import java.util.Collection;
-import java.util.List;
 
 // TODO - This may be able to be merged into {@link PersonalizedRecommendationsBuilder} if the
 // response is similar enough

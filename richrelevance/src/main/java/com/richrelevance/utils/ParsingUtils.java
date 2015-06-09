@@ -1,5 +1,7 @@
 package com.richrelevance.utils;
 
+import android.text.TextUtils;
+
 import com.richrelevance.internal.json.JSONHelper;
 
 import org.json.JSONArray;
@@ -12,8 +14,12 @@ public class ParsingUtils {
         return json.optString("status");
     }
 
+    public static String getErrorMessage(JSONObject json) {
+        return json.optString("errormessage");
+    }
+
     public static boolean isStatusOk(String status) {
-        return "ok".equalsIgnoreCase(status);
+        return TextUtils.isEmpty(status) || "ok".equalsIgnoreCase(status);
     }
 
     public static ValueMap<String> optValueMap(JSONObject json, String key) {

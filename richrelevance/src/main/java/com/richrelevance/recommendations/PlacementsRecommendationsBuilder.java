@@ -1,4 +1,4 @@
-package com.richrelevance.placements;
+package com.richrelevance.recommendations;
 
 import com.richrelevance.Product;
 import com.richrelevance.RRLog;
@@ -710,6 +710,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     @Override
     protected void populateResponse(WebResponse response, JSONObject json, PlacementResponseInfo result) {
-        PlacementsParser.parsePlacementResponseInfo(json, result);
+        RecommendationsParser.parsePlacementResponseInfo(json, result);
     }
 }
