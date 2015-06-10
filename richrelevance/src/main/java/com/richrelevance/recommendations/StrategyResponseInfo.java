@@ -6,16 +6,16 @@ import com.richrelevance.StrategyType;
 import java.util.List;
 
 public class StrategyResponseInfo extends ResponseInfo {
-    private List<ProductRecommendation> products;
+    private List<RecommendedProduct> products;
     private StrategyType strategyType;
     private String requestId;
     private String message;
 
-    public List<ProductRecommendation> getProducts() {
+    public List<RecommendedProduct> getRecommendedProducts() {
         return products;
     }
 
-    void setProducts(List<ProductRecommendation> products) {
+    void setRecommendedProducts(List<RecommendedProduct> products) {
         this.products = products;
     }
 

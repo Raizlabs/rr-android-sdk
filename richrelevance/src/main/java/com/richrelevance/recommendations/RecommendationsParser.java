@@ -33,7 +33,7 @@ public class RecommendationsParser {
         responseInfo.setStrategyType(StrategyType.fromKey(json.optString("strategyName")));
         responseInfo.setMessage(json.optString("message"));
 
-        responseInfo.setProducts(JSONHelper.parseJSONArray(json, KEY_RECOMMENDED_PRODUCTS, productRecommendationParserDelegate));
+        responseInfo.setRecommendedProducts(JSONHelper.parseJSONArray(json, KEY_RECOMMENDED_PRODUCTS, productRecommendationParserDelegate));
     }
 
     static PlacementResponse parsePlacementResponse(JSONObject json) {
@@ -54,12 +54,12 @@ public class RecommendationsParser {
         return response;
     }
 
-    static ProductRecommendation parseProductRecommendation(JSONObject json) {
+    static RecommendedProduct parseProductRecommendation(JSONObject json) {
         if (json == null) {
             return null;
         }
 
-        ProductRecommendation product = new ProductRecommendation();
+        RecommendedProduct product = new RecommendedProduct();
         product.setId(json.optString("id"));
         product.setName(json.optString("name"));
         product.setBrand(json.optString("brand"));
@@ -113,10 +113,10 @@ public class RecommendationsParser {
                 }
             };
 
-    private static final JSONArrayParserDelegate<ProductRecommendation> productRecommendationParserDelegate =
-            new JSONArrayParserDelegate<ProductRecommendation>() {
+    private static final JSONArrayParserDelegate<RecommendedProduct> productRecommendationParserDelegate =
+            new JSONArrayParserDelegate<RecommendedProduct>() {
                 @Override
-                public ProductRecommendation parseObject(JSONObject json) {
+                public RecommendedProduct parseObject(JSONObject json) {
                     return parseProductRecommendation(json);
                 }
             };

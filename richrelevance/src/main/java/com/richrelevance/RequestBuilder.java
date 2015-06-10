@@ -305,7 +305,12 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
             Result result = createNewResult();
             result.setStatus(ParsingUtils.getStatus(json));
             result.setErrorMessage(ParsingUtils.getErrorMessage(json));
-            if (!result.isStatusOk() || result.hasErrorMessage()) {
+            if (result.hasErrorMessage()) {
+                resultCallback.onError(new com.richrelevance.Error(Error.ErrorType.ApiError, result.getErrorMessage()));
+                return;
+            }
+
+            if (!result.isStatusOk()) {
                 resultCallback.onError(new com.richrelevance.Error(Error.ErrorType.ApiError, "Status was: " + result.getStatus()));
                 return;
             }

@@ -5,7 +5,7 @@ import com.richrelevance.utils.ValueMap;
 
 import java.util.List;
 
-public class ProductRecommendation {
+public class RecommendedProduct {
     private String id;
     private String name;
     private String brand;

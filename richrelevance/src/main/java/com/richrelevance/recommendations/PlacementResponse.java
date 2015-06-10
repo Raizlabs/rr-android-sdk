@@ -11,7 +11,7 @@ public class PlacementResponse {
     private String htmlElementId;
     private String html;
 
-    private List<ProductRecommendation> recommendedProducts;
+    private List<RecommendedProduct> recommendedProducts;
 
     public Placement getPlacement() {
         return placement;
@@ -45,11 +45,11 @@ public class PlacementResponse {
         this.html = html;
     }
 
-    public List<ProductRecommendation> getRecommendedProducts() {
+    public List<RecommendedProduct> getRecommendedProducts() {
         return recommendedProducts;
     }
 
-    void setRecommendedProducts(List<ProductRecommendation> recommendedProducts) {
+    void setRecommendedProducts(List<RecommendedProduct> recommendedProducts) {
         this.recommendedProducts = recommendedProducts;
     }
 }

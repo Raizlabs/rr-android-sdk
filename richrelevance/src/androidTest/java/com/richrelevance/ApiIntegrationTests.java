@@ -7,7 +7,7 @@ import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
-import com.richrelevance.recommendations.ProductRecommendation;
+import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyResponseInfo;
 import com.richrelevance.utils.ParsingUtils;
@@ -94,7 +94,7 @@ public class ApiIntegrationTests extends BaseTestCase {
         PlacementResponse placement = responseInfo.getPlacements().get(0);
         assertTrue(placement.getRecommendedProducts().size() > 0);
 
-        ProductRecommendation product = placement.getRecommendedProducts().get(0);
+        RecommendedProduct product = placement.getRecommendedProducts().get(0);
         assertTrue(product.getCategories().size() > 0);
         assertNonEmpty(product.getName());
         assertNonEmpty(product.getGenre());

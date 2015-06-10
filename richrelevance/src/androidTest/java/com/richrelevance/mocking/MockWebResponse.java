@@ -75,7 +75,11 @@ public class MockWebResponse implements WebResponse {
 
     @Override
     public InputStream getContentStream() throws IOException {
-        return context.getAssets().open(response.getContentAssetPath());
+        String assetPath = response.getContentAssetPath();
+        if (!TextUtils.isEmpty(assetPath)) {
+            return context.getAssets().open(assetPath);
+        }
+        return null;
     }
 
     @Override
