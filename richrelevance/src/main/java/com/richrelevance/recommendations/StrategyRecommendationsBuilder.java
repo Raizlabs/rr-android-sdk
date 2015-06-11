@@ -2,6 +2,7 @@ package com.richrelevance.recommendations;
 
 import android.util.Log;
 
+import com.richrelevance.ClientConfiguration;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.ResponseInfo;
 import com.richrelevance.StrategyType;
@@ -168,8 +169,8 @@ public class StrategyRecommendationsBuilder extends RequestBuilder<StrategyRespo
     }
 
     @Override
-    protected String getEndpointPath() {
-        return "rrPlatform/recsUsingStrategy";
+    protected String getEndpointPath(ClientConfiguration configuration) {
+        return "rrserver/api/rrPlatform/recsUsingStrategy";
     }
 
     @Override

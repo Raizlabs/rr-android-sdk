@@ -42,8 +42,8 @@ public class ApiIntegrationTests extends BaseTestCase {
             }
 
             @Override
-            protected String getEndpointPath() {
-                return "rrPlatform/recsForPlacements";
+            protected String getEndpointPath(ClientConfiguration configuration) {
+                return "rrserver/api/rrPlatform/recsForPlacements";
             }
 
             @Override
@@ -52,6 +52,48 @@ public class ApiIntegrationTests extends BaseTestCase {
         };
 
         BuilderExecutorHelper<ResponseInfo> helper = new BuilderExecutorHelper<>(client, builder);
+        helper.execute();
+        helper.waitUntilCompleted();
+        assertNotNull(helper.getResult());
+    }
+
+    public void testOAuth() {
+        ClientConfiguration config = new ClientConfiguration(Constants.TestApiKeys.API_KEY, Constants.TestApiKeys.API_CLIENT_KEY);
+        config.setEndpoint(Endpoints.PRODUDCTION, true);
+        config.setUserId("RZTestUser");
+        config.setSessionId(UUID.randomUUID().toString());
+        config.setApiClientSecret(Constants.TestApiKeys.API_CLIENT_SECRET);
+
+        RichRelevanceClient oauthClient = new RichRelevanceClientImpl();
+        oauthClient.setConfiguration(config);
+
+        RequestBuilder<ResponseInfo> builder = new RequestBuilder<ResponseInfo>() {
+            @Override
+            protected ResponseInfo createNewResult() {
+                return new ResponseInfo() {
+                };
+            }
+
+            @Override
+            protected String getEndpointPath(ClientConfiguration configuration) {
+                String format = "userProfile/api/v1/service/userProfile/%s/%s";
+                return String.format(format, configuration.getApiKey(), configuration.getUserId());
+            }
+
+            @Override
+            protected void applyConfigurationParams(ClientConfiguration configuration) {
+
+            }
+
+            @Override
+            protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
+
+            }
+        }
+                .setUseOAuth(true)
+                .setParameter("field", "all");
+
+        BuilderExecutorHelper<ResponseInfo> helper = new BuilderExecutorHelper<>(oauthClient, builder);
         helper.execute();
         helper.waitUntilCompleted();
         assertNotNull(helper.getResult());

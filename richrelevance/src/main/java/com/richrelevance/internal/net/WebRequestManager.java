@@ -1,7 +1,6 @@
 package com.richrelevance.internal.net;
 
 import android.os.Process;
-import android.support.annotation.Nullable;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -183,7 +182,7 @@ public class WebRequestManager {
      * @param listener The listener to call with results, or null.
      * @param <Result> The result type of the request.
      */
-    public <Result> void executeInBackground(WebRequest<Result> request, @Nullable WebRequestListener<Result> listener) {
+    public <Result> void executeInBackground(WebRequest<Result> request, WebRequestListener<Result> listener) {
         backgroundPoolExecutor.execute(createRequestRunnable(request, listener));
     }
 

@@ -11,6 +11,7 @@ public class ClientConfiguration {
 
     private String apiKey;
     private String apiClientKey;
+    private String apiClientSecret;
     private String userId;
     private String sessionId;
 
@@ -85,6 +86,21 @@ public class ClientConfiguration {
      */
     public String getUserId() {
         return userId;
+    }
+
+    /**
+     * @return The API Client Secret to use for requests.
+     */
+    public String getApiClientSecret() {
+        return apiClientSecret;
+    }
+
+    /**
+     * Sets the API Client Secret to use for requests.
+     * @param apiClientSecret The API Client Secret to use for requests.
+     */
+    public void setApiClientSecret(String apiClientSecret) {
+        this.apiClientSecret = apiClientSecret;
     }
 
     /**

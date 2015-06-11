@@ -1,5 +1,6 @@
 package com.richrelevance.builders;
 
+import com.richrelevance.ClientConfiguration;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.ResponseInfo;
 import com.richrelevance.internal.net.WebResponse;
@@ -18,7 +19,7 @@ public class ProductViewBuilder extends RequestBuilder<ResponseInfo> {
     }
 
     @Override
-    protected String getEndpointPath() {
+    protected String getEndpointPath(ClientConfiguration configuration) {
         return "/rrPlatform/recsForPlacements";
     }
 

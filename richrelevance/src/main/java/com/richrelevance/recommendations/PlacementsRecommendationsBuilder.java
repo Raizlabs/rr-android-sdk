@@ -1,5 +1,6 @@
 package com.richrelevance.recommendations;
 
+import com.richrelevance.ClientConfiguration;
 import com.richrelevance.Product;
 import com.richrelevance.RRLog;
 import com.richrelevance.Range;
@@ -699,8 +700,8 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     @Override
-    protected String getEndpointPath() {
-        return "rrPlatform/recsForPlacements";
+    protected String getEndpointPath(ClientConfiguration configuration) {
+        return "rrserver/api/rrPlatform/recsForPlacements";
     }
 
     @Override

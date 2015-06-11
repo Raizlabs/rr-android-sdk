@@ -82,7 +82,7 @@ public class ClientTests extends TestCase {
         }
 
         @Override
-        protected String getEndpointPath() {
+        protected String getEndpointPath(ClientConfiguration configuration) {
             return "test";
         }
 

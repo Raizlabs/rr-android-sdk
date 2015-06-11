@@ -2,6 +2,11 @@ package com.richrelevance.internal.net;
 
 import com.richrelevance.Error;
 import com.richrelevance.RRLog;
+import com.richrelevance.internal.net.oauth.OAuthConfig;
+import com.richrelevance.internal.net.oauth.signpost.OAuthConsumer;
+import com.richrelevance.internal.net.oauth.signpost.exception.OAuthCommunicationException;
+import com.richrelevance.internal.net.oauth.signpost.exception.OAuthExpectationFailedException;
+import com.richrelevance.internal.net.oauth.signpost.exception.OAuthMessageSignerException;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -32,6 +37,15 @@ class HttpUrlConnectionExecutor<Result> implements WebRequestExecutor<Result> {
         HttpURLConnection connection = getConnection(builder);
 
         if (connection != null) {
+            OAuthConfig oAuthConfig = builder.getOAuthConfig();
+            if (oAuthConfig != null) {
+                try {
+                    new OAuthConsumer(oAuthConfig.getConsumerKey(), oAuthConfig.getConsumerSecret()).sign(connection);
+                } catch (OAuthMessageSignerException | OAuthExpectationFailedException | OAuthCommunicationException e) {
+                    RRLog.e(getClass().getSimpleName(), "Error signing OAuth", e);
+                }
+            }
+
             connection.setConnectTimeout(connectionTimeout);
             connection.setReadTimeout(readTimeout);
             try {

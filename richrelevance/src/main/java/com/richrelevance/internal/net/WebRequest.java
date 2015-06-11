@@ -1,7 +1,5 @@
 package com.richrelevance.internal.net;
 
-import android.support.annotation.NonNull;
-
 import com.richrelevance.Error;
 
 /**
@@ -31,5 +29,5 @@ public interface WebRequest<T> {
      * @param response       The response to interpret.
      * @param resultCallback The callback to send results to.
      */
-    public void translate(WebResponse response, @NonNull ResultCallback<T> resultCallback);
+    public void translate(WebResponse response, ResultCallback<T> resultCallback);
 }

@@ -1,7 +1,5 @@
 package com.richrelevance.internal.net;
 
-import android.support.annotation.Nullable;
-
 import com.richrelevance.Error;
 
 import java.io.IOException;
@@ -29,7 +27,7 @@ class BasicWebResultInfo<Result> implements WebResultInfo<Result> {
      * @param responseMessage  The response message of the request.
      * @throws IOException If there was an exception with the connection.
      */
-    public BasicWebResultInfo(Result result, @Nullable Error error, long requestTimestamp, int responseCode, String responseMessage) throws IOException {
+    public BasicWebResultInfo(Result result, Error error, long requestTimestamp, int responseCode, String responseMessage) throws IOException {
         this.result = result;
         this.timestamp = requestTimestamp;
         this.responseCode = responseCode;

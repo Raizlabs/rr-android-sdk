@@ -1,5 +1,6 @@
 package com.richrelevance.builders;
 
+import com.richrelevance.ClientConfiguration;
 import com.richrelevance.Product;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.ResponseInfo;
@@ -32,7 +33,7 @@ public class LogPurchaseBuilder extends RequestBuilder<ResponseInfo> {
     }
 
     @Override
-    protected String getEndpointPath() {
+    protected String getEndpointPath(ClientConfiguration configuration) {
         return "/rrPlatform/recsForPlacements";
     }
 

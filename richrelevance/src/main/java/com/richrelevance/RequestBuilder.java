@@ -1,13 +1,12 @@
 package com.richrelevance;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.internal.net.oauth.OAuthConfig;
 import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.ValueMap;
 
@@ -32,6 +31,8 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
     private WebRequestBuilder webRequestBuilder;
     private Callback<Result> resultCallback;
 
+    private boolean useOAuth = false;
+
     public RequestBuilder() {
         webRequestBuilder = new WebRequestBuilder(HttpMethod.Get, (String) null);
         setClient(RichRelevance.getDefaultClient());
@@ -52,6 +53,11 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      */
     public void execute() {
         client.executeRequest(this);
+    }
+
+    public RequestBuilder<Result> setUseOAuth(boolean useOAuth) {
+        this.useOAuth = useOAuth;
+        return this;
     }
 
     /**
@@ -221,11 +227,15 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      *
      * @return The builder to use to execute the request or null if something went wrong.
      */
-    @Nullable
     WebRequestBuilder build() {
         if (assertConfiguration()) {
             applyConfiguration(getConfiguration());
             onBuild(webRequestBuilder);
+            if (useOAuth) {
+                webRequestBuilder.setOAuthConfig(new OAuthConfig(
+                        getConfiguration().getApiClientKey(),
+                        getConfiguration().getApiClientSecret()));
+            }
             return webRequestBuilder;
         }
 
@@ -242,25 +252,29 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
 
     }
 
-    protected void applyConfiguration(ClientConfiguration configuration) {
-        setUrl(getFullUrl());
+    protected final void applyConfiguration(ClientConfiguration configuration) {
+        setUrl(getFullUrl(configuration));
+        applyConfigurationParams(configuration);
+    }
+
+    protected void applyConfigurationParams(ClientConfiguration configuration) {
         setApiKey(configuration.getApiKey());
         setApiClientKey(configuration.getApiClientKey());
         setUserId(configuration.getUserId());
         setSessionId(configuration.getSessionId());
     }
 
-    protected String getFullUrl() {
-        return getFullUrl(getEndpointPath());
+    protected String getFullUrl(ClientConfiguration configuration) {
+        return getFullUrl(getEndpointPath(configuration), configuration);
     }
 
-    protected String getFullUrl(String path) {
+    protected String getFullUrl(String path, ClientConfiguration configuration) {
         if (!assertConfiguration()) {
             return null;
         }
 
-        String scheme = getConfiguration().useHttps() ? "https" : "http";
-        String endpoint = getConfiguration().getEndpoint();
+        String scheme = configuration.useHttps() ? "https" : "http";
+        String endpoint = configuration.getEndpoint();
 
         return String.format(Locale.US, "%s://%s/%s", scheme, endpoint, path);
     }
@@ -269,7 +283,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         webRequestBuilder.setUrl(url);
     }
 
-    private ClientConfiguration getConfiguration() {
+    protected ClientConfiguration getConfiguration() {
         return client.getConfiguration();
     }
 
@@ -330,9 +344,10 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
     /**
      * Called to obtain the path of the endpoint to hit.
      *
+     * @param configuration The configuration being used.
      * @return The path of the endpoint.
      */
-    protected abstract String getEndpointPath();
+    protected abstract String getEndpointPath(ClientConfiguration configuration);
 
     /**
      * Called to parse the given response data into the appropriate result type after it has been determined to be a
@@ -352,7 +367,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
             }
 
             @Override
-            public void translate(WebResponse response, @NonNull ResultCallback<Result> resultCallback) {
+            public void translate(WebResponse response, ResultCallback<Result> resultCallback) {
                 parseResponse(response, resultCallback);
             }
         };

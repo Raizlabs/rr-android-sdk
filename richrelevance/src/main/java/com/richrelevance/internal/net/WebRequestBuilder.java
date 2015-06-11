@@ -2,7 +2,10 @@ package com.richrelevance.internal.net;
 
 import android.util.Pair;
 
+import com.richrelevance.internal.net.oauth.OAuthConfig;
+
 import java.net.URI;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +22,8 @@ public class WebRequestBuilder {
     private HttpMethod method;
     private List<Pair<String, String>> params;
     private LinkedHashMap<String, String> headers;
+
+    private OAuthConfig oAuthConfig;
 
     /**
      * Constructs a {@link WebRequestBuilder} using the given {@link HttpMethod}
@@ -148,6 +153,20 @@ public class WebRequestBuilder {
         return this;
     }
 
+    public boolean containsParam(String key) {
+        for (Pair<String, String> param : params) {
+            if (key.equals(param.first)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public List<Pair<String, String>> getParams() {
+        return Collections.unmodifiableList(params);
+    }
+
     /**
      * Gets the first value for the given key.
      *
@@ -228,6 +247,14 @@ public class WebRequestBuilder {
     public WebRequestBuilder addHeaders(Map<String, String> headers) {
         putEntries(headers, this.headers);
         return this;
+    }
+
+    public void setOAuthConfig(OAuthConfig config) {
+        this.oAuthConfig = config;
+    }
+
+    public OAuthConfig getOAuthConfig() {
+        return oAuthConfig;
     }
 
     private void putEntries(Map<String, String> entries, Map<String, String> map) {

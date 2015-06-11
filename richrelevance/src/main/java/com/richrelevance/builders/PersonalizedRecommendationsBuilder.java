@@ -1,5 +1,6 @@
 package com.richrelevance.builders;
 
+import com.richrelevance.ClientConfiguration;
 import com.richrelevance.ResponseInfo;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.RequestBuilder;
@@ -22,7 +23,7 @@ public class PersonalizedRecommendationsBuilder extends RequestBuilder<ResponseI
     }
 
     @Override
-    protected String getEndpointPath() {
+    protected String getEndpointPath(ClientConfiguration configuration) {
         return "/rrPlatform/personalize";
     }
 

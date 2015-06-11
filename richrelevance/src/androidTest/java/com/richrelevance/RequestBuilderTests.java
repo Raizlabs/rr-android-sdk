@@ -31,7 +31,7 @@ public class RequestBuilderTests extends TestCase {
         }
 
         @Override
-        protected String getEndpointPath() {
+        protected String getEndpointPath(ClientConfiguration configuration) {
             return TEST_ENDPOINT_PATH;
         }
 
