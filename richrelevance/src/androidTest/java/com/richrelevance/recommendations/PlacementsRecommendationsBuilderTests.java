@@ -4,9 +4,6 @@ import com.richrelevance.BaseTestCase;
 import com.richrelevance.Product;
 import com.richrelevance.Range;
 import com.richrelevance.RequestBuilderAccessor;
-import com.richrelevance.StrategyType;
-import com.richrelevance.recommendations.Placement;
-import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.utils.ValueMap;
 
 public class PlacementsRecommendationsBuilderTests extends BaseTestCase {

@@ -10,7 +10,9 @@ import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyResponseInfo;
+import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.userProfile.UserProfileBuilder;
+import com.richrelevance.userProfile.UserProfileField;
 import com.richrelevance.userProfile.UserProfileResponseInfo;
 import com.richrelevance.utils.ParsingUtils;
 

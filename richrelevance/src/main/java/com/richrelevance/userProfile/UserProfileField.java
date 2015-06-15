@@ -1,4 +1,4 @@
-package com.richrelevance;
+package com.richrelevance.userProfile;
 
 public enum UserProfileField {
 

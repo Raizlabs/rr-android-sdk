@@ -3,10 +3,7 @@ package com.richrelevance.recommendations;
 import com.richrelevance.BaseAndroidTestCase;
 import com.richrelevance.Error;
 import com.richrelevance.RequestBuilderAccessor;
-import com.richrelevance.ResponseInfo;
-import com.richrelevance.StrategyType;
 import com.richrelevance.internal.TestResultCallback;
-import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.mocking.MockWebResponse;
 import com.richrelevance.mocking.ResponseBuilder;
 

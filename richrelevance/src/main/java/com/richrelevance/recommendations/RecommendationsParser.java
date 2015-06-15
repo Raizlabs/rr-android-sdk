@@ -1,7 +1,6 @@
 package com.richrelevance.recommendations;
 
 import com.richrelevance.Range;
-import com.richrelevance.StrategyType;
 import com.richrelevance.internal.json.JSONArrayParserDelegate;
 import com.richrelevance.internal.json.JSONHelper;
 import com.richrelevance.utils.ParsingUtils;

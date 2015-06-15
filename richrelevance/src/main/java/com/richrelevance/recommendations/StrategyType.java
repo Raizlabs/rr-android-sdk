@@ -1,4 +1,4 @@
-package com.richrelevance;
+package com.richrelevance.recommendations;
 
 public enum StrategyType {
     SITE_WIDE_BEST_SELLERS {

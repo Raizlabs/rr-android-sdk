@@ -11,7 +11,7 @@ import com.richrelevance.recommendations.Placement;
 import com.richrelevance.Product;
 import com.richrelevance.Range;
 import com.richrelevance.RichRelevance;
-import com.richrelevance.StrategyType;
+import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.utils.ValueMap;
 
 

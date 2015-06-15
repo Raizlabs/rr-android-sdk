@@ -8,8 +8,10 @@ import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.builders.ProductViewBuilder;
 import com.richrelevance.builders.SetUserPreferenceBuilder;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
+import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.userProfile.UserProfileBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
+import com.richrelevance.userProfile.UserProfileField;
 
 import java.util.Collection;
 

@@ -2,8 +2,6 @@ package com.richrelevance.userProfile;
 
 import com.richrelevance.ClientConfiguration;
 import com.richrelevance.RequestBuilder;
-import com.richrelevance.ResponseInfo;
-import com.richrelevance.UserProfileField;
 import com.richrelevance.internal.net.WebResponse;
 
 import org.json.JSONObject;

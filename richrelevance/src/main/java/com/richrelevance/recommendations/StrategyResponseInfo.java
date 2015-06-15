@@ -1,7 +1,6 @@
 package com.richrelevance.recommendations;
 
 import com.richrelevance.ResponseInfo;
-import com.richrelevance.StrategyType;
 
 import java.util.List;
 

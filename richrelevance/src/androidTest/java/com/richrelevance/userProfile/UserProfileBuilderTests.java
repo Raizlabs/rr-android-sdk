@@ -2,7 +2,6 @@ package com.richrelevance.userProfile;
 
 import com.richrelevance.BaseTestCase;
 import com.richrelevance.RequestBuilderAccessor;
-import com.richrelevance.UserProfileField;
 
 public class UserProfileBuilderTests extends BaseTestCase {
 

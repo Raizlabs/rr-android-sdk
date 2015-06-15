@@ -1,13 +1,8 @@
 package com.richrelevance.recommendations;
 
-import android.util.Log;
-
 import com.richrelevance.ClientConfiguration;
 import com.richrelevance.RequestBuilder;
-import com.richrelevance.ResponseInfo;
-import com.richrelevance.StrategyType;
 import com.richrelevance.internal.net.WebResponse;
-import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.ValueMap;
 
 import org.json.JSONObject;

@@ -5,7 +5,6 @@ import com.richrelevance.Product;
 import com.richrelevance.RRLog;
 import com.richrelevance.Range;
 import com.richrelevance.RequestBuilder;
-import com.richrelevance.StrategyType;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.utils.Utils;
