@@ -7,6 +7,7 @@ import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.internal.net.oauth.OAuthConfig;
+import com.richrelevance.recommendations.Placement;
 import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.ValueMap;
 
@@ -114,10 +115,18 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
     }
 
     public RequestBuilder<Result> addListParameters(String key, Object... values) {
-        return addListParameters(key, Arrays.asList(values));
+        return addListParametersWithDelimiter(LIST_DELIMITER, key, values);
     }
 
     public RequestBuilder<Result> addListParameters(String key, Collection<?> values) {
+        return addListParametersWithDelimiter(LIST_DELIMITER, key, values);
+    }
+
+    public RequestBuilder<Result> addListParametersWithDelimiter(String delimiter, String key, Object... values) {
+        return addListParametersWithDelimiter(delimiter, key, Arrays.asList(values));
+    }
+
+    public RequestBuilder<Result> addListParametersWithDelimiter(String delimiter, String key, Collection<?> values) {
         // Short circuit
         if ((values == null) || values.isEmpty()) {
             return this;
@@ -137,7 +146,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
                 String stringValue = value.toString();
                 if (!TextUtils.isEmpty(stringValue)) {
                     if (hasValue) {
-                        valueBuilder.append(LIST_DELIMITER);
+                        valueBuilder.append(delimiter);
                     }
 
                     valueBuilder.append(stringValue);
@@ -151,19 +160,31 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
-    public RequestBuilder<Result> setListParameter(String key, String... values) {
-        setParameter(key, StringUtils.join(LIST_DELIMITER, values));
+    public RequestBuilder<Result> setListParameter(String key, Object... values) {
+        setListParameterWithDelimiter(LIST_DELIMITER, key, values);
         return this;
     }
 
     public RequestBuilder<Result> setListParameter(String key, Collection<?> values) {
-        setParameter(key, StringUtils.join(LIST_DELIMITER, values));
+        setListParameterWithDelimiter(LIST_DELIMITER, key, values);
         return this;
     }
 
-    public RequestBuilder<Result> setListParameterFlat(String key, String... values) {
-        for (String value : values) {
-            webRequestBuilder.addParam(key, value);
+    public RequestBuilder<Result> setListParameterWithDelimiter(String delimiter, String key, Object... values) {
+        setParameter(key, StringUtils.join(delimiter, values));
+        return this;
+    }
+
+    public RequestBuilder<Result> setListParameterWithDelimiter(String delimiter, String key, Collection<?> values) {
+        setParameter(key, StringUtils.join(delimiter, values));
+        return this;
+    }
+
+    public RequestBuilder<Result> setListParameterFlat(String key, Object... values) {
+        for (Object value : values) {
+            if (value != null) {
+                webRequestBuilder.addParam(key, value.toString());
+            }
         }
         return this;
     }

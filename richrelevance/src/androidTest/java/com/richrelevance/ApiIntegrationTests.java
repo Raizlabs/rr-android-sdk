@@ -10,6 +10,8 @@ import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyResponseInfo;
+import com.richrelevance.userProfile.UserProfileBuilder;
+import com.richrelevance.userProfile.UserProfileResponseInfo;
 import com.richrelevance.utils.ParsingUtils;
 
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class ApiIntegrationTests extends BaseTestCase {
 
     private RichRelevanceClient client;
+    private RichRelevanceClient oAuthClient;
 
     @Override
     protected void setUp() throws Exception {
@@ -31,6 +34,15 @@ public class ApiIntegrationTests extends BaseTestCase {
 
         client = new RichRelevanceClientImpl();
         client.setConfiguration(config);
+
+        ClientConfiguration oAuthConfig = new ClientConfiguration(Constants.TestApiKeys.API_KEY, Constants.TestApiKeys.API_CLIENT_KEY);
+        oAuthConfig.setEndpoint(Endpoints.PRODUDCTION, true);
+        oAuthConfig.setUserId("RZTestUser");
+        oAuthConfig.setSessionId(UUID.randomUUID().toString());
+        oAuthConfig.setApiClientSecret(Constants.TestApiKeys.API_CLIENT_SECRET);
+
+        oAuthClient = new RichRelevanceClientImpl();
+        oAuthClient.setConfiguration(oAuthConfig);
     }
 
     public void testBasic() {
@@ -58,15 +70,6 @@ public class ApiIntegrationTests extends BaseTestCase {
     }
 
     public void testOAuth() {
-        ClientConfiguration config = new ClientConfiguration(Constants.TestApiKeys.API_KEY, Constants.TestApiKeys.API_CLIENT_KEY);
-        config.setEndpoint(Endpoints.PRODUDCTION, true);
-        config.setUserId("RZTestUser");
-        config.setSessionId(UUID.randomUUID().toString());
-        config.setApiClientSecret(Constants.TestApiKeys.API_CLIENT_SECRET);
-
-        RichRelevanceClient oauthClient = new RichRelevanceClientImpl();
-        oauthClient.setConfiguration(config);
-
         RequestBuilder<ResponseInfo> builder = new RequestBuilder<ResponseInfo>() {
             @Override
             protected ResponseInfo createNewResult() {
@@ -93,7 +96,7 @@ public class ApiIntegrationTests extends BaseTestCase {
                 .setUseOAuth(true)
                 .setParameter("field", "all");
 
-        BuilderExecutorHelper<ResponseInfo> helper = new BuilderExecutorHelper<>(oauthClient, builder);
+        BuilderExecutorHelper<ResponseInfo> helper = new BuilderExecutorHelper<>(oAuthClient, builder);
         helper.execute();
         helper.waitUntilCompleted();
         assertNotNull(helper.getResult());
@@ -143,6 +146,18 @@ public class ApiIntegrationTests extends BaseTestCase {
         assertNonEmpty(product.getId());
         assertNonEmpty(product.getClickUrl());
         assertNonEmpty(product.getImageUrl());
+    }
+
+    public void testUserProfile() {
+        UserProfileBuilder builder = RichRelevance.buildUserProfile(UserProfileField.ALL);
+
+        BuilderExecutorHelper<UserProfileResponseInfo> helper = new BuilderExecutorHelper<>(oAuthClient, builder);
+        helper.execute();
+        helper.waitUntilCompleted();
+
+        UserProfileResponseInfo responseInfo = helper.getResult();
+        assertNotNull(responseInfo);
+        assertEquals(oAuthClient.getConfiguration().getUserId(), responseInfo.getUserId());
     }
 
     private static class BuilderExecutorHelper<T extends ResponseInfo> {

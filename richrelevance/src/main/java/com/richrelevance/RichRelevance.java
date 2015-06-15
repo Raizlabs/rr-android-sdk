@@ -8,7 +8,7 @@ import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.builders.ProductViewBuilder;
 import com.richrelevance.builders.SetUserPreferenceBuilder;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
-import com.richrelevance.builders.UserProfileBuilder;
+import com.richrelevance.userProfile.UserProfileBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 
 import java.util.Collection;
@@ -113,14 +113,14 @@ public class RichRelevance {
                 .addPreferences(preferences);
     }
 
-    public static UserProfileBuilder buildUserProfileField(UserProfileField... fields) {
+    public static UserProfileBuilder buildUserProfile(UserProfileField... fields) {
         return new UserProfileBuilder()
-                .addFields(fields);
+                .setFields(fields);
     }
 
-    public static UserProfileBuilder buildUserProfileField(Collection<UserProfileField> fields) {
+    public static UserProfileBuilder buildUserProfile(Collection<UserProfileField> fields) {
         return new UserProfileBuilder()
-                .addFields(fields);
+                .setFields(fields);
     }
 
     // endregion Fetching

@@ -710,7 +710,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     @Override
-    protected void populateResponse(WebResponse response, JSONObject json, PlacementResponseInfo result) {
-        RecommendationsParser.parsePlacementResponseInfo(json, result);
+    protected void populateResponse(WebResponse response, JSONObject json, PlacementResponseInfo responseInfo) {
+        RecommendationsParser.parsePlacementResponseInfo(json, responseInfo);
     }
 }

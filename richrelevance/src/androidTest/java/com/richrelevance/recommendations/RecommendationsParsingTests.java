@@ -5,6 +5,7 @@ import com.richrelevance.Error;
 import com.richrelevance.RequestBuilderAccessor;
 import com.richrelevance.ResponseInfo;
 import com.richrelevance.StrategyType;
+import com.richrelevance.internal.TestResultCallback;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.mocking.MockWebResponse;
 import com.richrelevance.mocking.ResponseBuilder;
@@ -69,7 +70,7 @@ public class RecommendationsParsingTests extends BaseAndroidTestCase {
         };
 
         accessor.parseResponse(response, callback);
-        callback.assertSuccess();
+        callback.assertSuccess(this);
     }
 
     public void testParseRecsForPlacementsApiError() {
@@ -91,7 +92,7 @@ public class RecommendationsParsingTests extends BaseAndroidTestCase {
         };
 
         accessor.parseResponse(response, callback);
-        callback.assertSuccess();
+        callback.assertSuccess(this);
     }
 
     public void testParseRecsForPlacementsBadResponse() {
@@ -111,7 +112,7 @@ public class RecommendationsParsingTests extends BaseAndroidTestCase {
         };
 
         accessor.parseResponse(response, callback);
-        callback.assertSuccess();
+        callback.assertSuccess(this);
     }
 
     public void testParseRecsForStrategy() {
@@ -166,30 +167,6 @@ public class RecommendationsParsingTests extends BaseAndroidTestCase {
         };
 
         accessor.parseResponse(response, callback);
-        callback.assertSuccess();
-    }
-
-    private abstract static class TestResultCallback<T extends ResponseInfo>
-            implements WebRequest.ResultCallback<ResponseInfo> {
-
-        private boolean succeeded = false;
-
-        @Override
-        public void onSuccess(ResponseInfo result) {
-            testResponse((T) result, null);
-            succeeded = true;
-        }
-
-        @Override
-        public void onError(Error error) {
-            testResponse(null, error);
-            succeeded = true;
-        }
-
-        public void assertSuccess() {
-            assertTrue("Response did not return", succeeded);
-        }
-
-        protected abstract void testResponse(T response, Error error);
+        callback.assertSuccess(this);
     }
 }
