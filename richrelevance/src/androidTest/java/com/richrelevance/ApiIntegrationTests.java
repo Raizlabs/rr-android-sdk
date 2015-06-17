@@ -11,6 +11,10 @@ import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyResponseInfo;
 import com.richrelevance.recommendations.StrategyType;
+import com.richrelevance.userPreference.ActionType;
+import com.richrelevance.userPreference.TargetType;
+import com.richrelevance.userPreference.UserPreferenceBuilder;
+import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 import com.richrelevance.userProfile.UserProfileBuilder;
 import com.richrelevance.userProfile.UserProfileField;
 import com.richrelevance.userProfile.UserProfileResponseInfo;
@@ -160,6 +164,18 @@ public class ApiIntegrationTests extends BaseTestCase {
         UserProfileResponseInfo responseInfo = helper.getResult();
         assertNotNull(responseInfo);
         assertEquals(oAuthClient.getConfiguration().getUserId(), responseInfo.getUserId());
+    }
+
+    public void testUserPreferences() {
+        UserPreferenceBuilder builder = RichRelevance.buildSetUserPreference(TargetType.BRAND, ActionType.LIKE, "apple");
+
+        BuilderExecutorHelper<UserPreferenceResponseInfo> helper = new BuilderExecutorHelper<>(client, builder);
+        helper.execute();
+        helper.waitUntilCompleted();
+
+        UserPreferenceResponseInfo responseInfo = helper.getResult();
+        assertNotNull(responseInfo);
+        assertNonEmpty(responseInfo.getUserId());
     }
 
     private static class BuilderExecutorHelper<T extends ResponseInfo> {

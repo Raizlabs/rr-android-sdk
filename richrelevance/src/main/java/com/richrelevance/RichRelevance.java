@@ -1,18 +1,18 @@
 package com.richrelevance;
 
-import com.richrelevance.builders.GetUserPreferenceBuilder;
-import com.richrelevance.builders.LogPurchaseBuilder;
 import com.richrelevance.builders.PersonalizedRecommendationsBuilder;
+import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
-import com.richrelevance.builders.ProductViewBuilder;
-import com.richrelevance.builders.SetUserPreferenceBuilder;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyType;
+import com.richrelevance.userPreference.ActionType;
+import com.richrelevance.userPreference.TargetType;
+import com.richrelevance.userPreference.UserPreferenceBuilder;
 import com.richrelevance.userProfile.UserProfileBuilder;
-import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.userProfile.UserProfileField;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class RichRelevance {
@@ -39,6 +39,7 @@ public class RichRelevance {
 
     /**
      * Sets the default {@link RichRelevanceClient} to use for requests.
+     *
      * @param client The default client to use for requests.
      */
     public static void setDefaultClient(RichRelevanceClient client) {
@@ -47,6 +48,7 @@ public class RichRelevance {
 
     /**
      * Creates a new {@link RichRelevanceClient}.
+     *
      * @return A new client.
      */
     public static RichRelevanceClient newClient() {
@@ -54,6 +56,7 @@ public class RichRelevance {
     }
 
     // TODO - If isProduction() is just for logging, we might as well remove it since logging can already be configured manually.
+
     /**
      * @return False if the app is known to be built configured for debug, true if it is unknown or built for
      * production.
@@ -64,6 +67,7 @@ public class RichRelevance {
 
     /**
      * Manually sets the configuration to act like this is a production build.
+     *
      * @param isProduction True to act like a production build, false not to.
      */
     public static void setIsProduction(boolean isProduction) {
@@ -72,6 +76,7 @@ public class RichRelevance {
 
     /**
      * Manually enables or disables all logging in the SDK.
+     *
      * @param enabled True to enable logging, false to disable it.
      */
     public static void setLoggingEnabled(boolean enabled) {
@@ -105,14 +110,12 @@ public class RichRelevance {
                 .addPlacements(placements);
     }
 
-    public static GetUserPreferenceBuilder buildUserPreferences(UserPreference... preferences) {
-        return new GetUserPreferenceBuilder()
-                .addPreferences(preferences);
+    public static UserPreferenceBuilder buildGetUserPreferences(TargetType... fields) {
+        return new UserPreferenceBuilder(fields);
     }
 
-    public static GetUserPreferenceBuilder buildUserPreferences(Collection<UserPreference> preferences) {
-        return new GetUserPreferenceBuilder()
-                .addPreferences(preferences);
+    public static UserPreferenceBuilder buildGetUserPreferences(Collection<TargetType> fields) {
+        return new UserPreferenceBuilder(fields);
     }
 
     public static UserProfileBuilder buildUserProfile(UserProfileField... fields) {
@@ -129,32 +132,22 @@ public class RichRelevance {
 
     // region Tracking
 
-    public static RequestBuilder<ResponseInfo> buildProductView(Placement placement, String productId) {
-        return new ProductViewBuilder()
-                .setProductId(productId);
+    public static RequestBuilder<?> buildProductView(Placement placement, String productId) {
+        // TODO
+        return null;
     }
 
-    public static LogPurchaseBuilder buildLogPurchase(String orderNumber) {
-        return new LogPurchaseBuilder()
-                .setOrderNumber(orderNumber);
+    public static RequestBuilder<?> buildLogPurchase(String orderNumber) {
+        // TODO
+        return null;
     }
 
-    public static SetUserPreferenceBuilder buildTrackUserPreference(
-            SetUserPreferenceBuilder.ActionType action,
-            SetUserPreferenceBuilder.TargetType target,
-            String... ids) {
-
-        return new SetUserPreferenceBuilder()
-                .setIds(ids)
-                .setActionType(action)
-                .setTargetType(target);
+    public static UserPreferenceBuilder buildSetUserPreference(TargetType target, ActionType action, String... ids) {
+        return new UserPreferenceBuilder(target, action, ids);
     }
 
     public static RequestBuilder<?> buildProductLike(String... productIds) {
-        return buildTrackUserPreference(
-                SetUserPreferenceBuilder.ActionType.Like,
-                SetUserPreferenceBuilder.TargetType.Product,
-                productIds);
+        return buildSetUserPreference(TargetType.PRODUCT, ActionType.LIKE, productIds);
     }
 
     // endregion Tracking

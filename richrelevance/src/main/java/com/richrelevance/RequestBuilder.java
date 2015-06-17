@@ -228,6 +228,10 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
+    protected String getParam(String key) {
+        return webRequestBuilder.getParam(key);
+    }
+
     Callback<Result> getCallback() {
         return resultCallback;
     }

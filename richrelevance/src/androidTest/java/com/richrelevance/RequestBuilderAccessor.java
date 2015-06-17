@@ -12,6 +12,10 @@ public class RequestBuilderAccessor {
         this.builder = builder;
     }
 
+    public String getUrl() {
+        return builder.getWebRequest().getRequestBuilder().getFullUrl();
+    }
+
     public String getParamValue(String key) {
         return builder.getWebRequest().getRequestBuilder().getParam(key);
     }
