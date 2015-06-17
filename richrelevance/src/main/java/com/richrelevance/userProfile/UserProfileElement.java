@@ -58,7 +58,7 @@ public abstract class UserProfileElement {
         @Override
         protected void onParse(JSONObject jsonObject) {
             channel = jsonObject.optString("channel");
-            JSONHelper.parseStrings(jsonObject, "segments");
+            segments = JSONHelper.parseStrings(jsonObject, "segments");
         }
     }
 
@@ -69,7 +69,7 @@ public abstract class UserProfileElement {
         @Override
         protected void onParse(JSONObject jsonObject) {
             channel = jsonObject.optString("channel");
-            ParsingUtils.optValueMap(jsonObject, "values");
+            values = ParsingUtils.optValueMap(jsonObject, "values");
         }
 
         public String getChannel() {

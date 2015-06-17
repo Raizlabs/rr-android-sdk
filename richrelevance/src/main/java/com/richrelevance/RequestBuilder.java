@@ -350,6 +350,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
                 return;
             }
 
+            result.setRawJson(json);
             populateResponse(response, json, result);
             resultCallback.onSuccess(result);
         }

@@ -6,18 +6,18 @@ import com.richrelevance.RequestBuilderAccessor;
 public class UserProfileBuilderTests extends BaseTestCase {
 
     public void testFieldConstants() {
-        assertEquals(UserProfileField.VIEWED_ITEMS.getKey(), "viewedItems");
-        assertEquals(UserProfileField.CLICKED_ITEMS.getKey(), "clickedItems");
-        assertEquals(UserProfileField.REFERRER_URLS.getKey(), "referrerUrls");
-        assertEquals(UserProfileField.ORDERS.getKey(), "orders");
-        assertEquals(UserProfileField.VIEWED_CATEGORIES.getKey(), "viewedCategories");
-        assertEquals(UserProfileField.VIEWED_BRANDS.getKey(), "viewedBrands");
-        assertEquals(UserProfileField.ADDED_TO_CART_ITEMS.getKey(), "addedToCartItems");
-        assertEquals(UserProfileField.SEARCHED_TERMS.getKey(), "searchedTerms");
-        assertEquals(UserProfileField.USER_ATTRIBUTES.getKey(), "userAttributes");
-        assertEquals(UserProfileField.USER_SEGMENTS.getKey(), "userSegments");
-        assertEquals(UserProfileField.VERB_NOUNS.getKey(), "verbNouns");
-        assertEquals(UserProfileField.COUNTED_EVENTS.getKey(), "countedEvents");
+        assertEquals("viewedItems", UserProfileField.VIEWED_ITEMS.getKey());
+        assertEquals("clickedItems", UserProfileField.CLICKED_ITEMS.getKey());
+        assertEquals("referrerUrls", UserProfileField.REFERRER_URLS.getKey());
+        assertEquals("orders", UserProfileField.ORDERS.getKey());
+        assertEquals("viewedCategories", UserProfileField.VIEWED_CATEGORIES.getKey());
+        assertEquals("viewedBrands", UserProfileField.VIEWED_BRANDS.getKey());
+        assertEquals("addedToCartItems", UserProfileField.ADDED_TO_CART_ITEMS.getKey());
+        assertEquals("searchedTerms", UserProfileField.SEARCHED_TERMS.getKey());
+        assertEquals("userAttributes", UserProfileField.USER_ATTRIBUTES.getKey());
+        assertEquals("userSegments", UserProfileField.USER_SEGMENTS.getKey());
+        assertEquals("verbNouns", UserProfileField.VERB_NOUNS.getKey());
+        assertEquals("countedEvents", UserProfileField.COUNTED_EVENTS.getKey());
     }
 
     public void testAddField() {

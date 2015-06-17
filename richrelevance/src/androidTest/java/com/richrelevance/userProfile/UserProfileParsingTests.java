@@ -1,13 +1,11 @@
 package com.richrelevance.userProfile;
 
 
-import com.richrelevance.*;
+import com.richrelevance.BaseAndroidTestCase;
+import com.richrelevance.RequestBuilderAccessor;
 import com.richrelevance.internal.TestResultCallback;
 import com.richrelevance.mocking.MockWebResponse;
 import com.richrelevance.mocking.ResponseBuilder;
-import com.richrelevance.utils.ValueMap;
-
-import java.util.jar.Attributes;
 
 public class UserProfileParsingTests extends BaseAndroidTestCase {
 
@@ -32,7 +30,7 @@ public class UserProfileParsingTests extends BaseAndroidTestCase {
 
 
                 // Viewed Items
-                assertEquals(2, response.getViewedItems().size());
+                assertEquals(1, response.getViewedItems().size());
                 UserProfileElement.ViewedItem viewedItem = response.getViewedItems().get(0);
                 assertEquals("10291452", viewedItem.getItemId());
 
@@ -80,7 +78,7 @@ public class UserProfileParsingTests extends BaseAndroidTestCase {
                 assertEquals(4, response.getUserAttributes().size());
                 UserProfileElement.UserAttribute userAttribute = response.getUserAttributes().get(0);
                 assertEquals("WEB", userAttribute.getChannel());
-                assertNotNull(userAttribute.getValues());
+                 assertNotNull(userAttribute.getValues());
                 assertEquals("facebook", userAttribute.getValues().get("Social").get(0));
 
                 // Referrer
@@ -112,5 +110,8 @@ public class UserProfileParsingTests extends BaseAndroidTestCase {
                 assertEquals("someValue", response.getBatchAttributes().optString("someField"));
             }
         };
+
+        accessor.parseResponse(response, callback);
+        callback.assertSuccess(this);
     }
 }

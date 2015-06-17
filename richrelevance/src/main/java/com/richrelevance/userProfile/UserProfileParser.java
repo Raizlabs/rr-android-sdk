@@ -16,7 +16,7 @@ public class UserProfileParser {
         responseInfo.setMostRecentRRUserGuid(json.optString("mostRecentRRUserGuid"));
         responseInfo.setTimeOfFirstEvent(json.optLong("timeOfFirstEvent"));
 
-        responseInfo.setReferrerUrls(JSONHelper.parseJSONArray(json, "reffererUrls", REFFERER_PARSER));
+        responseInfo.setReferrerUrls(JSONHelper.parseJSONArray(json, "referrerUrls", REFFERER_PARSER));
         responseInfo.setUserSegments(JSONHelper.parseJSONArray(json, "userSegments", USER_SEGMENT_PARSER));
         responseInfo.setUserAttributes(JSONHelper.parseJSONArray(json, "userAttributes", USER_ATTRIBUTE_PARSER));
         responseInfo.setVerbNouns(JSONHelper.parseJSONArray(json, "verbNouns", VERB_NOUN_PARSER));
