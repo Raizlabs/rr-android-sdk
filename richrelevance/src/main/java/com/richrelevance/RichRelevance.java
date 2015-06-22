@@ -1,9 +1,9 @@
 package com.richrelevance;
 
-import com.richrelevance.builders.PersonalizedRecommendationsBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
+import com.richrelevance.recommendations.Product;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.userPreference.ActionType;
@@ -12,7 +12,6 @@ import com.richrelevance.userPreference.UserPreferenceBuilder;
 import com.richrelevance.userProfile.UserProfileBuilder;
 import com.richrelevance.userProfile.UserProfileField;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 public class RichRelevance {
@@ -100,16 +99,6 @@ public class RichRelevance {
                 .setPlacements(placements);
     }
 
-    public static PersonalizedRecommendationsBuilder buildPersonalizedRecommendations(Placement... placements) {
-        return new PersonalizedRecommendationsBuilder()
-                .addPlacements(placements);
-    }
-
-    public static PersonalizedRecommendationsBuilder buildPersonalizedRecommendations(Collection<Placement> placements) {
-        return new PersonalizedRecommendationsBuilder()
-                .addPlacements(placements);
-    }
-
     public static UserPreferenceBuilder buildGetUserPreferences(TargetType... fields) {
         return new UserPreferenceBuilder(fields);
     }
@@ -133,13 +122,23 @@ public class RichRelevance {
     // region Tracking
 
     public static RequestBuilder<?> buildProductView(Placement placement, String productId) {
-        // TODO
-        return null;
+        return new PlacementsRecommendationsBuilder()
+                .addPlacements(placement)
+                .setProductIds(productId);
     }
 
-    public static RequestBuilder<?> buildLogPurchase(String orderNumber) {
-        // TODO
-        return null;
+    public static RequestBuilder<?> buildLogPurchase(Placement placement, String orderId, Product... products) {
+        return new PlacementsRecommendationsBuilder()
+                .addPlacements(placement)
+                .setOrderId(orderId)
+                .addPurchasedProducts(products);
+    }
+
+    public static RequestBuilder<?> buildLogPurchase(Placement placement, String orderId, Collection<Product> products) {
+        return new PlacementsRecommendationsBuilder()
+                .addPlacements(placement)
+                .setOrderId(orderId)
+                .addPurchasedProducts(products);
     }
 
     public static UserPreferenceBuilder buildSetUserPreference(TargetType target, ActionType action, String... ids) {

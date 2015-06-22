@@ -8,6 +8,7 @@ import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.internal.net.WebResultInfo;
+import com.richrelevance.utils.Wrapper;
 
 import junit.framework.TestCase;
 

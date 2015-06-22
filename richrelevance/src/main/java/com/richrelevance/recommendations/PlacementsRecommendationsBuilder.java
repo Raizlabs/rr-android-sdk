@@ -1,7 +1,6 @@
 package com.richrelevance.recommendations;
 
 import com.richrelevance.ClientConfiguration;
-import com.richrelevance.Product;
 import com.richrelevance.RRLog;
 import com.richrelevance.Range;
 import com.richrelevance.RequestBuilder;
@@ -453,6 +452,26 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      */
     public PlacementsRecommendationsBuilder setSearchTerm(String searchTerm) {
         setParameter(Keys.SEARCH_TERM, searchTerm);
+        return this;
+    }
+
+    /**
+     * A single, or list of, product IDs. Part of an order definition on the purchase complete page.
+     * @param productIds The product IDs to set.
+     * @return This builder for chaining method calls.
+     */
+    public PlacementsRecommendationsBuilder setProductIds(String... productIds) {
+        setListParameter(Keys.PRODUCT_ID, productIds);
+        return this;
+    }
+
+    /**
+     * A single, or list of, product IDs. Part of an order definition on the purchase complete page.
+     * @param productIds The product IDs to set.
+     * @return This builder for chaining method calls.
+     */
+    public PlacementsRecommendationsBuilder setProductIds(Collection<String> productIds) {
+        setListParameter(Keys.PRODUCT_ID, productIds);
         return this;
     }
 

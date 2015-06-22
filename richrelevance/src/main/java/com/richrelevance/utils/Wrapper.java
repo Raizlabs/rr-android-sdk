@@ -1,4 +1,4 @@
-package com.richrelevance;
+package com.richrelevance.utils;
 
 /**
  * Class which is a simple wrapper of an object of another type, allowing this

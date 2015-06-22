@@ -1,7 +1,6 @@
 package com.richrelevance.recommendations;
 
 import com.richrelevance.BaseTestCase;
-import com.richrelevance.Product;
 import com.richrelevance.Range;
 import com.richrelevance.RequestBuilderAccessor;
 import com.richrelevance.utils.ValueMap;
