@@ -20,11 +20,6 @@ public class RichRelevance {
 
     private static RichRelevanceClient defaultClient = newClient();
 
-    // Currently doesn't work in libraries built with Gradle
-    // Leaving for forwards compatibility if this ever gets fixed
-    // This defaults to false, so this is "safe" since we will always assume the worst
-    private static boolean isProduction = !BuildConfig.DEBUG;
-
     static WebRequestManager getWebRequestManager() {
         return webRequestManager;
     }
@@ -52,25 +47,6 @@ public class RichRelevance {
      */
     public static RichRelevanceClient newClient() {
         return new RichRelevanceClientImpl();
-    }
-
-    // TODO - If isProduction() is just for logging, we might as well remove it since logging can already be configured manually.
-
-    /**
-     * @return False if the app is known to be built configured for debug, true if it is unknown or built for
-     * production.
-     */
-    static boolean isProduction() {
-        return isProduction;
-    }
-
-    /**
-     * Manually sets the configuration to act like this is a production build.
-     *
-     * @param isProduction True to act like a production build, false not to.
-     */
-    public static void setIsProduction(boolean isProduction) {
-        RichRelevance.isProduction = isProduction;
     }
 
     /**

@@ -6,16 +6,10 @@ package com.richrelevance;
  */
 public class RRLog {
 
-    private static Boolean manualLoggingEnabled = null;
+    private static boolean loggingEnabled = false;
 
     static boolean isLoggingEnabled() {
-        // If it has been set manually, use it
-        if (manualLoggingEnabled != null) {
-            return manualLoggingEnabled;
-        } else {
-            // Otherwise default to production
-            return !RichRelevance.isProduction();
-        }
+            return loggingEnabled;
     }
 
     /**
@@ -23,7 +17,7 @@ public class RRLog {
      * @param enabled True to enable logging, false to disable it.
      */
     static void setLoggingEnabled(boolean enabled) {
-        manualLoggingEnabled = enabled;
+        loggingEnabled = enabled;
     }
 
     public static void v(String tag, String message) {
