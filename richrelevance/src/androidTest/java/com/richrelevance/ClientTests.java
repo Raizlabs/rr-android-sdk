@@ -1,15 +1,18 @@
 package com.richrelevance;
 
+import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.internal.net.WebResultInfo;
-
-import junit.framework.TestCase;
+import com.richrelevance.utils.Wrapper;
 
 import org.json.JSONObject;
 
-public class ClientTests extends TestCase {
+import java.lang.reflect.Field;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class ClientTests extends BaseTestCase {
 
     private static final String VALUE_CONFIG1 = "config1";
     private static final String VALUE_CONFIG2 = "config2";
@@ -67,6 +70,89 @@ public class ClientTests extends TestCase {
 
     }
 
+    public void testClickTrackingSuccess() {
+        PassFailWebManager testManager = new PassFailWebManager();
+        WebRequestManager oldManager = flipWebManager(ClickTrackingManager.getInstance(), testManager);
+
+        ClickTrackingManager.getInstance().trackClick(Endpoints.PRODUCTION + "/click");
+        assertClickTrackingEmpties();
+
+        flipWebManager(ClickTrackingManager.getInstance(), oldManager);
+    }
+
+    public void testClickTrackingRetry() {
+        final AtomicInteger failCount = new AtomicInteger(0);
+        final AtomicInteger successCount = new AtomicInteger(0);
+
+        PassFailWebManager testManager = new PassFailWebManager() {
+            @Override
+            public <Result> WebResultInfo<Result> execute(WebRequest<Result> request) {
+                if (fail) {
+                    failCount.incrementAndGet();
+                } else {
+                    successCount.incrementAndGet();
+                }
+
+                return super.execute(request);
+            }
+        };
+
+        WebRequestManager oldManager = flipWebManager(ClickTrackingManager.getInstance(), testManager);
+
+        testManager.setFail(true);
+
+        String url = Endpoints.PRODUCTION + "/click";
+        ClickTrackingManager.getInstance().trackClick(url);
+        ClickTrackingManager.getInstance().trackClick(url);
+
+        assertTrue(BusyLock.wait(50, 1000, new BusyLock.Evaluator() {
+            @Override
+            public boolean isUnlocked() {
+                return (failCount.get() == 2);
+            }
+        }));
+
+        assertEquals(0, successCount.get());
+
+        failCount.set(0);
+        successCount.set(0);
+
+        testManager.setFail(false);
+        ClickTrackingManager.getInstance().flush();
+
+        assertClickTrackingEmpties();
+        assertEquals(0, failCount.get());
+        assertEquals(2, successCount.get());
+    }
+
+    private void assertClickTrackingEmpties() {
+        assertTrue("Failed to catch a queued click track", ClickTrackingManager.getInstance().getQueuedCount() > 0);
+
+        boolean sentClick = BusyLock.wait(50, 10000, new BusyLock.Evaluator() {
+            @Override
+            public boolean isUnlocked() {
+                return (ClickTrackingManager.getInstance().getQueuedCount() == 0);
+            }
+        });
+        assertTrue(sentClick);
+    }
+
+    private WebRequestManager flipWebManager(ClickTrackingManager clickManager, WebRequestManager webManager) {
+        try {
+            Field webManagerField = ClickTrackingManager.class.getDeclaredField("webManager");
+            webManagerField.setAccessible(true);
+
+            WebRequestManager old = (WebRequestManager) webManagerField.get(clickManager);
+            webManagerField.set(clickManager, webManager);
+
+            return old;
+        } catch (NoSuchFieldException e) {
+            return null;
+        } catch (IllegalAccessException e) {
+            return null;
+        }
+    }
+
     private void assertConfigurationValues(WebRequestBuilder builder, String value) {
         assertEquals(value, builder.getParam("apiKey"));
         assertEquals(value, builder.getParam("apiClientKey"));
@@ -89,6 +175,50 @@ public class ClientTests extends TestCase {
         @Override
         protected void populateResponse(WebResponse response, JSONObject json, ResponseInfo responseInfo) {
 
+        }
+    }
+
+    private static class PassFailWebManager extends WebRequestManager {
+        protected boolean fail = false;
+
+        public void setFail(boolean fail) {
+            this.fail = fail;
+        }
+
+        @Override
+        public <Result> WebResultInfo<Result> execute(WebRequest<Result> request) {
+            final boolean wasSuccess = !fail;
+
+            return new WebResultInfo<Result>() {
+                @Override
+                public long getResponseTimestamp() {
+                    return 0;
+                }
+
+                @Override
+                public Result getResult() {
+                    return null;
+                }
+
+                @Override
+                public Error getError() {
+                    return null;
+                }
+
+                @Override
+                public int getResponseCode() {
+                    if (wasSuccess) {
+                        return 200;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                @Override
+                public String getResponseMessage() {
+                    return null;
+                }
+            };
         }
     }
 }

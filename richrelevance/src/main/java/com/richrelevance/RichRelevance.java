@@ -1,9 +1,12 @@
 package com.richrelevance;
 
+import android.content.Context;
+
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.Product;
+import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.userPreference.ActionType;
@@ -56,6 +59,10 @@ public class RichRelevance {
      */
     public static void setLoggingEnabled(boolean enabled) {
         RRLog.setLoggingEnabled(enabled);
+    }
+
+    public static void init(Context context) {
+        ClickTrackingManager.getInstance().init(context);
     }
 
     // region Fetching
@@ -123,6 +130,14 @@ public class RichRelevance {
 
     public static RequestBuilder<?> buildProductLike(String... productIds) {
         return buildSetUserPreference(TargetType.PRODUCT, ActionType.LIKE, productIds);
+    }
+
+    public static void trackClick(RecommendedProduct product) {
+        ClickTrackingManager.getInstance().trackClick(product.getClickUrl());
+    }
+
+    public static void flushClickTracking() {
+        ClickTrackingManager.getInstance().flush();
     }
 
     // endregion Tracking

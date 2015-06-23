@@ -1,6 +1,7 @@
 package com.richrelevance.recommendations;
 
 import com.richrelevance.Range;
+import com.richrelevance.RichRelevance;
 import com.richrelevance.utils.ValueMap;
 
 import java.util.List;
@@ -153,5 +154,9 @@ public class RecommendedProduct {
 
     void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public void trackClick() {
+        RichRelevance.trackClick(this);
     }
 }

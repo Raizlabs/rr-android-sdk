@@ -2,7 +2,10 @@ package com.richrelevance;
 
 import android.util.Log;
 
+import com.richrelevance.internal.net.WebRequest;
+import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.internal.net.WebResultInfo;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
@@ -124,6 +127,20 @@ public class ApiIntegrationTests extends BaseTestCase {
         helper.execute();
         helper.waitUntilCompleted();
         validateRecommendationsForPlacementsResponse(helper.getResult());
+
+        PlacementResponse placementResponse = helper.getResult().getPlacements().get(0);
+        RecommendedProduct product = placementResponse.getRecommendedProducts().get(0);
+        product.trackClick();
+        assertTrue("Failed to catch a queued click track", ClickTrackingManager.getInstance().getQueuedCount() > 0);
+
+        boolean sentClick = BusyLock.wait(50, 5 * 1000, new BusyLock.Evaluator() {
+            @Override
+            public boolean isUnlocked() {
+                return (ClickTrackingManager.getInstance().getQueuedCount() == 0);
+            }
+        });
+
+        assertTrue(sentClick);
     }
 
     public void testRecommendationsForPlacementsWithSearchTerm() {
