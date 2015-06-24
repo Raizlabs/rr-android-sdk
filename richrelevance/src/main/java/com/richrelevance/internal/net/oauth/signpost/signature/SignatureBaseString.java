@@ -41,13 +41,6 @@ public class SignatureBaseString {
         this.requestParameters = requestParameters;
     }
 
-    /**
-     * Builds the signature base string from the data this instance was
-     * configured with.
-     * 
-     * @return the signature base string
-     * @throws OAuthMessageSignerException
-     */
     public String generate() throws OAuthMessageSignerException {
 
         try {
@@ -82,15 +75,6 @@ public class SignatureBaseString {
         return scheme + "://" + authority + path;
     }
 
-    /**
-     * Normalizes the set of request parameters this instance was configured
-     * with, as per OAuth spec section 9.1.1.
-     * 
-     * @param parameters
-     *        the set of request parameters
-     * @return the normalized params string
-     * @throws IOException
-     */
     public String normalizeRequestParameters() throws IOException {
         if (requestParameters == null) {
             return "";

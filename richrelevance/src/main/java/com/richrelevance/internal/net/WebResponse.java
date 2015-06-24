@@ -64,7 +64,7 @@ public interface WebResponse {
      *
      * @return The {@link InputStream} to the content or null
      * if it does not exist.
-     * @throws IOException
+     * @throws IOException If the stream couldn't be accessed.
      */
     public InputStream getContentStream() throws IOException;
 

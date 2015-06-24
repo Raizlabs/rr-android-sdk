@@ -15,6 +15,9 @@
 package com.richrelevance.internal.net.oauth.signpost;
 
 
+import com.richrelevance.internal.net.oauth.signpost.gdata.base.PercentEscaper;
+import com.richrelevance.internal.net.oauth.signpost.http.HttpParameters;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,9 +28,6 @@ import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.richrelevance.internal.net.oauth.signpost.gdata.base.PercentEscaper;
-import com.richrelevance.internal.net.oauth.signpost.http.HttpParameters;
 
 public class OAuth {
 
@@ -73,13 +73,8 @@ public class OAuth {
         }
     }
 
-    /**
-     * Construct a x-www-form-urlencoded document containing the given sequence
-     * of name/value pairs. Use OAuth percent encoding (not exactly the encoding
-     * mandated by x-www-form-urlencoded).
-     */
     public static <T extends Map.Entry<String, String>> void formEncode(Collection<T> parameters,
-            OutputStream into) throws IOException {
+                                                                        OutputStream into) throws IOException {
         if (parameters != null) {
             boolean first = true;
             for (Map.Entry<String, String> entry : parameters) {
@@ -95,11 +90,6 @@ public class OAuth {
         }
     }
 
-    /**
-     * Construct a x-www-form-urlencoded document containing the given sequence
-     * of name/value pairs. Use OAuth percent encoding (not exactly the encoding
-     * mandated by x-www-form-urlencoded).
-     */
     public static <T extends Map.Entry<String, String>> String formEncode(Collection<T> parameters)
             throws IOException {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -107,7 +97,7 @@ public class OAuth {
         return new String(b.toByteArray());
     }
 
-    /** Parse a form-urlencoded document. */
+
     public static HttpParameters decodeForm(String form) {
         HttpParameters params = new HttpParameters();
         if (isEmpty(form)) {
@@ -144,11 +134,6 @@ public class OAuth {
         return decodeForm(sb.toString());
     }
 
-    /**
-     * Construct a Map containing a copy of the given parameters. If several
-     * parameters have the same name, the Map will contain the first value,
-     * only.
-     */
     public static <T extends Map.Entry<String, String>> Map<String, String> toMap(Collection<T> from) {
         HashMap<String, String> map = new HashMap<String, String>();
         if (from != null) {
@@ -171,26 +156,13 @@ public class OAuth {
     }
 
     /**
-     * Appends a list of key/value pairs to the given URL, e.g.:
-     * 
-     * <pre>
-     * String url = OAuth.addQueryParameters(&quot;http://example.com?a=1&quot;, b, 2, c, 3);
-     * </pre>
-     * 
-     * which yields:
-     * 
-     * <pre>
-     * http://example.com?a=1&b=2&c=3
-     * </pre>
-     * 
+     * Appends a list of key/value pairs to the given URL.
      * All parameters will be encoded according to OAuth's percent encoding
      * rules.
-     * 
-     * @param url
-     *        the URL
-     * @param kvPairs
-     *        the list of key/value pairs
-     * @return
+     *
+     * @param url     the URL
+     * @param kvPairs the list of key/value pairs
+     * @return The new query string.
      */
     public static String addQueryParameters(String url, String... kvPairs) {
         String queryDelim = url.contains("?") ? "&" : "?";
@@ -224,11 +196,9 @@ public class OAuth {
      * Helper method to concatenate a parameter and its value to a pair that can
      * be used in an HTTP header. This method percent encodes both parts before
      * joining them.
-     * 
-     * @param name
-     *        the OAuth parameter name, e.g. oauth_token
-     * @param value
-     *        the OAuth parameter value, e.g. 'hello oauth'
+     *
+     * @param name  the OAuth parameter name, e.g. oauth_token
+     * @param value the OAuth parameter value, e.g. 'hello oauth'
      * @return a name/value pair, e.g. oauth_token="hello%20oauth"
      */
     public static String toHeaderElement(String name, String value) {

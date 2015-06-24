@@ -139,8 +139,7 @@ public class OAuthConsumer {
      * {@link #generateNonce()} or {@link #generateTimestamp()} instead.
      * </p>
      *
-     * @param out
-     *        the request parameter which should be completed
+     * @param out the request parameter which should be completed
      */
     protected void completeOAuthParameters(HttpParameters out) {
         if (!out.containsKey(OAuth.OAUTH_CONSUMER_KEY)) {
@@ -171,6 +170,9 @@ public class OAuthConsumer {
     /**
      * Collects OAuth Authorization header parameters as per OAuth Core 1.0 spec
      * section 9.1.1
+     *
+     * @param request The request
+     * @param out     The parameters
      */
     protected void collectHeaderParameters(HttpRequest request, HttpParameters out) {
         HttpParameters headerParams = OAuth.oauthHeaderToParamsMap(request.getHeader(OAuth.HTTP_AUTHORIZATION_HEADER));
@@ -180,6 +182,10 @@ public class OAuthConsumer {
     /**
      * Collects x-www-form-urlencoded body parameters as per OAuth Core 1.0 spec
      * section 9.1.1
+     *
+     * @param request The request
+     * @param out     The parameters
+     * @throws IOException If the stream fails
      */
     protected void collectBodyParameters(HttpRequest request, HttpParameters out)
             throws IOException {
@@ -195,6 +201,9 @@ public class OAuthConsumer {
     /**
      * Collects HTTP GET query string parameters as per OAuth Core 1.0 spec
      * section 9.1.1
+     *
+     * @param request The request
+     * @param out     The parameters
      */
     protected void collectQueryParameters(HttpRequest request, HttpParameters out) {
 

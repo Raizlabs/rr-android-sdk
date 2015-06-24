@@ -29,11 +29,10 @@ import com.richrelevance.internal.net.oauth.signpost.OAuth;
 /**
  * A multi-map of HTTP request parameters. Each key references a
  * {@link SortedSet} of parameters collected from the request during message
- * signing. Parameter values are sorted as per {@linkplain http
- * ://oauth.net/core/1.0a/#anchor13}. Every key/value pair will be
- * percent-encoded upon insertion. This class has special semantics tailored to
- * being useful for message signing; it's not a general purpose collection class
- * to handle request parameters.
+ * signing. Parameter values are sorted as per http://oauth.net/core/1.0a/#anchor13
+ * Every key/value pair will be percent-encoded upon insertion. This class has
+ * special semantics tailored to being useful for message signing; it's not a
+ * general purpose collection class to handle request parameters.
  * 
  * @author Matthias Kaeppler
  */
@@ -136,7 +135,7 @@ public class HttpParameters implements Map<String, SortedSet<String>>, Serializa
     }
 
     /**
-     * Convenience method to merge a Map<String, List<String>>.
+     * Convenience method to merge a Map&lt;String, List&lt;String&gt;&gt;.
      * 
      * @param m
      *        the map
@@ -157,8 +156,6 @@ public class HttpParameters implements Map<String, SortedSet<String>>, Serializa
     }
 
     /**
-     * Convenience method for {@link #getFirst(key, false)}.
-     * 
      * @param key
      *        the parameter name (must be percent encoded if it contains unsafe
      *        characters!)

@@ -37,7 +37,8 @@ public class StrategyRecommendationsBuilder extends RequestBuilder<StrategyRespo
     }
 
     /**
-     * A product, a category, or a search string depending on the type of strategy chosen for strategyName.<p></p>
+     * A product, a category, or a search string depending on the type of strategy chosen for strategyName.
+     * <ul>
      * <li><b>PurchaseCP</b>,<b> ClickCP</b>: Use a <b>product ID</b></li>
      * <li><b>CategoryCP2</b>, <b>CategoryTopSellers</b>, <b>NewArrivalsIncategory</b>: Use a <b>category ID</b></li>
      * <li>SolrSearchToProduct: Use a search term</li>

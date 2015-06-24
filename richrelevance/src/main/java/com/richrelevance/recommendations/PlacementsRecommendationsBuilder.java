@@ -236,10 +236,10 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Sets the range of prices to include, filtering out anything outside the given range. The filter will match the
+     * <p>Sets the range of prices to include, filtering out anything outside the given range. The filter will match the
      * sale price or the list price of a product if no sale price is provided. The price is given in cents meaning if
      * you only want to exclude products that are greater than $5.79, the value provided should be ‘579’.
-     * <p/>
+     * </p>
      * <b>Note:</b> This is mutually exclusive with {@link #setPriceFilterExcludeRange(Range)} - setting one will
      * clear the other.
      *
@@ -251,10 +251,10 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Sets the range of prices to exclude, filtering out anything inside the given range. The filter will match the
+     * <p>Sets the range of prices to exclude, filtering out anything inside the given range. The filter will match the
      * sale price or the list price of a product if no sale price is provided. The price is given in cents meaning if
      * you only want to exclude products that are greater than $5.79, the value provided should be ‘579’.
-     * <p/>
+     * </p>
      * <b>Note:</b> This is mutually exclusive with {@link #setPriceFilterIncludeRange(Range)} - setting one will
      * clear the other.
      *
@@ -606,7 +606,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     /**
      * Sets the region ID. Must be consistent with the ID used in the
-     * <a href="http://developer.richrelevance.com/?page_id=403" title="Product Region Flat File Feed">product region feed</a>.
+     * <a href="http://developer.richrelevance.com/?page_id=403">product region feed</a>.
      *
      * @param regionId The region ID to set.
      * @return This builder for chaining method calls.
@@ -641,8 +641,8 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Search & Browse only. The total number of products to return in the response. This value overrides the return
-     * count set in the placement or in the Search & Browse configuration. (For example, if you want to return products
+     * Search and Browse only. The total number of products to return in the response. This value overrides the return
+     * count set in the placement or in the Search and Browse configuration. (For example, if you want to return products
      * 30-60, this value would be 30.) Max value = 1000.
      *
      * @param count The total number of products to return.
@@ -654,7 +654,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Search & Browse only. The starting number for the products that you want to return. (For example, if you want to
+     * Search and Browse only. The starting number for the products that you want to return. (For example, if you want to
      * return products 30-60, this value would be 30.)
      *
      * @param start The starting product.
@@ -666,7 +666,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Search & Browse only. Filter based on price ranges that the products should belong to in cents. N/A for clients
+     * Search and Browse only. Filter based on price ranges that the products should belong to in cents. N/A for clients
      * with localized product prices.
      *
      * @param ranges The ranges that the products should belong to in cents.
@@ -677,7 +677,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Search & Browse only. Filter based on price ranges that the products should belong to in cents. N/A for clients
+     * Search and Browse only. Filter based on price ranges that the products should belong to in cents. N/A for clients
      * with localized product prices.
      *
      * @param ranges The ranges that the products should belong to in cents.
@@ -698,7 +698,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Search & Browse only. Filter types and values selected by the shopper. Needs configuration by the RichRelevance
+     * Search and Browse only. Filter types and values selected by the shopper. Needs configuration by the RichRelevance
      * team before turned on.
      *
      * @param attributes The attributes to set.

@@ -8,9 +8,9 @@ import android.view.MenuItem;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.recommendations.Placement;
-import com.richrelevance.Product;
 import com.richrelevance.Range;
 import com.richrelevance.RichRelevance;
+import com.richrelevance.recommendations.Product;
 import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.utils.ValueMap;
 
@@ -45,17 +45,6 @@ public class MainActivity extends ActionBarActivity {
                 .execute();
 
         RichRelevance.buildRecommendationsUsingStrategy(StrategyType.SITE_WIDE_BEST_SELLERS)
-                .setCallback(new Callback<Object>() {
-                    @Override
-                    public void onResult(Object result) {
-
-                    }
-
-                    @Override
-                    public void onError(Error error) {
-
-                    }
-                })
                 .execute();
     }
 

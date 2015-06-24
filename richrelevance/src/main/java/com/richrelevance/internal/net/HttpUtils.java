@@ -5,13 +5,13 @@ import android.util.Pair;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class of helper utilities for HTTP.
  */
 class HttpUtils {
 
+    @SuppressWarnings("deprecation")
     static String getQueryString(List<Pair<String, String>> pairs) {
         StringBuilder queryBuilder = new StringBuilder();
         boolean first = true;
@@ -34,7 +34,6 @@ class HttpUtils {
                 queryBuilder.append(URLEncoder.encode(value, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 // Fallback
-                //noinspection deprecation
                 queryBuilder.append(URLEncoder.encode(value));
             }
 

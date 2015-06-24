@@ -114,7 +114,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
-    public RequestBuilder<Result> addListParameters(String key, Object... values) {
+    public <T> RequestBuilder<Result> addListParameters(String key, T... values) {
         return addListParametersWithDelimiter(LIST_DELIMITER, key, values);
     }
 
@@ -122,7 +122,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return addListParametersWithDelimiter(LIST_DELIMITER, key, values);
     }
 
-    public RequestBuilder<Result> addListParametersWithDelimiter(String delimiter, String key, Object... values) {
+    public <T> RequestBuilder<Result> addListParametersWithDelimiter(String delimiter, String key, T... values) {
         return addListParametersWithDelimiter(delimiter, key, Arrays.asList(values));
     }
 
@@ -160,7 +160,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
-    public RequestBuilder<Result> setListParameter(String key, Object... values) {
+    public <T> RequestBuilder<Result> setListParameter(String key, T... values) {
         setListParameterWithDelimiter(LIST_DELIMITER, key, values);
         return this;
     }
@@ -170,7 +170,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
-    public RequestBuilder<Result> setListParameterWithDelimiter(String delimiter, String key, Object... values) {
+    public <T> RequestBuilder<Result> setListParameterWithDelimiter(String delimiter, String key, T... values) {
         setParameter(key, StringUtils.join(delimiter, values));
         return this;
     }
@@ -180,7 +180,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
-    public RequestBuilder<Result> setListParameterFlat(String key, Object... values) {
+    public <T> RequestBuilder<Result> setListParameterFlat(String key, T... values) {
         for (Object value : values) {
             if (value != null) {
                 webRequestBuilder.addParam(key, value.toString());

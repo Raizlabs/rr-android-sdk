@@ -25,6 +25,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
 
     /**
      * Constructs a builder which retrieves user preferences for the given fields.
+     * @param fields The fields to retrieve.
      */
     public UserPreferenceBuilder(TargetType... fields) {
         setFields(fields);
@@ -32,6 +33,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
 
     /**
      * Constructs a builder which retrieves user preferences for the given fields.
+     * @param fields The fields to retrieve.
      */
     public UserPreferenceBuilder(Collection<TargetType> fields) {
         setFields(fields);
