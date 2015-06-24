@@ -79,7 +79,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * <ul>
      * <li>You will get one set of recommendations for each placement.</li>
      * <li>All placements must be for the same page type. </li>
-     * <li>The first placement is assumed to be the “best” placement and will receive the best recommendation strategy. </li>
+     * <li>The first placement is assumed to be the "best" placement and will receive the best recommendation strategy. </li>
      * <li>When multiple placements are requested in the same call, each will receive a unique strategy and unique products.</li>
      * </ul>
      *
@@ -97,7 +97,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * <ul>
      * <li>You will get one set of recommendations for each placement.</li>
      * <li>All placements must be for the same page type. </li>
-     * <li>The first placement is assumed to be the “best” placement and will receive the best recommendation strategy. </li>
+     * <li>The first placement is assumed to be the "best" placement and will receive the best recommendation strategy. </li>
      * <li>When multiple placements are requested in the same call, each will receive a unique strategy and unique products.</li>
      * </ul>
      *
@@ -115,7 +115,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * <ul>
      * <li>You will get one set of recommendations for each placement.</li>
      * <li>All placements must be for the same page type. </li>
-     * <li>The first placement is assumed to be the “best” placement and will receive the best recommendation strategy. </li>
+     * <li>The first placement is assumed to be the "best" placement and will receive the best recommendation strategy. </li>
      * <li>When multiple placements are requested in the same call, each will receive a unique strategy and unique products.</li>
      * </ul>
      *
@@ -238,7 +238,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     /**
      * <p>Sets the range of prices to include, filtering out anything outside the given range. The filter will match the
      * sale price or the list price of a product if no sale price is provided. The price is given in cents meaning if
-     * you only want to exclude products that are greater than $5.79, the value provided should be ‘579’.
+     * you only want to exclude products that are greater than $5.79, the value provided should be '579'.
      * </p>
      * <b>Note:</b> This is mutually exclusive with {@link #setPriceFilterExcludeRange(Range)} - setting one will
      * clear the other.
@@ -253,7 +253,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     /**
      * <p>Sets the range of prices to exclude, filtering out anything inside the given range. The filter will match the
      * sale price or the list price of a product if no sale price is provided. The price is given in cents meaning if
-     * you only want to exclude products that are greater than $5.79, the value provided should be ‘579’.
+     * you only want to exclude products that are greater than $5.79, the value provided should be '579'.
      * </p>
      * <b>Note:</b> This is mutually exclusive with {@link #setPriceFilterIncludeRange(Range)} - setting one will
      * clear the other.
@@ -396,7 +396,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Shopper’s referrer prior to viewing this page. Used for reporting and merchandising. Highly recommended.
+     * Shopper's referrer prior to viewing this page. Used for reporting and merchandising. Highly recommended.
      *
      * @param referrer The shopper's referrer prior to viewing this page.
      * @return This builder for chaining method calls.

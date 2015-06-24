@@ -30,7 +30,7 @@ public class UserProfileResponseInfo extends ResponseInfo {
     private JSONObject batchAttributes;
 
     /**
-     * @return The merchant’s user ID for the profile.
+     * @return The merchant's user ID for the profile.
      */
     public String getUserId() {
         return userId;
@@ -133,7 +133,7 @@ public class UserProfileResponseInfo extends ResponseInfo {
 
     /**
      * @return A list of the most recent brandView events of the user. These typically correspond to views of the
-     * merchant’s brand page. The sessionId and timestamp have the same meaning as for {@link #getViewedItems()}.
+     * merchant's brand page. The sessionId and timestamp have the same meaning as for {@link #getViewedItems()}.
      */
     public List<UserProfileElement.ViewedBrand> getViewedBrands() {
         return viewedBrands;
