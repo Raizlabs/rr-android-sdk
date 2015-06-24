@@ -5,11 +5,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.richrelevance.Callback;
-import com.richrelevance.Error;
-import com.richrelevance.recommendations.Placement;
 import com.richrelevance.Range;
 import com.richrelevance.RichRelevance;
+import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.Product;
 import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.utils.ValueMap;
@@ -24,8 +22,7 @@ public class MainActivity extends ActionBarActivity {
 
         RichRelevance.buildRecommendationsForPlacements(
                 new Placement(Placement.PlacementType.ADD_TO_CART, "thing"),
-                new Placement(Placement.PlacementType.CATEGORY, "other thing")
-        )
+                new Placement(Placement.PlacementType.CATEGORY, "other thing"))
                 .addPlacements(new Placement(Placement.PlacementType.ITEM, "another one"))
                 .setCount(50)
                 .addPurchasedProducts(

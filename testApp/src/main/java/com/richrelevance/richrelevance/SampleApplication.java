@@ -15,6 +15,6 @@ public class SampleApplication extends Application {
         configuration.setUserId("androidTest");
         configuration.setSessionId("093820948123");
 
-        RichRelevance.getDefaultClient().setConfiguration(configuration);
+        RichRelevance.init(this, configuration);
     }
 }
