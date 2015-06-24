@@ -26,6 +26,8 @@ public class RichRelevance {
 
     private static RichRelevanceClient defaultClient = newClient();
 
+    private RichRelevance() { }
+
     static WebRequestManager getWebRequestManager() {
         return webRequestManager;
     }
@@ -178,7 +180,7 @@ public class RichRelevance {
      * @param fields The desired field types.
      * @return The created builder.
      */
-    public static UserProfileBuilder buildUserProfile(UserProfileField... fields) {
+    public static UserProfileBuilder buildGetUserProfile(UserProfileField... fields) {
         return new UserProfileBuilder()
                 .setFields(fields);
     }
@@ -188,7 +190,7 @@ public class RichRelevance {
      * @param fields The desired field types.
      * @return The created builder.
      */
-    public static UserProfileBuilder buildUserProfile(Collection<UserProfileField> fields) {
+    public static UserProfileBuilder buildGetUserProfile(Collection<UserProfileField> fields) {
         return new UserProfileBuilder()
                 .setFields(fields);
     }
@@ -270,7 +272,7 @@ public class RichRelevance {
     /**
      * Attempts to flush the click tracking queue. This will be done automatically when the network becomes available
      * if the {@link android.Manifest.permission#ACCESS_NETWORK_STATE} permission is held. Otherwise, call this method
-     * when you would like to reattempt click tracking.
+     * when you would like to reattempt to send the queued click tracking requests.
      */
     public static void flushClickTracking() {
         ClickTrackingManager.getInstance().flush();

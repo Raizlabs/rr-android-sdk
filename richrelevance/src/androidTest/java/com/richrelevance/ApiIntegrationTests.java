@@ -170,7 +170,7 @@ public class ApiIntegrationTests extends BaseTestCase {
     }
 
     public void testUserProfile() {
-        UserProfileBuilder builder = RichRelevance.buildUserProfile(UserProfileField.ALL);
+        UserProfileBuilder builder = RichRelevance.buildGetUserProfile(UserProfileField.ALL);
 
         BuilderExecutorHelper<UserProfileResponseInfo> helper = new BuilderExecutorHelper<>(oAuthClient, builder);
         helper.execute();
