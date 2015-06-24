@@ -4,7 +4,7 @@ import com.richrelevance.internal.json.JSONHelper;
 
 import org.json.JSONObject;
 
-public class UserPreferenceParser {
+class UserPreferenceParser {
 
     static void parseUserPreferenceResponseInfo(JSONObject json, UserPreferenceResponseInfo responseInfo) {
         if (json == null || responseInfo == null) {
@@ -13,17 +13,17 @@ public class UserPreferenceParser {
 
         responseInfo.setUserId(json.optString("userId"));
 
-        responseInfo.setProducts(parsePreference(json, TargetType.PRODUCT));
-        responseInfo.setBrands(parsePreference(json, TargetType.BRAND));
-        responseInfo.setCategories(parsePreference(json, TargetType.CATEGORY));
-        responseInfo.setStores(parsePreference(json, TargetType.STORE));
+        responseInfo.setProducts(parsePreference(json, FieldType.PRODUCT));
+        responseInfo.setBrands(parsePreference(json, FieldType.BRAND));
+        responseInfo.setCategories(parsePreference(json, FieldType.CATEGORY));
+        responseInfo.setStores(parsePreference(json, FieldType.STORE));
     }
 
-    private static Preference parsePreference(JSONObject json, TargetType targetType) {
-        Preference preference = new Preference(targetType);
+    private static Preference parsePreference(JSONObject json, FieldType fieldType) {
+        Preference preference = new Preference(fieldType);
 
         if (json != null) {
-            JSONObject preferenceJson = json.optJSONObject(targetType.getResultKey());
+            JSONObject preferenceJson = json.optJSONObject(fieldType.getResultKey());
             if (preferenceJson != null) {
                 preference.setLikes(JSONHelper.parseStrings(preferenceJson, ActionType.LIKE.getKey()));
                 preference.setDislikes(JSONHelper.parseStrings(preferenceJson, ActionType.DISLIKE.getKey()));

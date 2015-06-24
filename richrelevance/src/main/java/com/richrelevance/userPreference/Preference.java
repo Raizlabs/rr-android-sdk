@@ -3,19 +3,19 @@ package com.richrelevance.userPreference;
 import java.util.List;
 
 public class Preference {
-    private TargetType targetType;
+    private FieldType fieldType;
     
     private List<String> likes;
     private List<String> dislikes;
     private List<String> neutrals;
     private List<String> notForRecs;
 
-    public Preference(TargetType targetType) {
-        this.targetType = targetType;
+    public Preference(FieldType fieldType) {
+        this.fieldType = fieldType;
     }
 
-    public TargetType getTargetType() {
-        return targetType;
+    public FieldType getFieldType() {
+        return fieldType;
     }
 
     public List<String> getLikes() {

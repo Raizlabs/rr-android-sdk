@@ -2,10 +2,7 @@ package com.richrelevance;
 
 import android.util.Log;
 
-import com.richrelevance.internal.net.WebRequest;
-import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResponse;
-import com.richrelevance.internal.net.WebResultInfo;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
@@ -15,7 +12,7 @@ import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyResponseInfo;
 import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.userPreference.ActionType;
-import com.richrelevance.userPreference.TargetType;
+import com.richrelevance.userPreference.FieldType;
 import com.richrelevance.userPreference.UserPreferenceBuilder;
 import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 import com.richrelevance.userProfile.UserProfileBuilder;
@@ -185,7 +182,7 @@ public class ApiIntegrationTests extends BaseTestCase {
     }
 
     public void testUserPreferences() {
-        UserPreferenceBuilder builder = RichRelevance.buildSetUserPreference(TargetType.BRAND, ActionType.LIKE, "apple");
+        UserPreferenceBuilder builder = RichRelevance.buildTrackUserPreference(FieldType.BRAND, ActionType.LIKE, "apple");
 
         BuilderExecutorHelper<UserPreferenceResponseInfo> helper = new BuilderExecutorHelper<>(client, builder);
         helper.execute();

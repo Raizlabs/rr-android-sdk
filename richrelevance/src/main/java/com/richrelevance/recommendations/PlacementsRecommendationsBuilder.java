@@ -16,6 +16,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * A builder which requests product recommendations using placements.
+ */
 public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementResponseInfo> {
 
     public static class Keys {

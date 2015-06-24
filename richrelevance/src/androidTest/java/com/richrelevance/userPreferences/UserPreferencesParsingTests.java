@@ -8,7 +8,7 @@ import com.richrelevance.internal.TestResultCallback;
 import com.richrelevance.mocking.MockWebResponse;
 import com.richrelevance.mocking.ResponseBuilder;
 import com.richrelevance.userPreference.Preference;
-import com.richrelevance.userPreference.TargetType;
+import com.richrelevance.userPreference.FieldType;
 import com.richrelevance.userPreference.UserPreferenceBuilder;
 import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 
@@ -17,7 +17,7 @@ import java.util.LinkedList;
 public class UserPreferencesParsingTests extends AndroidTestCase {
 
     public void testParseUserPreferences() {
-        UserPreferenceBuilder builder = new UserPreferenceBuilder(new LinkedList<TargetType>());
+        UserPreferenceBuilder builder = new UserPreferenceBuilder(new LinkedList<FieldType>());
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
 
         ResponseBuilder responseBuilder = new ResponseBuilder()

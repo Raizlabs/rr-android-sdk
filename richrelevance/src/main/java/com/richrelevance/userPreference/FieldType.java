@@ -1,6 +1,6 @@
 package com.richrelevance.userPreference;
 
-public enum TargetType {
+public enum FieldType {
 
     BRAND {
         @Override

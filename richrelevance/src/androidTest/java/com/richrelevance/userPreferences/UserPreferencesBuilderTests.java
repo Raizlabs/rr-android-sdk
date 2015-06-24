@@ -7,7 +7,7 @@ import com.richrelevance.RequestBuilderAccessor;
 import com.richrelevance.RichRelevanceClient;
 import com.richrelevance.TestClient;
 import com.richrelevance.userPreference.ActionType;
-import com.richrelevance.userPreference.TargetType;
+import com.richrelevance.userPreference.FieldType;
 import com.richrelevance.userPreference.UserPreferenceBuilder;
 
 public class UserPreferencesBuilderTests extends BaseTestCase {
@@ -33,37 +33,37 @@ public class UserPreferencesBuilderTests extends BaseTestCase {
     }
 
     public void testTargetTypes() {
-        assertEquals("brand", TargetType.BRAND.getRequestKey());
-        assertEquals("pref_brand", TargetType.BRAND.getResultKey());
-        assertEquals("category", TargetType.CATEGORY.getRequestKey());
-        assertEquals("pref_category", TargetType.CATEGORY.getResultKey());
-        assertEquals("product", TargetType.PRODUCT.getRequestKey());
-        assertEquals("pref_product", TargetType.PRODUCT.getResultKey());
-        assertEquals("store", TargetType.STORE.getRequestKey());
-        assertEquals("pref_store", TargetType.STORE.getResultKey());
+        assertEquals("brand", FieldType.BRAND.getRequestKey());
+        assertEquals("pref_brand", FieldType.BRAND.getResultKey());
+        assertEquals("category", FieldType.CATEGORY.getRequestKey());
+        assertEquals("pref_category", FieldType.CATEGORY.getResultKey());
+        assertEquals("product", FieldType.PRODUCT.getRequestKey());
+        assertEquals("pref_product", FieldType.PRODUCT.getResultKey());
+        assertEquals("store", FieldType.STORE.getRequestKey());
+        assertEquals("pref_store", FieldType.STORE.getResultKey());
     }
 
     public void testPath() {
-        RequestBuilder<?> getBuilder = new UserPreferenceBuilder(TargetType.BRAND);
+        RequestBuilder<?> getBuilder = new UserPreferenceBuilder(FieldType.BRAND);
         getBuilder.setClient(client);
         RequestBuilderAccessor getAccessor = new RequestBuilderAccessor(getBuilder);
         assertTrue(getAccessor.getUrl().startsWith("https://recs.richrelevance.com/rrserver/api/user/preference/RZTestUser"));
 
-        RequestBuilder<?> setBuilder = new UserPreferenceBuilder(TargetType.BRAND, ActionType.DISLIKE, "item");
+        RequestBuilder<?> setBuilder = new UserPreferenceBuilder(FieldType.BRAND, ActionType.DISLIKE, "item");
         setBuilder.setClient(client);
         RequestBuilderAccessor setAccessor = new RequestBuilderAccessor(setBuilder);
         assertTrue(setAccessor.getUrl().startsWith("https://recs.richrelevance.com/rrserver/api/user/preference"));
     }
 
     public void testConstruction() {
-        RequestBuilder<?> builder = new UserPreferenceBuilder(TargetType.BRAND, ActionType.LIKE, "");
+        RequestBuilder<?> builder = new UserPreferenceBuilder(FieldType.BRAND, ActionType.LIKE, "");
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
         assertEquals("brand", accessor.getParamValue(UserPreferenceBuilder.Keys.TARGET_TYPE));
         assertEquals("like", accessor.getParamValue(UserPreferenceBuilder.Keys.ACTION_TYPE));
     }
 
     public void testSetViewGuid() {
-        RequestBuilder<?> builder = new UserPreferenceBuilder(TargetType.BRAND)
+        RequestBuilder<?> builder = new UserPreferenceBuilder(FieldType.BRAND)
                 .setViewGuid("ab");
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
 
@@ -71,7 +71,7 @@ public class UserPreferencesBuilderTests extends BaseTestCase {
     }
 
     public void testSetPreferences() {
-        RequestBuilder<?> builder = new UserPreferenceBuilder(TargetType.BRAND)
+        RequestBuilder<?> builder = new UserPreferenceBuilder(FieldType.BRAND)
                 .setPreferences("a", "b");
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
         assertEquals("a|b", accessor.getParamValue(UserPreferenceBuilder.Keys.PREFERENCES));

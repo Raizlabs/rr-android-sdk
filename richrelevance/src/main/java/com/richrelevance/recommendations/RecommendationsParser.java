@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RecommendationsParser {
+class RecommendationsParser {
 
     private static final String KEY_RECOMMENDED_PRODUCTS = "recommendedProducts";
 

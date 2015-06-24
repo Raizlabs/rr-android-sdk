@@ -13,6 +13,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * A builder which gets or sets user preferences.
+ */
 public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponseInfo> {
 
     public static class Keys {
@@ -27,7 +30,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * Constructs a builder which retrieves user preferences for the given fields.
      * @param fields The fields to retrieve.
      */
-    public UserPreferenceBuilder(TargetType... fields) {
+    public UserPreferenceBuilder(FieldType... fields) {
         setFields(fields);
     }
 
@@ -35,7 +38,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * Constructs a builder which retrieves user preferences for the given fields.
      * @param fields The fields to retrieve.
      */
-    public UserPreferenceBuilder(Collection<TargetType> fields) {
+    public UserPreferenceBuilder(Collection<FieldType> fields) {
         setFields(fields);
     }
 
@@ -45,7 +48,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @param action What has the shopper indicated about the brands/categories/products/stores.
      * @param ids A list of brand IDs, category IDs, product IDs, or store IDs to perform the action on.
      */
-    public UserPreferenceBuilder(TargetType target, ActionType action, String... ids) {
+    public UserPreferenceBuilder(FieldType target, ActionType action, String... ids) {
         setTargetType(target);
         setActionType(action);
         setPreferences(ids);
@@ -57,7 +60,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @param action What has the shopper indicated about the brands/categories/products/stores.
      * @param ids A list of brand IDs, category IDs, product IDs, or store IDs to perform the action on.
      */
-    public UserPreferenceBuilder(TargetType target, ActionType action, Collection<String> ids) {
+    public UserPreferenceBuilder(FieldType target, ActionType action, Collection<String> ids) {
         setTargetType(target);
         setActionType(action);
         setPreferences(ids);
@@ -68,7 +71,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @param fields The fields to return.
      * @return This builder for chaining method calls.
      */
-    public UserPreferenceBuilder setFields(TargetType... fields) {
+    public UserPreferenceBuilder setFields(FieldType... fields) {
         setFields(Arrays.asList(fields));
         return this;
     }
@@ -78,9 +81,9 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @param fields The fields to return.
      * @return This builder for chaining method calls.
      */
-    public UserPreferenceBuilder setFields(Collection<TargetType> fields) {
+    public UserPreferenceBuilder setFields(Collection<FieldType> fields) {
         List<String> fieldValues = new ArrayList<>(fields.size());
-        for (TargetType field : fields) {
+        for (FieldType field : fields) {
             fieldValues.add(field.getResultKey());
         }
 
@@ -130,7 +133,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @param target The kind of value.
      * @return This builder for chaining method calls.
      */
-    protected UserPreferenceBuilder setTargetType(TargetType target) {
+    protected UserPreferenceBuilder setTargetType(FieldType target) {
         setParameter(Keys.TARGET_TYPE, target.getRequestKey());
         return this;
     }

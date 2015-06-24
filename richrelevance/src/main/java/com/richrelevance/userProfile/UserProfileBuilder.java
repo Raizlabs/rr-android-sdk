@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * A builder which requests user profile information.
+ */
 public class UserProfileBuilder extends RequestBuilder<UserProfileResponseInfo> {
 
     private static final String DELIMITER_FIELDS = ",";

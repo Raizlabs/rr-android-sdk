@@ -18,7 +18,10 @@ import java.util.Collection;
 import java.util.Locale;
 
 /**
- * Class which assists in the setup and construction of a request, as well as the parsing of the response.
+ * <p>Class which assists in the setup and construction of a request, as well as the parsing of the response. A callback
+ * may be set to be notified of the response (see {@link #setCallback(Callback)}).</p>
+ * <p>Extra parameters may be set using the provided methods, or custom ones may be added using the primitive setParameter
+ * methods.</p>
  *
  * @param <Result> The type of the result that this request will return.
  */
@@ -109,23 +112,64 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
+    /**
+     * Removes the parameter for the given key.
+     * @param key The key of the parameter to remove.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> removeParameter(String key) {
         webRequestBuilder.removeParam(key);
         return this;
     }
 
+    /**
+     * Adds the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will append to any existing value already stored at the given key.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @param <T> The type of objects being passed.
+     * @return This builder for chaining method calls.
+     */
     public <T> RequestBuilder<Result> addListParameters(String key, T... values) {
         return addListParametersWithDelimiter(LIST_DELIMITER, key, values);
     }
 
+    /**
+     * Adds the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will append to any existing value already stored at the given key.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> addListParameters(String key, Collection<?> values) {
         return addListParametersWithDelimiter(LIST_DELIMITER, key, values);
     }
 
+    /**
+     * Adds the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will append to any existing value already stored at the given key.
+     * @param delimiter The delimiter to use between values.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @param <T> The type of objects being passed.
+     * @return This builder for chaining method calls.
+     */
     public <T> RequestBuilder<Result> addListParametersWithDelimiter(String delimiter, String key, T... values) {
         return addListParametersWithDelimiter(delimiter, key, Arrays.asList(values));
     }
 
+    /**
+     * Adds the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will append to any existing value already stored at the given key.
+     * @param delimiter The delimiter to use between values.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> addListParametersWithDelimiter(String delimiter, String key, Collection<?> values) {
         // Short circuit
         if ((values == null) || values.isEmpty()) {
@@ -160,26 +204,71 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
+    /**
+     * Sets the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will replace any existing value already stored at the given key.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @param <T> The type of objects being passed.
+     * @return This builder for chaining method calls.
+     */
     public <T> RequestBuilder<Result> setListParameter(String key, T... values) {
         setListParameterWithDelimiter(LIST_DELIMITER, key, values);
         return this;
     }
 
+    /**
+     * Sets the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will replace any existing value already stored at the given key.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> setListParameter(String key, Collection<?> values) {
         setListParameterWithDelimiter(LIST_DELIMITER, key, values);
         return this;
     }
 
+    /**
+     * Sets the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will replace any existing value already stored at the given key.
+     * @param delimiter The delimiter to use between values.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @param <T> The type of objects being passed.
+     * @return This builder for chaining method calls.
+     */
     public <T> RequestBuilder<Result> setListParameterWithDelimiter(String delimiter, String key, T... values) {
         setParameter(key, StringUtils.join(delimiter, values));
         return this;
     }
 
+    /**
+     * Sets the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as a single parameter with delimited values, e.g. "key=a|b|c".
+     * This method will replace any existing value already stored at the given key.
+     * @param delimiter The delimiter to use between values.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> setListParameterWithDelimiter(String delimiter, String key, Collection<?> values) {
         setParameter(key, StringUtils.join(delimiter, values));
         return this;
     }
 
+    /**
+     * Sets the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as multiple instances of the same parameter, e.g. "key=a&amp;key=b".
+     * This method will replace any existing value already stored at the given key.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @param <T> The type of objects being passed.
+     * @return This builder for chaining method calls.
+     */
     public <T> RequestBuilder<Result> setListParameterFlat(String key, T... values) {
         for (Object value : values) {
             if (value != null) {
@@ -189,6 +278,14 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
+    /**
+     * Sets the given values for the given key. This will result in the values being converted to strings
+     * (via {@link Object#toString()}) and passed as multiple instances of the same parameter, e.g. "key=a&amp;key=b".
+     * This method will replace any existing value already stored at the given key.
+     * @param key The key of the parameter to set.
+     * @param values The values to set.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> setListParameterFlat(String key, Collection<String> values) {
         for (String value : values) {
             webRequestBuilder.addParam(key, value);
@@ -196,12 +293,26 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return this;
     }
 
+    /**
+     * Sets the given map as the value for the given key. Each key in the map will be mapped to a delimited list
+     * of its values. E.g. "key=a:1,2,3;b:5;c:6"
+     * @param key The key to set the map as the value of.
+     * @param values The map of values to store.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> setValueMapParameter(String key, ValueMap<?> values) {
         String value = StringUtils.join(values, LIST_DELIMITER, VALUE_MAP_VALUE_DELIMITER, VALUE_MAP_VALUE_ASSIGNMENT);
         setParameter(key, value);
         return this;
     }
 
+    /**
+     * Sets the given map as the value for the given key. Each key-value-pair in the map will be included in a
+     * delimited list. E.g. "key=a:1|a:2|a:3|b:5|c:6"
+     * @param key The key to set the map as the value of.
+     * @param values The map of values to store.
+     * @return This builder for chaining method calls.
+     */
     public RequestBuilder<Result> setValueMapParameterFlat(String key, ValueMap<?> values) {
         String value = StringUtils.joinFlat(values, LIST_DELIMITER, VALUE_MAP_VALUE_ASSIGNMENT);
         setParameter(key, value);

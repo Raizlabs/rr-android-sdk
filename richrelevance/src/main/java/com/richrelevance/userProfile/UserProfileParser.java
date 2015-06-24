@@ -5,7 +5,7 @@ import com.richrelevance.internal.json.JSONHelper;
 
 import org.json.JSONObject;
 
-public class UserProfileParser {
+class UserProfileParser {
 
     static void parseUserProfileResponseInfo(JSONObject json, UserProfileResponseInfo responseInfo) {
         if (json == null || responseInfo == null) {

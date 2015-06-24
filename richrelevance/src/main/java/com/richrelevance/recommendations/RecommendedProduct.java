@@ -156,6 +156,9 @@ public class RecommendedProduct {
         this.categories = categories;
     }
 
+    /**
+     * Tracks a click on this product.
+     */
     public void trackClick() {
         RichRelevance.trackClick(this);
     }

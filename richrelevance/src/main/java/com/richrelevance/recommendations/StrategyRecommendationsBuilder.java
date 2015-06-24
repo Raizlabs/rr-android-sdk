@@ -9,6 +9,9 @@ import org.json.JSONObject;
 
 import java.util.Collection;
 
+/**
+ * A builder which requests product recommendations using a specified strategy.
+ */
 public class StrategyRecommendationsBuilder extends RequestBuilder<StrategyResponseInfo> {
 
     public static class Keys {
@@ -26,7 +29,7 @@ public class StrategyRecommendationsBuilder extends RequestBuilder<StrategyRespo
     }
 
     /**
-     * Sets the strategy family name.
+     * Sets the strategy to use to obtain recommendations.
      *
      * @param strategy The strategy to use.
      * @return This builder for chaining method calls.
