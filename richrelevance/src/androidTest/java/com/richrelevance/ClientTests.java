@@ -105,7 +105,7 @@ public class ClientTests extends BaseTestCase {
         ClickTrackingManager.getInstance().trackClick(url);
         ClickTrackingManager.getInstance().trackClick(url);
 
-        assertTrue(BusyLock.wait(50, 1000, new BusyLock.Evaluator() {
+        assertTrue(BusyLock.wait(50, 3000, new BusyLock.Evaluator() {
             @Override
             public boolean isUnlocked() {
                 return (failCount.get() == 2);

@@ -130,7 +130,7 @@ public class ApiIntegrationTests extends BaseTestCase {
         product.trackClick();
         assertTrue("Failed to catch a queued click track", ClickTrackingManager.getInstance().getQueuedCount() > 0);
 
-        boolean sentClick = BusyLock.wait(50, 5 * 1000, new BusyLock.Evaluator() {
+        boolean sentClick = BusyLock.wait(50, 5 * 3000, new BusyLock.Evaluator() {
             @Override
             public boolean isUnlocked() {
                 return (ClickTrackingManager.getInstance().getQueuedCount() == 0);
