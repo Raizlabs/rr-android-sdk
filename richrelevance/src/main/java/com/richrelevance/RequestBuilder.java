@@ -33,7 +33,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
 
     private RichRelevanceClient client;
     private WebRequestBuilder webRequestBuilder;
-    private Callback<Result> resultCallback;
+    private Callback<? super Result> resultCallback;
 
     private boolean useOAuth = false;
 
@@ -343,7 +343,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         return webRequestBuilder.getParam(key);
     }
 
-    Callback<Result> getCallback() {
+    Callback<? super Result> getCallback() {
         return resultCallback;
     }
 
@@ -353,7 +353,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @param callback The callback to call.
      * @return This builder for chaining method calls.
      */
-    public RequestBuilder<Result> setCallback(Callback<Result> callback) {
+    public RequestBuilder<Result> setCallback(Callback<? super Result> callback) {
         this.resultCallback = callback;
         return this;
     }

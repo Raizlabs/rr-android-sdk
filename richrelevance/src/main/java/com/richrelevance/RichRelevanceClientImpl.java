@@ -22,7 +22,7 @@ class RichRelevanceClientImpl implements RichRelevanceClient {
     }
 
     @Override
-    public <T extends ResponseInfo> void executeRequest(RequestBuilder<T> request) {
+    public <T extends ResponseInfo> void executeRequest(final RequestBuilder<T> request) {
         request.setClient(this);
 
         CallbackWebListener<T> listener = new CallbackWebListener<>(request.getCallback());
@@ -37,9 +37,9 @@ class RichRelevanceClientImpl implements RichRelevanceClient {
 
     private static class CallbackWebListener<T> implements WebRequestManager.WebRequestListener<T> {
 
-        private Callback<T> callback;
+        private Callback<? super T> callback;
 
-        public CallbackWebListener(Callback<T> callback) {
+        public CallbackWebListener(Callback<? super T> callback) {
             this.callback = callback;
         }
 
