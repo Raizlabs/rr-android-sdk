@@ -22,7 +22,7 @@ import java.util.Collection;
  */
 public class RichRelevance {
 
-    private static WebRequestManager webRequestManager = new WebRequestManager();
+    private static WebRequestManager webRequestManager = new WebRequestManager(2);
 
     private static RichRelevanceClient defaultClient = newClient();
 
