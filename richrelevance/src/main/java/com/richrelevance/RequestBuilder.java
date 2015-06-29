@@ -9,6 +9,7 @@ import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.internal.net.oauth.OAuthConfig;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.utils.ParsingUtils;
+import com.richrelevance.utils.Utils;
 import com.richrelevance.utils.ValueMap;
 
 import org.json.JSONObject;
@@ -158,7 +159,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public <T> RequestBuilder<Result> addListParametersWithDelimiter(String delimiter, String key, T... values) {
-        return addListParametersWithDelimiter(delimiter, key, Arrays.asList(values));
+        return addListParametersWithDelimiter(delimiter, key, Utils.safeAsList(values));
     }
 
     /**
@@ -270,9 +271,11 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public <T> RequestBuilder<Result> setListParameterFlat(String key, T... values) {
-        for (Object value : values) {
-            if (value != null) {
-                webRequestBuilder.addParam(key, value.toString());
+        if (values != null) {
+            for (Object value : values) {
+                if (value != null) {
+                    webRequestBuilder.addParam(key, value.toString());
+                }
             }
         }
         return this;
@@ -287,8 +290,10 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public RequestBuilder<Result> setListParameterFlat(String key, Collection<String> values) {
-        for (String value : values) {
-            webRequestBuilder.addParam(key, value);
+        if (values != null) {
+            for (String value : values) {
+                webRequestBuilder.addParam(key, value);
+            }
         }
         return this;
     }

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.richrelevance.ClientConfiguration;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.utils.Utils;
 
 import org.json.JSONObject;
 
@@ -72,7 +73,7 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @return This builder for chaining method calls.
      */
     public UserPreferenceBuilder setFields(FieldType... fields) {
-        setFields(Arrays.asList(fields));
+        setFields(Utils.safeAsList(fields));
         return this;
     }
 
@@ -82,12 +83,19 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @return This builder for chaining method calls.
      */
     public UserPreferenceBuilder setFields(Collection<FieldType> fields) {
-        List<String> fieldValues = new ArrayList<>(fields.size());
-        for (FieldType field : fields) {
-            fieldValues.add(field.getResultKey());
+        if (fields != null) {
+            List<String> fieldValues = new ArrayList<>(fields.size());
+            for (FieldType field : fields) {
+                if (field != null) {
+                    fieldValues.add(field.getResultKey());
+                }
+            }
+
+            setListParameter(Keys.FIELDS, fieldValues);
+        } else {
+            removeParameter(Keys.FIELDS);
         }
 
-        setListParameter(Keys.FIELDS, fieldValues);
         return this;
     }
 
@@ -134,7 +142,11 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @return This builder for chaining method calls.
      */
     protected UserPreferenceBuilder setTargetType(FieldType target) {
-        setParameter(Keys.TARGET_TYPE, target.getRequestKey());
+        if (target != null) {
+            setParameter(Keys.TARGET_TYPE, target.getRequestKey());
+        } else {
+            removeParameter(Keys.TARGET_TYPE);
+        }
         return this;
     }
 
@@ -145,7 +157,11 @@ public class UserPreferenceBuilder extends RequestBuilder<UserPreferenceResponse
      * @return This builder for chaining method calls.
      */
     protected UserPreferenceBuilder setActionType(ActionType action) {
-        setParameter(Keys.ACTION_TYPE, action.getKey());
+        if (action != null) {
+            setParameter(Keys.ACTION_TYPE, action.getKey());
+        } else {
+            removeParameter(Keys.ACTION_TYPE);
+        }
         return this;
     }
 

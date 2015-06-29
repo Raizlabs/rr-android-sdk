@@ -3,6 +3,7 @@ package com.richrelevance.userProfile;
 import com.richrelevance.ClientConfiguration;
 import com.richrelevance.RequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.utils.Utils;
 
 import org.json.JSONObject;
 
@@ -32,7 +33,7 @@ public class UserProfileBuilder extends RequestBuilder<UserProfileResponseInfo> 
      * @return This builder for chaining method calls.
      */
     public UserProfileBuilder addFields(UserProfileField... fields) {
-        return addFields(Arrays.asList(fields));
+        return addFields(Utils.safeAsList(fields));
     }
 
     /**
@@ -41,11 +42,16 @@ public class UserProfileBuilder extends RequestBuilder<UserProfileResponseInfo> 
      * @return This builder for chaining method calls.
      */
     public UserProfileBuilder addFields(Collection<UserProfileField> fields) {
-        List<String> stringFields = new ArrayList<>(fields.size());
-        for (UserProfileField field : fields) {
-            stringFields.add(field.getKey());
+        if (fields != null) {
+            List<String> stringFields = new ArrayList<>(fields.size());
+            for (UserProfileField field : fields) {
+                if (field != null) {
+                    stringFields.add(field.getKey());
+                }
+            }
+            addListParametersWithDelimiter(DELIMITER_FIELDS, Keys.FIELDS, stringFields);
         }
-        addListParametersWithDelimiter(DELIMITER_FIELDS, Keys.FIELDS, stringFields);
+
         return this;
     }
 
@@ -55,7 +61,7 @@ public class UserProfileBuilder extends RequestBuilder<UserProfileResponseInfo> 
      * @return This builder for chaining method calls.
      */
     public UserProfileBuilder setFields(UserProfileField... fields) {
-        setFields(Arrays.asList(fields));
+        setFields(Utils.safeAsList(fields));
         return this;
     }
 

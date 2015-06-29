@@ -26,7 +26,7 @@ public class ValueMap<T> {
      * @return This map for chaining method calls.
      */
     public ValueMap<T> add(String key, T...values) {
-        return add(key, Arrays.asList(values));
+        return add(key, Utils.safeAsList(values));
     }
 
     /**

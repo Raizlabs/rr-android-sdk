@@ -12,7 +12,6 @@ import com.richrelevance.utils.ValueMap;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -90,7 +89,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder addPlacements(Placement... placements) {
-        addListParameters(Keys.PLACEMENTS, getPlacementStrings(Arrays.asList(placements)));
+        addListParameters(Keys.PLACEMENTS, getPlacementStrings(Utils.safeAsList(placements)));
         return this;
     }
 
@@ -108,7 +107,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setPlacements(Placement... placements) {
-        setListParameter(Keys.PLACEMENTS, getPlacementStrings(Arrays.asList(placements)));
+        setListParameter(Keys.PLACEMENTS, getPlacementStrings(Utils.safeAsList(placements)));
         return this;
     }
 
@@ -131,13 +130,19 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     private Collection<String> getPlacementStrings(Collection<Placement> placements) {
-        List<String> stringPlacements = new ArrayList<>(placements.size());
+        if (placements != null) {
+            List<String> stringPlacements = new ArrayList<>(placements.size());
 
-        for (Placement placement : placements) {
-            stringPlacements.add(placement.getApiValue());
+            for (Placement placement : placements) {
+                if (placement != null) {
+                    stringPlacements.add(placement.getApiValue());
+                }
+            }
+
+            return stringPlacements;
         }
 
-        return stringPlacements;
+        return null;
     }
 
     /**
@@ -172,7 +177,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setBrandFilterExclude(String... brands) {
-        return setFilteredBrands(Arrays.asList(brands), false);
+        return setFilteredBrands(Utils.safeAsList(brands), false);
     }
 
     /**
@@ -198,7 +203,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setBrandFilterInclude(String... brands) {
-        return setFilteredBrands(Arrays.asList(brands), true);
+        return setFilteredBrands(Utils.safeAsList(brands), true);
     }
 
     /**
@@ -276,19 +281,26 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     private PlacementsRecommendationsBuilder setPriceFilterRange(Range range, boolean inclusive) {
-        if (range.hasMax()) {
-            setParameter(Keys.PRICE_FILTER_MIN, range.getMin());
+        if (range != null) {
+            if (range.hasMax()) {
+                setParameter(Keys.PRICE_FILTER_MIN, range.getMin());
+            } else {
+                removeParameter(Keys.PRICE_FILTER_MIN);
+            }
+
+            if (range.hasMax()) {
+                setParameter(Keys.PRICE_FILTER_MAX, range.getMax());
+            } else {
+                removeParameter(Keys.PRICE_FILTER_MAX);
+            }
+
+            setParameter(Keys.PRICE_FILTER_INCLUDE, inclusive);
         } else {
             removeParameter(Keys.PRICE_FILTER_MIN);
-        }
-
-        if (range.hasMax()) {
-            setParameter(Keys.PRICE_FILTER_MAX, range.getMax());
-        } else {
             removeParameter(Keys.PRICE_FILTER_MAX);
+            removeParameter(Keys.PRICE_FILTER_INCLUDE);
         }
 
-        setParameter(Keys.PRICE_FILTER_INCLUDE, inclusive);
 
         return this;
     }
@@ -460,6 +472,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     /**
      * A single, or list of, product IDs. Part of an order definition on the purchase complete page.
+     *
      * @param productIds The product IDs to set.
      * @return This builder for chaining method calls.
      */
@@ -470,6 +483,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     /**
      * A single, or list of, product IDs. Part of an order definition on the purchase complete page.
+     *
      * @param productIds The product IDs to set.
      * @return This builder for chaining method calls.
      */
@@ -496,7 +510,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder addPurchasedProducts(Product... products) {
-        return addPurchasedProducts(Arrays.asList(products));
+        return addPurchasedProducts(Utils.safeAsList(products));
     }
 
     /**
@@ -506,30 +520,33 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder addPurchasedProducts(Collection<Product> products) {
-        Collection<String> productIds = new ArrayList<>(products.size());
-        Collection<Integer> productQuantities = new ArrayList<>(products.size());
-        Collection<Integer> productPriceCents = new ArrayList<>(products.size());
-        Collection<Double> productPriceDollars = new ArrayList<>(products.size());
+        if (products != null) {
+            Collection<String> productIds = new ArrayList<>(products.size());
+            Collection<Integer> productQuantities = new ArrayList<>(products.size());
+            Collection<Integer> productPriceCents = new ArrayList<>(products.size());
+            Collection<Double> productPriceDollars = new ArrayList<>(products.size());
 
-        for (Product product : products) {
-            if (product != null) {
-                Utils.addIfNonNull(productIds, product.getId());
-                Utils.addIfNonNull(productQuantities, product.getQuantity());
-                Utils.addIfNonNull(productPriceCents, product.getPriceCents());
-                Utils.addIfNonNull(productPriceDollars, product.getPriceDollars());
+            for (Product product : products) {
+                if (product != null) {
+                    Utils.addIfNonNull(productIds, product.getId());
+                    Utils.addIfNonNull(productQuantities, product.getQuantity());
+                    Utils.addIfNonNull(productPriceCents, product.getPriceCents());
+                    Utils.addIfNonNull(productPriceDollars, product.getPriceDollars());
+                }
             }
-        }
 
-        addListParameters(Keys.PRODUCT_ID, productIds);
-        addListParameters(Keys.PRODUCT_QUANTITIES, productQuantities);
-        addListParameters(Keys.PRODUCT_PRICES_CENTS, productPriceCents);
-        addListParameters(Keys.PRODUCT_PRICES_DOLLARS, productPriceDollars);
+            addListParameters(Keys.PRODUCT_ID, productIds);
+            addListParameters(Keys.PRODUCT_QUANTITIES, productQuantities);
+            addListParameters(Keys.PRODUCT_PRICES_CENTS, productPriceCents);
+            addListParameters(Keys.PRODUCT_PRICES_DOLLARS, productPriceDollars);
+        }
 
         return this;
     }
 
     /**
      * To supply user segments. Should be passed in to have a segment targeted campaign work correctly.
+     *
      * @param segments The user segments to set.
      * @return This builder for chaining method calls.
      */
@@ -585,7 +602,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setStrategySet(StrategyType... strategies) {
-        setStrategySet(Arrays.asList(strategies));
+        setStrategySet(Utils.safeAsList(strategies));
         return this;
     }
 
@@ -598,12 +615,18 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setStrategySet(Collection<StrategyType> strategies) {
-        List<String> stringStrategies = new ArrayList<>(strategies.size());
-        for (StrategyType strategy : strategies) {
-            stringStrategies.add(strategy.getKey());
+        if (strategies != null) {
+            List<String> stringStrategies = new ArrayList<>(strategies.size());
+            for (StrategyType strategy : strategies) {
+                if (strategy != null) {
+                    stringStrategies.add(strategy.getKey());
+                }
+            }
+            setListParameter(Keys.STRATEGY_SET, stringStrategies);
+        } else {
+            removeParameter(Keys.STRATEGY_SET);
         }
 
-        setListParameter(Keys.STRATEGY_SET, stringStrategies);
         return this;
     }
 
@@ -676,7 +699,7 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setPriceRanges(Range... ranges) {
-        return setPriceRanges(Arrays.asList(ranges));
+        return setPriceRanges(Utils.safeAsList(ranges));
     }
 
     /**
@@ -687,16 +710,23 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      * @return This builder for chaining method calls.
      */
     public PlacementsRecommendationsBuilder setPriceRanges(Collection<Range> ranges) {
-        List<String> stringRanges = new ArrayList<>(ranges.size());
-        for (Range range : ranges) {
-            if (range.hasMax() && range.hasMin()) {
-                stringRanges.add(range.getMin() + ";" + range.getMax());
-            } else {
-                RRLog.w(getClass().getSimpleName(), "Skipping price range - range must have a min and max value");
+        if (ranges != null) {
+            List<String> stringRanges = new ArrayList<>(ranges.size());
+            for (Range range : ranges) {
+                if (range != null) {
+                    if (range.hasMax() && range.hasMin()) {
+                        stringRanges.add(range.getMin() + ";" + range.getMax());
+                    } else {
+                        RRLog.w(getClass().getSimpleName(), "Skipping price range - range must have a min and max value");
+                    }
+                }
             }
+
+            setListParameter(Keys.PRICE_RANGES, stringRanges);
+        } else {
+            removeParameter(Keys.PRICE_RANGES);
         }
 
-        setListParameter(Keys.PRICE_RANGES, stringRanges);
         return this;
     }
 
