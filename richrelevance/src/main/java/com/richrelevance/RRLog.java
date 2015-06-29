@@ -8,6 +8,7 @@ import android.support.annotation.IntDef;
  */
 public class RRLog {
 
+    //@formatter:off
     @IntDef({
             VERBOSE,
             DEBUG,
@@ -16,8 +17,7 @@ public class RRLog {
             ERROR,
             NONE
     })
-    public @interface LogLevel {
-    }
+    public @interface LogLevel { }
 
     public static final int VERBOSE = 2; // 0x10
     public static final int DEBUG = 4; // 0x100
@@ -27,6 +27,7 @@ public class RRLog {
     public static final int NONE = 63; // 0x111111
 
     private static @LogLevel int logLevel;
+    //@formatter:on
 
     /**
      * Sets the level of logs which will be logged.
