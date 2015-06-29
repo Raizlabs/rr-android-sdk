@@ -122,8 +122,12 @@ class ClickTrackingManager {
     private void registerStateListener() {
         synchronized (this) {
             if (context != null) {
-                context.registerReceiver(CONNECTION_STATE_RECEIVER,
-                        new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+                try {
+                    context.registerReceiver(CONNECTION_STATE_RECEIVER,
+                            new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+                } catch (Exception e) {
+                    // Shouldn't happen, but we don't want to crash if this ever changes
+                }
             } else {
                 logUninitializedWarning();
             }
