@@ -2,15 +2,23 @@ package com.richrelevance.richrelevance;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.richrelevance.Range;
-import com.richrelevance.RichRelevance;
+import com.richrelevance.*;
+import com.richrelevance.Error;
 import com.richrelevance.recommendations.Placement;
+import com.richrelevance.recommendations.PlacementResponse;
+import com.richrelevance.recommendations.PlacementResponseInfo;
+import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.Product;
+import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.utils.ValueMap;
+
+import java.security.ProtectionDomain;
+import java.util.Collection;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -42,6 +50,28 @@ public class MainActivity extends ActionBarActivity {
                 .execute();
 
         RichRelevance.buildRecommendationsUsingStrategy(StrategyType.SITE_WIDE_BEST_SELLERS)
+                .execute();
+
+
+        // Create a "RecommendationsForPlacements" builder for the "add to cart" placement type.
+        Placement placement = new Placement(Placement.PlacementType.ADD_TO_CART, "prod1");
+        RichRelevance.buildRecommendationsForPlacements(placement)
+                // Attach a callback
+                .setCallback(new Callback<PlacementResponseInfo>() {
+                    @Override
+                    public void onResult(PlacementResponseInfo result) {
+                        PlacementResponse placement = result.getPlacements().get(0);
+                        RecommendedProduct product = placement.getRecommendedProducts().get(0);
+
+                        product.trackClick();
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        Log.e(getClass().getSimpleName(), "Error: " + error.getMessage());
+                    }
+                })
+                // Execute the request
                 .execute();
     }
 
