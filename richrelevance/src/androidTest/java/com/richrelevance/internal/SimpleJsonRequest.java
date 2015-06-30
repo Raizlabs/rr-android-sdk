@@ -1,4 +1,4 @@
-package com.richrelevance;
+package com.richrelevance.internal;
 
 
 import com.richrelevance.internal.net.HttpMethod;

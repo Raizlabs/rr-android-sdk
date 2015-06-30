@@ -2,12 +2,14 @@ package com.richrelevance;
 
 import android.util.Log;
 
+import com.richrelevance.internal.SimpleJsonRequest;
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.internal.net.WebResultInfo;
+import com.richrelevance.internal.OneShotLock;
 import com.richrelevance.utils.Wrapper;
 
 import junit.framework.TestCase;

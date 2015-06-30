@@ -1,4 +1,4 @@
-package com.richrelevance;
+package com.richrelevance.internal;
 
 public class Constants {
     public static class TestApiKeys {

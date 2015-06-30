@@ -1,4 +1,4 @@
-package com.richrelevance;
+package com.richrelevance.internal;
 
 /**
  * A class which is locked until {@link #unlock()} is called.

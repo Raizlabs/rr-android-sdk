@@ -2,6 +2,7 @@ package com.richrelevance;
 
 import android.test.AndroidTestCase;
 
+import com.richrelevance.internal.SimpleJsonRequest;
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
