@@ -7,14 +7,12 @@ import com.richrelevance.internal.net.WebRequest;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.internal.net.oauth.OAuthConfig;
-import com.richrelevance.recommendations.Placement;
 import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.Utils;
 import com.richrelevance.utils.ValueMap;
 
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
 

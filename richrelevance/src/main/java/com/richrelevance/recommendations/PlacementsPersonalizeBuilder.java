@@ -156,7 +156,7 @@ public class PlacementsPersonalizeBuilder extends PlacementsBuilder<PlacementPer
 
     @Override
     protected String getEndpointPath(ClientConfiguration configuration) {
-        return "rrserver/api/rrPlatform/personalize";
+        return "rrserver/api/personalize";
     }
 
     @Override
