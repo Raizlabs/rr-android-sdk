@@ -2,7 +2,9 @@ package com.richrelevance;
 
 import android.util.Log;
 
+import com.richrelevance.internal.BusyLock;
 import com.richrelevance.internal.Constants;
+import com.richrelevance.internal.OneShotLock;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
@@ -19,8 +21,6 @@ import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 import com.richrelevance.userProfile.UserProfileBuilder;
 import com.richrelevance.userProfile.UserProfileField;
 import com.richrelevance.userProfile.UserProfileResponseInfo;
-import com.richrelevance.internal.BusyLock;
-import com.richrelevance.internal.OneShotLock;
 import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.Wrapper;
 

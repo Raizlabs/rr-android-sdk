@@ -7,6 +7,9 @@ import com.richrelevance.utils.ValueMap;
 
 public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
 
+    /*
+     *  Inherited methods
+     */
     public void testPlacementTypeConstants() {
         assertEquals(Placement.PlacementType.HOME.getKey(), "home_page");
         assertEquals(Placement.PlacementType.ITEM.getKey(), "item_page");
@@ -32,14 +35,127 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
 
         builder.addPlacements(placement1, placement2);
 
-        String placementString = accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.PLACEMENTS);
+        String placementString = accessor.getParamValue(PlacementsBuilder.Keys.PLACEMENTS);
         assertEquals("cart_page.horizontal|home_page.vertical", placementString);
 
         builder.addPlacements(placement3);
-        placementString = accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.PLACEMENTS);
+        placementString = accessor.getParamValue(PlacementsBuilder.Keys.PLACEMENTS);
         assertEquals("cart_page.horizontal|home_page.vertical|home_page.full", placementString);
     }
 
+    public void testSetPageFeaturedBrand() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        builder.setPageFeaturedBrand("Sony");
+        assertEquals("Sony", accessor.getParamValue(PlacementsBuilder.Keys.PAGE_FEATURED_BRAND));
+    }
+
+    public void testExcludeHtml() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        assertEquals("true", accessor.getParamValue(PlacementsBuilder.Keys.EXCLUDE_HTML));
+
+        builder.excludeHtml(false);
+        assertEquals("false", accessor.getParamValue(PlacementsBuilder.Keys.EXCLUDE_HTML));
+    }
+
+    public void testSetIncludeCategoryData() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        assertEmpty(accessor.getParamValue(PlacementsBuilder.Keys.INCLUDE_CATEGORY_DATA));
+
+        builder.setReturnCategoryData(false);
+        assertEquals("false", accessor.getParamValue(PlacementsBuilder.Keys.INCLUDE_CATEGORY_DATA));
+    }
+
+    public void testSetUserAttributes() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        ValueMap<String> attributes = new ValueMap<String>()
+                .add("age", "30")
+                .add("gender", "female")
+                .add("hair_color", "red", "blonde");
+
+        builder.setUserAttributes(attributes);
+        assertEquals(
+                "age:30|gender:female|hair_color:red;blonde",
+                accessor.getParamValue(PlacementsBuilder.Keys.USER_ATTRIBUTES));
+    }
+
+    public void testSetReferrer() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        assertEmpty(accessor.getParamValue(PlacementsBuilder.Keys.REFERRER));
+
+        builder.setReferrer("myRef");
+        assertEquals("myRef", accessor.getParamValue(PlacementsBuilder.Keys.REFERRER));
+    }
+
+
+    public void testSetCategoryHintIds() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        assertEmpty(accessor.getParamValue(PlacementsBuilder.Keys.CATEGORY_HINT_IDS));
+
+        String[] hints = new String[]{"1", "2", "3"};
+        builder.setCategoryHintIds(hints);
+        assertJoined(accessor.getParamValue(PlacementsBuilder.Keys.CATEGORY_HINT_IDS), hints);
+
+    }
+
+    public void testSetUserSegments() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        ValueMap<String> segments = new ValueMap<String>()
+                .add("101", "NewUser")
+                .add("2", "Test");
+        builder.setUserSegments(segments);
+        assertEquals("101:NewUser|2:Test", accessor.getParamValue(PlacementsBuilder.Keys.USER_SEGMENTS));
+    }
+
+    public void testSetRegionId() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        builder.setRegionId("123");
+        assertEquals("123", accessor.getParamValue(PlacementsBuilder.Keys.REGION_ID));
+    }
+
+    public void testViewedProducts() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        ValueMap<Long> viewedProducts = new ValueMap<Long>()
+                .add("1", 190000L)
+                .add("2", 190010L, 190200L);
+
+        builder.setViewedProducts(viewedProducts);
+        assertEquals("1:190000|2:190010;190200", accessor.getParamValue(PlacementsBuilder.Keys.VIEWED_PRODUCTS));
+    }
+
+    public void testSetPurchasedProducts() {
+        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        ValueMap<Long> purchasedProducts = new ValueMap<Long>()
+                .add("1", 190000L)
+                .add("2", 190010L, 190200L);
+
+        builder.setPurchasedProducts(purchasedProducts);
+        assertEquals("1:190000|2:190010;190200", accessor.getParamValue(PlacementsBuilder.Keys.PURCHASED_PRODUCTS));
+    }
+
+
+    /*
+     * PlacementsRecommendationsBuilder unique methods
+     */
     public void testTimestamp() {
         PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
@@ -80,13 +196,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
         assertFalse(Boolean.valueOf(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.BRAND_INCLUDE_FILTERED)));
     }
 
-    public void testSetPageFeaturedBrand() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        builder.setPageFeaturedBrand("Sony");
-        assertEquals("Sony", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.PAGE_FEATURED_BRAND));
-    }
 
     public void setFilterPriceRangeIncludeCents() {
         PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
@@ -108,15 +217,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
         assertEquals("false", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.PRICE_FILTER_INCLUDE));
     }
 
-    public void testExcludeHtml() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        assertEquals("true", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.EXCLUDE_HTML));
-
-        builder.excludeHtml(false);
-        assertEquals("false", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.EXCLUDE_HTML));
-    }
 
     public void testExcludeRecommendedItems() {
         PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
@@ -138,16 +238,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
         assertEquals("true", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.MINIMAL_RECOMMENDED_ITEM_DATA));
     }
 
-    public void testSetIncludeCategoryData() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        assertEmpty(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.INCLUDE_CATEGORY_DATA));
-
-        builder.setReturnCategoryData(false);
-        assertEquals("false", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.INCLUDE_CATEGORY_DATA));
-    }
-
     public void testSetExcludeProductsFromRecommendations() {
         PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
@@ -155,21 +245,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
         String[] products = new String[]{"1", "2", "3"};
         builder.setExcludedProducts(products);
         assertJoined(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.EXCLUDE_PRODUCT_IDS), products);
-    }
-
-    public void testSetUserAttributes() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        ValueMap<String> attributes = new ValueMap<String>()
-                .add("age", "30")
-                .add("gender", "female")
-                .add("hair_color", "red", "blonde");
-
-        builder.setUserAttributes(attributes);
-        assertEquals(
-                "age:30|gender:female|hair_color:red;blonde",
-                accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.USER_ATTRIBUTES));
     }
 
     public void testSetRefinements() {
@@ -187,16 +262,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
                 accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.REFINEMENTS));
     }
 
-    public void testSetReferrer() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        assertEmpty(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.REFERRER));
-
-        builder.setReferrer("myRef");
-        assertEquals("myRef", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.REFERRER));
-    }
-
     public void testSetCategoryId() {
         PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
@@ -205,18 +270,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
 
         builder.setCategoryId("1234");
         assertEquals("1234", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.CATEGORY_ID));
-    }
-
-    public void testSetCategoryHintIds() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        assertEmpty(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.CATEGORY_HINT_IDS));
-
-        String[] hints = new String[]{"1", "2", "3"};
-        builder.setCategoryHintIds(hints);
-        assertJoined(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.CATEGORY_HINT_IDS), hints);
-
     }
 
     public void testSetSearchTerm() {
@@ -263,17 +316,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
         assertJoined(accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.PRODUCT_PRICES_DOLLARS), "100.5", "75.5");
     }
 
-    public void testSetUserSegments() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        ValueMap<String> segments = new ValueMap<String>()
-                .add("101", "NewUser")
-                .add("2", "Test");
-        builder.setUserSegments(segments);
-        assertEquals("101:NewUser|2:Test", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.USER_SEGMENTS));
-    }
-
     public void testSetRegistryId() {
         PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
@@ -307,38 +349,6 @@ public class PlacementsRecommendationsBuilderTests extends BaseTestCase {
 
         builder.setStrategySet(StrategyType.NEW_ARRIVALS, StrategyType.PERSONALIZED);
         assertEquals("NewArrivals|Personalized", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.STRATEGY_SET));
-    }
-
-    public void testSetRegionId() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        builder.setRegionId("123");
-        assertEquals("123", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.REGION_ID));
-    }
-
-    public void testViewedProducts() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        ValueMap<Long> viewedProducts = new ValueMap<Long>()
-                .add("1", 190000L)
-                .add("2", 190010L, 190200L);
-
-        builder.setViewedProducts(viewedProducts);
-        assertEquals("1:190000|2:190010;190200", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.VIEWED_PRODUCTS));
-    }
-
-    public void testSetPurchasedProducts() {
-        PlacementsRecommendationsBuilder builder = new PlacementsRecommendationsBuilder();
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-
-        ValueMap<Long> purchasedProducts = new ValueMap<Long>()
-                .add("1", 190000L)
-                .add("2", 190010L, 190200L);
-
-        builder.setPurchasedProducts(purchasedProducts);
-        assertEquals("1:190000|2:190010;190200", accessor.getParamValue(PlacementsRecommendationsBuilder.Keys.PURCHASED_PRODUCTS));
     }
 
     public void testSetCount() {
