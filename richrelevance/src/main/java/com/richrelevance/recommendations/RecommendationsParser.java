@@ -120,7 +120,7 @@ class RecommendationsParser {
                 }
             };
 
-    private static final JSONArrayParserDelegate<Category> categoryParserDelegate =
+    public static final JSONArrayParserDelegate<Category> categoryParserDelegate =
             new JSONArrayParserDelegate<Category>() {
                 @Override
                 public Category parseObject(JSONObject json) {

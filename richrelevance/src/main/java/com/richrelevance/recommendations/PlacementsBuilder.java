@@ -11,6 +11,20 @@ import java.util.List;
 
 public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseInfo, Builder extends PlacementsBuilder> extends RequestBuilder<PlacementsResponseInfo> {
 
+    public static class Keys {
+        public static final String PLACEMENTS = "placements";
+        public static final String PAGE_FEATURED_BRAND = "fpb";
+        public static final String EXCLUDE_HTML = "excludeHtml";
+        public static final String INCLUDE_CATEGORY_DATA = "categoryData";
+        public static final String USER_ATTRIBUTES = "userAttribute";
+        public static final String REFERRER = "pref";
+        public static final String CATEGORY_HINT_IDS = "chi";
+        public static final String USER_SEGMENTS = "sgs";
+        public static final String REGION_ID = "rid";
+        public static final String VIEWED_PRODUCTS = "viewed";
+        public static final String PURCHASED_PRODUCTS = "purchased";
+    }
+
     /**
      * Sets the list of placements. Each identifier consists of a page type (see valid page types below) and a placement
      * name. <ul> <li>You will get one set of recommendations for each placement.</li> <li>All placements must be for
@@ -19,7 +33,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * unique strategy and unique products.</li> </ul>
      *
      * @param placements The placements to use.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setPlacements(Placement... placements) {
@@ -35,7 +48,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * unique strategy and unique products.</li> </ul>
      *
      * @param placements The placements to use.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setPlacements(Collection<Placement> placements) {
@@ -47,7 +59,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * The brand featured on the page. Used to set the seed for brand-seeded strategies like Brand Top Sellers.
      *
      * @param brand The brand featured on the page.
-     *
      * @return This builder for chaining method calls.
      */
     public PlacementsBuilder setPageFeaturedBrand(String brand) {
@@ -60,7 +71,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * response. Default state: true.
      *
      * @param returnCategoryData True to include category data.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setReturnCategoryData(boolean returnCategoryData) {
@@ -72,7 +82,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * Sets the key/value pairs describing the attribute context of the current of the user.
      *
      * @param attributes The map of attributes to set.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setUserAttributes(ValueMap<String> attributes) {
@@ -86,7 +95,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * category.
      *
      * @param hintIds The category hint IDs to set.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setCategoryHintIds(String... hintIds) {
@@ -100,7 +108,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * category.
      *
      * @param hintIds The category hint IDs to set.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setCategoryHintIds(Collection<String> hintIds) {
@@ -125,7 +132,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * region feed</a>.
      *
      * @param regionId The region ID to set.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setRegionId(String regionId) {
@@ -138,7 +144,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * milliseconds using UTC time zone for each view.
      *
      * @param products A map of the product IDs mapped to the view timestamps.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setViewedProducts(ValueMap<Long> products) {
@@ -151,7 +156,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * milliseconds using UTC time zone for each purchase.
      *
      * @param products A map of the product IDs mapped to the purchase time stamps.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setPurchasedProducts(ValueMap<Long> products) {
@@ -163,7 +167,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * Shopper's referrer prior to viewing this page. Used for reporting and merchandising. Highly recommended.
      *
      * @param referrer The shopper's referrer prior to viewing this page.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder setReferrer(String referrer) {
@@ -179,7 +182,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * receive a unique strategy and unique products.</li> </ul>
      *
      * @param placements The placements to add.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder addPlacements(Placement... placements) {
@@ -192,7 +194,6 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
      * the HTML for the placement, which is set in the layout, in the html field. Default = true.
      *
      * @param exclude True to omit the returned HTML.
-     *
      * @return This builder for chaining method calls.
      */
     public Builder excludeHtml(boolean exclude) {
@@ -214,29 +215,5 @@ public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseI
         }
 
         return null;
-    }
-
-    public static class Keys {
-        public static final String PLACEMENTS = "placements";
-
-        public static final String PAGE_FEATURED_BRAND = "fpb";
-
-        public static final String EXCLUDE_HTML = "excludeHtml";
-
-        public static final String INCLUDE_CATEGORY_DATA = "categoryData";
-
-        public static final String USER_ATTRIBUTES = "userAttribute";
-
-        public static final String REFERRER = "pref";
-
-        public static final String CATEGORY_HINT_IDS = "chi";
-
-        public static final String USER_SEGMENTS = "sgs";
-
-        public static final String REGION_ID = "rid";
-
-        public static final String VIEWED_PRODUCTS = "viewed";
-
-        public static final String PURCHASED_PRODUCTS = "purchased";
     }
 }
