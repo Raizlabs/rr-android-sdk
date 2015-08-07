@@ -1,78 +1,41 @@
 package com.richrelevance.richrelevance;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.richrelevance.richrelevance.model.CardModel;
+import com.richrelevance.richrelevance.model.Orientations;
+import com.richrelevance.richrelevance.view.CardContainer;
+import com.richrelevance.richrelevance.view.SimpleCardStackAdapter;
 import com.richrelevance.*;
 import com.richrelevance.Error;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
-import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
-import com.richrelevance.recommendations.Product;
 import com.richrelevance.recommendations.RecommendedProduct;
-import com.richrelevance.recommendations.StrategyType;
-import com.richrelevance.utils.ValueMap;
+import com.richrelevance.userPreference.ActionType;
+import com.richrelevance.userPreference.FieldType;
 
-import java.security.ProtectionDomain;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    CardContainer cardContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RichRelevance.buildRecommendationsForPlacements(
-                new Placement(Placement.PlacementType.ADD_TO_CART, "thing"),
-                new Placement(Placement.PlacementType.CATEGORY, "other thing"))
-                .addPlacements(new Placement(Placement.PlacementType.ITEM, "another one"))
-                .setCount(50)
-                .addPurchasedProducts(
-                        new Product("product1", 2093, 902),
-                        new Product("product2", 3920, 298)
-                )
-                .setUserAttributes(
-                        new ValueMap<String>()
-                                .add("attr", "val", "val2")
-                                .add("otherAtt", "val", "val2")
-                                .add("otherAttr", "val", "val2")
-                )
-                .setPriceRanges(
-                        new Range(100, 10000),
-                        new Range(Range.NONE, 200000)
-                )
-                .execute();
+        resetStack(null);
 
-        RichRelevance.buildRecommendationsUsingStrategy(StrategyType.SITE_WIDE_BEST_SELLERS)
-                .execute();
-
-
-        // Create a "RecommendationsForPlacements" builder for the "add to cart" placement type.
-        Placement placement = new Placement(Placement.PlacementType.ADD_TO_CART, "prod1");
-        RichRelevance.buildRecommendationsForPlacements(placement)
-                // Attach a callback
-                .setCallback(new Callback<PlacementResponseInfo>() {
-                    @Override
-                    public void onResult(PlacementResponseInfo result) {
-                        PlacementResponse placement = result.getPlacements().get(0);
-                        RecommendedProduct product = placement.getRecommendedProducts().get(0);
-
-                        product.trackClick();
-                    }
-
-                    @Override
-                    public void onError(Error error) {
-                        Log.e(getClass().getSimpleName(), "Error: " + error.getMessage());
-                    }
-                })
-                // Execute the request
-                .execute();
     }
 
     @Override
@@ -95,5 +58,75 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public Context getContext() {
+        return (Context)this;
+    }
+
+    public void resetStack(View view) {
+        // Create a "RecommendationsForPlacements" builder for the "add to cart" placement type.
+       // Placement placement = new Placement(Placement.PlacementType.ADD_TO_CART, "prod1");
+        RichRelevance.buildRecommendationsForPlacements(
+                new Placement(Placement.PlacementType.ADD_TO_CART, "prod1"),
+                new Placement(Placement.PlacementType.HOME, "prod2"))
+                // Attach a callback
+                .setCallback(new Callback<PlacementResponseInfo>() {
+                    @Override
+                    public void onResult(PlacementResponseInfo result) {
+                        List<CardModel> cards = new ArrayList<>();
+
+                        for (PlacementResponse placement : result.getPlacements()) {
+                            for (final RecommendedProduct recommendedProduct : placement.getRecommendedProducts()) {
+
+                                CardModel card = new CardModel(
+                                        recommendedProduct.getName(),
+                                        recommendedProduct.getBrand(),
+                                        recommendedProduct.getImageUrl(),
+                                        recommendedProduct.getPriceCents()
+                                );
+
+                                card.setOnCardDismissedListener(new CardModel.OnCardDismissedListener() {
+                                    @Override
+                                    public void onLike() {
+                                        RichRelevance.buildTrackUserPreference(
+                                                FieldType.PRODUCT,
+                                                ActionType.LIKE,
+                                                recommendedProduct.getId()
+                                        ).execute();
+                                    }
+
+                                    @Override
+                                    public void onDislike() {
+                                        RichRelevance.buildTrackUserPreference(
+                                                FieldType.PRODUCT,
+                                                ActionType.DISLIKE,
+                                                recommendedProduct.getId()
+                                        ).execute();
+                                    }
+                                });
+                                cards.add(card);
+                            }
+                        }
+
+                        final SimpleCardStackAdapter adapter = new SimpleCardStackAdapter(getContext(), cards);
+
+                        cardContainer = (CardContainer) findViewById(R.id.cardLayoutView);
+                        cardContainer.setOrientation(Orientations.Orientation.Disordered);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                cardContainer.setAdapter(adapter);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        Log.e(getClass().getSimpleName(), "Error: " + error.getMessage());
+                    }
+                })
+                .execute();
     }
 }

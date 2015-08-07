@@ -1,5 +1,19 @@
 apply plugin: 'com.android.application'
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.1'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -22,5 +36,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'org.projectlombok:lombok:1.12.4'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(':richrelevance')
+    compile 'com.android.support:cardview-v7:+'
 }
