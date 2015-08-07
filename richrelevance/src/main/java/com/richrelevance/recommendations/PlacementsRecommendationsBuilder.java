@@ -3,7 +3,6 @@ package com.richrelevance.recommendations;
 import com.richrelevance.ClientConfiguration;
 import com.richrelevance.RRLog;
 import com.richrelevance.Range;
-import com.richrelevance.RequestBuilder;
 import com.richrelevance.internal.net.WebRequestBuilder;
 import com.richrelevance.internal.net.WebResponse;
 import com.richrelevance.utils.Utils;
@@ -18,31 +17,25 @@ import java.util.List;
 /**
  * A builder which requests product recommendations using placements.
  */
-public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementResponseInfo> {
+public class PlacementsRecommendationsBuilder extends PlacementsBuilder<PlacementResponseInfo, PlacementsRecommendationsBuilder> {
 
     public static class Keys {
-        public static final String PLACEMENTS = "placements";
 
         public static final String TIMESTAMP = "ts";
 
         public static final String BRAND_FILTER = "filbr";
         public static final String BRAND_INCLUDE_FILTERED = "includeBrandFilteredProducts";
-        public static final String PAGE_FEATURED_BRAND = "fpb";
 
         public static final String PRICE_FILTER_MIN = "minPriceFilter";
         public static final String PRICE_FILTER_MAX = "maxPriceFilter";
         public static final String PRICE_FILTER_INCLUDE = "includePriceFilteredProducts";
 
-        public static final String EXCLUDE_HTML = "excludeHtml";
         public static final String EXCLUDE_ITEM_ATTRIBUTES = "excludeItemAttributes";
         public static final String EXCLUDE_RECOMMENDED_ITEMS = "excludeRecItems";
         public static final String MINIMAL_RECOMMENDED_ITEM_DATA = "returnMinimalRecItemData";
-        public static final String INCLUDE_CATEGORY_DATA = "categoryData";
         public static final String EXCLUDE_PRODUCT_IDS = "bi";
 
-        public static final String USER_ATTRIBUTES = "userAttribute";
         public static final String REFINEMENTS = "rfm";
-        public static final String REFERRER = "pref";
 
         public static final String PRODUCT_ID = "productId";
         public static final String PRODUCT_QUANTITIES = "q";
@@ -50,18 +43,12 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
         public static final String PRODUCT_PRICES_CENTS = "ppc";
 
         public static final String CATEGORY_ID = "categoryId";
-        public static final String CATEGORY_HINT_IDS = "chi";
         public static final String SEARCH_TERM = "searchTerm";
         public static final String ORDER_ID = "o";
-        public static final String USER_SEGMENTS = "sgs";
         public static final String REGISTRY_ID = "rg";
         public static final String REGISTRY_TYPE_ID = "rgt";
         public static final String ALREADY_ADDED_REGISTRY_ITEMS = "aari";
         public static final String STRATEGY_SET = "strategySet";
-
-        public static final String REGION_ID = "rid";
-        public static final String VIEWED_PRODUCTS = "viewed";
-        public static final String PURCHASED_PRODUCTS = "purchased";
 
         public static final String COUNT = "count";
         public static final String START = "st";
@@ -73,76 +60,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
 
     public PlacementsRecommendationsBuilder() {
         excludeHtml(true);
-    }
-
-    /**
-     * Adds to the list of placements. Each identifier consists of a page type (see valid page types below) and a
-     * placement name.
-     * <ul>
-     * <li>You will get one set of recommendations for each placement.</li>
-     * <li>All placements must be for the same page type. </li>
-     * <li>The first placement is assumed to be the "best" placement and will receive the best recommendation strategy. </li>
-     * <li>When multiple placements are requested in the same call, each will receive a unique strategy and unique products.</li>
-     * </ul>
-     *
-     * @param placements The placements to add.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder addPlacements(Placement... placements) {
-        addListParameters(Keys.PLACEMENTS, getPlacementStrings(Utils.safeAsList(placements)));
-        return this;
-    }
-
-    /**
-     * Sets the list of placements. Each identifier consists of a page type (see valid page types below) and a
-     * placement name.
-     * <ul>
-     * <li>You will get one set of recommendations for each placement.</li>
-     * <li>All placements must be for the same page type. </li>
-     * <li>The first placement is assumed to be the "best" placement and will receive the best recommendation strategy. </li>
-     * <li>When multiple placements are requested in the same call, each will receive a unique strategy and unique products.</li>
-     * </ul>
-     *
-     * @param placements The placements to use.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setPlacements(Placement... placements) {
-        setListParameter(Keys.PLACEMENTS, getPlacementStrings(Utils.safeAsList(placements)));
-        return this;
-    }
-
-    /**
-     * Sets the list of placements. Each identifier consists of a page type (see valid page types below) and a
-     * placement name.
-     * <ul>
-     * <li>You will get one set of recommendations for each placement.</li>
-     * <li>All placements must be for the same page type. </li>
-     * <li>The first placement is assumed to be the "best" placement and will receive the best recommendation strategy. </li>
-     * <li>When multiple placements are requested in the same call, each will receive a unique strategy and unique products.</li>
-     * </ul>
-     *
-     * @param placements The placements to use.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setPlacements(Collection<Placement> placements) {
-        setListParameter(Keys.PLACEMENTS, getPlacementStrings(placements));
-        return this;
-    }
-
-    private Collection<String> getPlacementStrings(Collection<Placement> placements) {
-        if (placements != null) {
-            List<String> stringPlacements = new ArrayList<>(placements.size());
-
-            for (Placement placement : placements) {
-                if (placement != null) {
-                    stringPlacements.add(placement.getApiValue());
-                }
-            }
-
-            return stringPlacements;
-        }
-
-        return null;
     }
 
     /**
@@ -233,17 +150,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * The brand featured on the page. Used to set the seed for brand-seeded strategies like Brand Top Sellers.
-     *
-     * @param brand The brand featured on the page.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setPageFeaturedBrand(String brand) {
-        setParameter(Keys.PAGE_FEATURED_BRAND, brand);
-        return this;
-    }
-
-    /**
      * <p>Sets the range of prices to include, filtering out anything outside the given range. The filter will match the
      * sale price or the list price of a product if no sale price is provided. The price is given in cents meaning if
      * you only want to exclude products that are greater than $5.79, the value provided should be '579'.
@@ -306,18 +212,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * If set to true, omits the HTML returned in the Relevance Cloud server response. If false, the response includes
-     * the HTML for the placement, which is set in the layout, in the html field. Default = true.
-     *
-     * @param exclude True to omit the returned HTML.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder excludeHtml(boolean exclude) {
-        setParameter(Keys.EXCLUDE_HTML, exclude);
-        return this;
-    }
-
-    /**
      * If set to true, removes the item attributes from the recommended products data. Default = false.
      *
      * @param exclude True to remove the item attributes.
@@ -353,18 +247,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * If set to false, omits category data in the response. If true, categoryIds and categories are returned in the
-     * response. Default state: true.
-     *
-     * @param returnCategoryData True to include category data.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setReturnCategoryData(boolean returnCategoryData) {
-        setParameter(Keys.INCLUDE_CATEGORY_DATA, returnCategoryData);
-        return this;
-    }
-
-    /**
      * List of product IDs that should not be recommended in this response.
      *
      * @param productIds The product IDs not to recommend.
@@ -387,17 +269,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Sets the key/value pairs describing the attribute context of the current of the user.
-     *
-     * @param attributes The map of attributes to set.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setUserAttributes(ValueMap<String> attributes) {
-        setValueMapParameter(Keys.USER_ATTRIBUTES, attributes);
-        return this;
-    }
-
-    /**
      * Refinement. Triggers a refinement filter rule configured in the {rr} dashboard. Rules eliminate a set of
      * products from recommendations based on product attributes. For more information see: Supplement: Adding
      * Refinements (RRO-2SIGSAR)
@@ -411,17 +282,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * Shopper's referrer prior to viewing this page. Used for reporting and merchandising. Highly recommended.
-     *
-     * @param referrer The shopper's referrer prior to viewing this page.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setReferrer(String referrer) {
-        setParameter(Keys.REFERRER, referrer);
-        return this;
-    }
-
-    /**
      * Sets the ID of the category currently being viewed.
      *
      * @param categoryId The ID of the category being viewed.
@@ -429,32 +289,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
      */
     public PlacementsRecommendationsBuilder setCategoryId(String categoryId) {
         setParameter(Keys.CATEGORY_ID, categoryId);
-        return this;
-    }
-
-    /**
-     * Sets category hint IDs. Category hints can be added to any page type. Several category hints can be added on a
-     * single page. Each category hint added qualifies the page for merchandising rules that are associated to the
-     * category.
-     *
-     * @param hintIds The category hint IDs to set.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setCategoryHintIds(String... hintIds) {
-        setListParameter(Keys.CATEGORY_HINT_IDS, hintIds);
-        return this;
-    }
-
-    /**
-     * Sets category hint IDs. Category hints can be added to any page type. Several category hints can be added on a
-     * single page. Each category hint added qualifies the page for merchandising rules that are associated to the
-     * category.
-     *
-     * @param hintIds The category hint IDs to set.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setCategoryHintIds(Collection<String> hintIds) {
-        setListParameter(Keys.CATEGORY_HINT_IDS, hintIds);
         return this;
     }
 
@@ -545,17 +379,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
     }
 
     /**
-     * To supply user segments. Should be passed in to have a segment targeted campaign work correctly.
-     *
-     * @param segments The user segments to set.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setUserSegments(ValueMap<String> segments) {
-        setValueMapParameter(Keys.USER_SEGMENTS, segments);
-        return this;
-    }
-
-    /**
      * Sets a registry ID string, used to identify a particular registry.
      *
      * @param registryId The registry ID to set.
@@ -627,42 +450,6 @@ public class PlacementsRecommendationsBuilder extends RequestBuilder<PlacementRe
             removeParameter(Keys.STRATEGY_SET);
         }
 
-        return this;
-    }
-
-    /**
-     * Sets the region ID. Must be consistent with the ID used in the
-     * <a href="http://developer.richrelevance.com/?page_id=403">product region feed</a>.
-     *
-     * @param regionId The region ID to set.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setRegionId(String regionId) {
-        setParameter(Keys.REGION_ID, regionId);
-        return this;
-    }
-
-    /**
-     * List the product IDs of the product detail pages user viewed in the current session, including timestamps in
-     * milliseconds using UTC time zone for each view.
-     *
-     * @param products A map of the product IDs mapped to the view timestamps.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setViewedProducts(ValueMap<Long> products) {
-        setValueMapParameter(Keys.VIEWED_PRODUCTS, products);
-        return this;
-    }
-
-    /**
-     * List the product IDs of the products the user purchased in the current session, including timestamps in
-     * milliseconds using UTC time zone for each purchase.
-     *
-     * @param products A map of the product IDs mapped to the purchase time stamps.
-     * @return This builder for chaining method calls.
-     */
-    public PlacementsRecommendationsBuilder setPurchasedProducts(ValueMap<Long> products) {
-        setValueMapParameter(Keys.PURCHASED_PRODUCTS, products);
         return this;
     }
 

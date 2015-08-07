@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class PlacementsBuilder<PlacementResponseInfo extends ResponseInfo, Builder extends PlacementsBuilder> extends RequestBuilder<PlacementResponseInfo> {
+
+public abstract class PlacementsBuilder<PlacementsResponseInfo extends ResponseInfo, Builder extends PlacementsBuilder> extends RequestBuilder<PlacementsResponseInfo> {
 
     /**
      * Sets the list of placements. Each identifier consists of a page type (see valid page types below) and a placement
@@ -240,4 +241,3 @@ public abstract class PlacementsBuilder<PlacementResponseInfo extends ResponseIn
         public static final String PURCHASED_PRODUCTS = "purchased";
     }
 }
-

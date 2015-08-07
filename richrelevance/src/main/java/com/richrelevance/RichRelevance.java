@@ -3,7 +3,9 @@ package com.richrelevance;
 import android.content.Context;
 
 import com.richrelevance.internal.net.WebRequestManager;
+import com.richrelevance.recommendations.Creative;
 import com.richrelevance.recommendations.Placement;
+import com.richrelevance.recommendations.PlacementsPersonalizeBuilder;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.Product;
 import com.richrelevance.recommendations.RecommendedProduct;
@@ -166,6 +168,28 @@ public class RichRelevance {
     }
 
     /**
+     * Creates a builder which requests creatives content for the specified placements, personalized to the current user.
+     *
+     * @param placements The desired placements.
+     * @return The created builder.
+     */
+    public static PlacementsPersonalizeBuilder buildPersonalizations(Placement... placements) {
+        return new PlacementsPersonalizeBuilder()
+                .setPlacements(placements);
+    }
+
+    /**
+     * Creates a builder which requests creatives content for the specified placements, personalized to the current user.
+     *
+     * @param placements The desired placements.
+     * @return The created builder.
+     */
+    public static PlacementsPersonalizeBuilder buildPersonalizations(Collection<Placement> placements) {
+        return new PlacementsPersonalizeBuilder()
+                .setPlacements(placements);
+    }
+
+    /**
      * Creates a builder which requests user preferences.
      *
      * @param fields The desired field types.
@@ -285,6 +309,17 @@ public class RichRelevance {
      */
     public static void trackClick(RecommendedProduct product) {
         ClickTrackingManager.getInstance().trackClick(product.getClickUrl());
+    }
+
+    /**
+     * Tracks a user click on a particular creative. If no network is available, a best effort is made to
+     * queue the request and submit it when the network becomes available.
+     *
+     * @param creative The product the user clicked.
+     * @see #flushClickTracking()
+     */
+    public static void trackClick(Creative creative) {
+        ClickTrackingManager.getInstance().trackClick(creative.getTrackingUrl());
     }
 
     /**

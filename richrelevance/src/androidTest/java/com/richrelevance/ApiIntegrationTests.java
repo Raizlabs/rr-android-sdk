@@ -2,11 +2,17 @@ package com.richrelevance;
 
 import android.util.Log;
 
+import com.richrelevance.internal.BusyLock;
 import com.richrelevance.internal.Constants;
+import com.richrelevance.internal.OneShotLock;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.recommendations.Creative;
 import com.richrelevance.recommendations.Placement;
+import com.richrelevance.recommendations.PlacementPersonalizeResponse;
+import com.richrelevance.recommendations.PlacementPersonalizeResponseInfo;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
+import com.richrelevance.recommendations.PlacementsPersonalizeBuilder;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
@@ -19,8 +25,6 @@ import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 import com.richrelevance.userProfile.UserProfileBuilder;
 import com.richrelevance.userProfile.UserProfileField;
 import com.richrelevance.userProfile.UserProfileResponseInfo;
-import com.richrelevance.internal.BusyLock;
-import com.richrelevance.internal.OneShotLock;
 import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.Wrapper;
 
@@ -170,6 +174,47 @@ public class ApiIntegrationTests extends BaseTestCase {
         assertNonEmpty(product.getId());
         assertNonEmpty(product.getClickUrl());
         assertNonEmpty(product.getImageUrl());
+    }
+
+    public void testPersonalizePlacements() {
+        Placement placement = new Placement(Placement.PlacementType.HOME, "omnichannel");
+        PlacementsPersonalizeBuilder builder = RichRelevance.buildPersonalizations(placement);
+        BuilderExecutorHelper<PlacementPersonalizeResponseInfo> helper = new BuilderExecutorHelper<>(client, builder);
+        helper.execute();
+        helper.waitUntilCompleted();
+        validatePersonalizePlacementsResponse(helper.getResult());
+
+        PlacementPersonalizeResponse placementResponse = helper.getResult().getPlacements().get(0);
+        Creative creative = placementResponse.getCreatives().get(0);
+        int currentClickCount = ClickTrackingManager.getInstance().getQueuedCount();
+        creative.trackClick();
+        assertTrue("Failed to catch a queued click track", ++currentClickCount ==  ClickTrackingManager.getInstance().getQueuedCount());
+
+        boolean sentClick = BusyLock.wait(50, 5 * 3000, new BusyLock.Evaluator() {
+            @Override
+            public boolean isUnlocked() {
+                return (ClickTrackingManager.getInstance().getQueuedCount() == 0);
+            }
+        });
+
+        assertTrue(sentClick);
+    }
+
+    public void validatePersonalizePlacementsResponse(PlacementPersonalizeResponseInfo responseInfo) {
+        assertNotNull(responseInfo);
+
+        assertTrue(ParsingUtils.isStatusOk(responseInfo.getStatus()));
+        assertTrue(responseInfo.getPlacements().size() > 0);
+
+        assertTrue(responseInfo.getRequestMap().size() > 0);
+
+        PlacementPersonalizeResponse placement = responseInfo.getPlacements().get(0);
+        assertTrue(placement.getCreatives().size() > 0);
+
+        Creative creative = placement.getCreatives().get(0);
+        assertNonEmpty(creative.getTrackingUrl());
+        assertNonEmpty(creative.getCampaign());
+        assertTrue(creative.getCreativeMap().size() > 0);
     }
 
     public void testUserProfile() {
