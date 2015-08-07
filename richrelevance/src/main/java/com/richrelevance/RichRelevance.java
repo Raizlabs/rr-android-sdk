@@ -6,6 +6,7 @@ import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.Product;
+import com.richrelevance.recommendations.ProductBuilder;
 import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyType;
@@ -183,6 +184,26 @@ public class RichRelevance {
      */
     public static UserPreferenceBuilder buildGetUserPreferences(Collection<FieldType> fields) {
         return new UserPreferenceBuilder(fields);
+    }
+
+    /**
+     * Creates a builder which requests products.
+     *
+     * @param productIds The desired products.
+     * @return The created builder.
+     */
+    public static ProductBuilder buildProductsRequest(String... productIds) {
+        return new ProductBuilder(productIds);
+    }
+
+    /**
+     * Creates a builder which requests products.
+     *
+     * @param productIds The desired products.
+     * @return The created builder.
+     */
+    public static ProductBuilder buildProductsRequest(Collection<String> productIds) {
+        return new ProductBuilder(productIds);
     }
 
     /**
