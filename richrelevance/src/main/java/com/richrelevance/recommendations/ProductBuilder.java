@@ -11,11 +11,14 @@ import java.util.Collection;
 
 public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
 
+    public static class Keys {
+        public static final String PRODUCTID = "productId";
+    }
+
     /**
      * Set one or more product ids. Used to retrieve a list of products based on these ids.
      *
      * @param productIds The products to return.
-     *
      * @return This builder for chaining method calls.
      */
     public ProductBuilder setProducts(String... productIds) {
@@ -27,7 +30,6 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
      * Sets a list of product ids. Used to retrieve a list of products based on these ids.
      *
      * @param productIds The products to return.
-     *
      * @return This builder for chaining method calls.
      */
     public ProductBuilder setProducts(Collection<String> productIds) {
@@ -52,9 +54,5 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
     @Override
     protected void populateResponse(WebResponse response, JSONObject json, ProductResponseInfo responseInfo) {
         ProductsParser.parseProductResponseInfo(json, responseInfo);
-    }
-
-    public static class Keys {
-        public static final String PRODUCTID = "productId";
     }
 }

@@ -6,20 +6,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.richrelevance.*;
+import com.richrelevance.Callback;
 import com.richrelevance.Error;
+import com.richrelevance.Range;
+import com.richrelevance.RichRelevance;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
-import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
 import com.richrelevance.recommendations.Product;
 import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyType;
 import com.richrelevance.utils.ValueMap;
-
-import java.security.ProtectionDomain;
-import java.util.Collection;
-
 
 public class MainActivity extends ActionBarActivity {
 

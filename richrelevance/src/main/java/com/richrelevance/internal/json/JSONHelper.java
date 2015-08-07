@@ -8,8 +8,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class with common utilities for JSON parsing
@@ -157,5 +159,26 @@ public class JSONHelper {
             return strings;
         }
         return null;
+    }
+
+    /**
+     * Parses all the keys and their values out of the given {@link JSONObject} into a map.
+     *
+     * @param json The {@link JSONObject} to get the keys/values from
+     * @return A map containing all the keys and their corresponding values.
+     */
+    public static Map<String, String> parseJSONToMap(JSONObject json) {
+        if(json == null) {
+            return null;
+        }
+
+        final Map<String, String> map = new HashMap<>();
+        JSONHelper.runOverKeys(json, new JSONHelper.JSONKeyDelegate() {
+            @Override
+            public void execute(JSONObject json, String key) {
+                map.put(key, json.optString(key));
+            }
+        });
+        return map;
     }
 }
