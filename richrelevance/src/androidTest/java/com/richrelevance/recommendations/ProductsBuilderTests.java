@@ -9,7 +9,7 @@ import com.richrelevance.TestClient;
 import com.richrelevance.userPreference.ActionType;
 import com.richrelevance.userPreference.FieldType;
 
-public class ProductsBuilderTests extends BaseTestCase{
+public class ProductsBuilderTests extends BaseTestCase {
     private RichRelevanceClient client;
 
     @Override
@@ -42,16 +42,10 @@ public class ProductsBuilderTests extends BaseTestCase{
     }
 
     public void testPath() {
-        RequestBuilder<?> getBuilder = new ProductBuilder("11111", "22222");
+        RequestBuilder<?> getBuilder = new ProductBuilder();
         getBuilder.setClient(client);
         RequestBuilderAccessor getAccessor = new RequestBuilderAccessor(getBuilder);
         assertTrue(getAccessor.getUrl().startsWith("https://recs.richrelevance.com/rrserver/api/rrPlatform/getProducts"));
-    }
-
-    public void testConstruction() {
-        RequestBuilder<?> builder = new ProductBuilder("11111");
-        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
-        assertEquals("11111", accessor.getParamValue(ProductBuilder.Keys.PRODUCTID));
     }
 
     public void testSetProducts() {

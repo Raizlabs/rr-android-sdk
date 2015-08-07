@@ -193,7 +193,7 @@ public class RichRelevance {
      * @return The created builder.
      */
     public static ProductBuilder buildProductsRequest(String... productIds) {
-        return new ProductBuilder(productIds);
+        return new ProductBuilder().setProducts(productIds);
     }
 
     /**
@@ -203,7 +203,7 @@ public class RichRelevance {
      * @return The created builder.
      */
     public static ProductBuilder buildProductsRequest(Collection<String> productIds) {
-        return new ProductBuilder(productIds);
+        return new ProductBuilder().setProducts(productIds);
     }
 
     /**

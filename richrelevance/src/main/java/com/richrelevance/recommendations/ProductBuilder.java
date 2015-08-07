@@ -12,25 +12,7 @@ import java.util.Collection;
 public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
 
     /**
-     * Constructs a builder which retrieves list of products for the given product ids.
-     *
-     * @param productIds The fields to retrieve.
-     */
-    public ProductBuilder(String... productIds) {
-        setProducts(productIds);
-    }
-
-    /**
-     * Constructs a builder which retrieves list of products for the given product ids.
-     *
-     * @param productIds The fields to retrieve.
-     */
-    public ProductBuilder(Collection<String> productIds) {
-        setProducts(productIds);
-    }
-
-    /**
-     * Which products should be returned?
+     * Set one or more product ids. Used to retrieve a list of products based on these ids.
      *
      * @param productIds The products to return.
      *
@@ -42,7 +24,7 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
     }
 
     /**
-     * Which products should be returned?
+     * Sets a list of product ids. Used to retrieve a list of products based on these ids.
      *
      * @param productIds The products to return.
      *
