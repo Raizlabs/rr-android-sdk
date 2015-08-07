@@ -2,12 +2,17 @@ package com.richrelevance;
 
 import android.util.Log;
 
+import com.richrelevance.internal.BusyLock;
 import com.richrelevance.internal.Constants;
+import com.richrelevance.internal.OneShotLock;
 import com.richrelevance.internal.net.WebResponse;
+import com.richrelevance.recommendations.CompleteProduct;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
 import com.richrelevance.recommendations.PlacementsRecommendationsBuilder;
+import com.richrelevance.recommendations.ProductBuilder;
+import com.richrelevance.recommendations.ProductResponseInfo;
 import com.richrelevance.recommendations.RecommendedProduct;
 import com.richrelevance.recommendations.StrategyRecommendationsBuilder;
 import com.richrelevance.recommendations.StrategyResponseInfo;
@@ -19,13 +24,12 @@ import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 import com.richrelevance.userProfile.UserProfileBuilder;
 import com.richrelevance.userProfile.UserProfileField;
 import com.richrelevance.userProfile.UserProfileResponseInfo;
-import com.richrelevance.internal.BusyLock;
-import com.richrelevance.internal.OneShotLock;
 import com.richrelevance.utils.ParsingUtils;
 import com.richrelevance.utils.Wrapper;
 
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ApiIntegrationTests extends BaseTestCase {
@@ -170,6 +174,21 @@ public class ApiIntegrationTests extends BaseTestCase {
         assertNonEmpty(product.getId());
         assertNonEmpty(product.getClickUrl());
         assertNonEmpty(product.getImageUrl());
+    }
+
+    public void testProducts() {
+        ProductBuilder builder = RichRelevance.buildProductsRequest("17177141");
+        BuilderExecutorHelper<ProductResponseInfo> helper = new BuilderExecutorHelper<>(client, builder);
+        helper.execute();
+        helper.waitUntilCompleted();
+
+        ProductResponseInfo responseInfo = helper.getResult();
+        assertNotNull(responseInfo);
+        assertEmpty(responseInfo.getRequestId());
+
+        List<CompleteProduct> products = responseInfo.getProducts();
+        assertNotNull(products);
+        assertEquals(1, products.size());
     }
 
     public void testUserProfile() {
