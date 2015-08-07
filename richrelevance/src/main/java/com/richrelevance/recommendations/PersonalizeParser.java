@@ -13,6 +13,9 @@ public class PersonalizeParser {
             Creative creative = new Creative();
             creative.setCreativeMap(JSONHelper.parseJSONToMap(json));
             creative.setTrackingUrl(creative.getCreativeMap().remove("trackingUrl"));
+            if(creative.getTrackingUrl() == null || creative.getTrackingUrl().equals("") || creative.getTrackingUrl().equals("N/A")){
+                creative.setTrackingUrl(json.optString("CLICK_THROUGH_URL"));
+            }
             creative.setCampaign(creative.getCreativeMap().remove("campaign"));
             return creative;
         }
