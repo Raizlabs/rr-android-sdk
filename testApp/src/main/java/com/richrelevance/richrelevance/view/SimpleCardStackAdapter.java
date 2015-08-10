@@ -27,14 +27,14 @@ public final class SimpleCardStackAdapter extends CardStackAdapter {
 	public View getCardView(int position, CardModel product, View convertView, ViewGroup parent) {
 		if(convertView == null) {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
-			convertView = inflater.inflate(R.layout.std_card_inner, parent, false);
+			convertView = inflater.inflate(R.layout.stack_item, parent, false);
 			assert convertView != null;
 		}
 
 		Picasso.with(getContext())
 				.load(product.getImgUrl())
-				.placeholder(R.drawable.picture1)
-				.error(R.drawable.picture1)
+				.placeholder(R.drawable.card_placeholder)
+				.error(R.drawable.card_placeholder)
 				.into((ImageView) convertView.findViewById(R.id.image_content));
 		((TextView) convertView.findViewById(R.id.title)).setText(product.getTitle());
 		((TextView) convertView.findViewById(R.id.brand)).setText(product.getBrand());

@@ -1,13 +1,14 @@
 package com.richrelevance.richrelevance;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +25,7 @@ import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferenceActivity extends ActionBarActivity implements android.support.v7.app.ActionBar.TabListener, PreferenceListFragment.LoadingListener {
+public class PreferenceActivity extends AppCompatActivity implements ActionBar.TabListener, PreferenceListFragment.LoadingListener {
 
     List<String> likedProducts, dislikedProducts;
 
@@ -39,11 +40,11 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
 
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_TABS);
-        //actionBar.setDisplayOptions(ActionBar.DISPLAY_USE_LOGO);
-        //actionBar.setLogo(R.drawable.rr_logo);
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.drawable.rr_logo);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
@@ -68,6 +69,8 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_preference, menu);
+        Utils.changeDrawableColor(menu.findItem(R.id.action_refresh).getIcon(), getResources().getColor(R.color.Primary_Light_Sub));
+        Utils.changeDrawableColor(menu.findItem(R.id.action_clear).getIcon(), getResources().getColor(R.color.Primary_Light_Sub));
         return true;
     }
 
@@ -76,8 +79,23 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
         int id = item.getItemId();
 
         switch(id) {
+
+            case R.id.action_refresh:
+                getPreferences(FieldType.PRODUCT);
+                return true;
+
             case R.id.action_clear:
-                clearProducts();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want clear all the current user preferences?").setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        clearProducts();
+                    }
+                }).setNegativeButton("Cancel", null);
+                builder.create().show();
+                return true;
+
+            case android.R.id.home:
+                onBackPressed();
                 return true;
 
             default:
@@ -110,7 +128,7 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
     @Override
     public void stopLoading() {
         if(progressBar != null) {
-            progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -119,10 +137,10 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
         RichRelevance.buildGetUserPreferences(fieldType).setCallback(new Callback<UserPreferenceResponseInfo>() {
             @Override
             public void onResult(final UserPreferenceResponseInfo result) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(PreferenceActivity.this != null && result != null) {
+                        if(result != null) {
                             PreferenceAdapter pagerAdapter = PreferenceActivity.this.pagerAdapter;
                             likedProducts = result.getProducts().getLikes();
                             dislikedProducts = result.getProducts().getDislikes();
@@ -136,13 +154,11 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
 
             @Override
             public void onError(final Error error) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(PreferenceActivity.this != null) {
-                            stopLoading();
-                            Toast.makeText(PreferenceActivity.this.getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        stopLoading();
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -150,31 +166,34 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
     }
 
     private void clearProducts() {
+        startLoading();
         List<String> allProducts = new ArrayList<>();
         if(likedProducts != null) { allProducts.addAll(likedProducts); }
         if(dislikedProducts != null) { allProducts.addAll(dislikedProducts); }
         RichRelevance.buildTrackUserPreference(FieldType.PRODUCT, ActionType.NEUTRAL, allProducts.toArray(new String[allProducts.size()])).setCallback(new Callback<UserPreferenceResponseInfo>() {
             @Override
             public void onResult(UserPreferenceResponseInfo result) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                try {
+                    Thread.sleep(5000);//Introduce delay to allow the server to make updates on its database
+                } catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(PreferenceActivity.this != null) {
-                            getPreferences(FieldType.PRODUCT);
-                        }
+                        stopLoading();
+                        getPreferences(FieldType.PRODUCT);
                     }
                 });
             }
 
             @Override
             public void onError(final Error error) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(PreferenceActivity.this != null) {
-                            stopLoading();
-                            Toast.makeText(PreferenceActivity.this.getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        stopLoading();
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }

@@ -2,8 +2,6 @@ package com.richrelevance.richrelevance;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -74,35 +72,39 @@ public class PreferenceListFragment extends Fragment {
         if(loadingListener != null) {
             loadingListener.startLoading();
         }
-        RichRelevance.buildProductsRequest(products).setCallback(new Callback<ProductResponseInfo>() {
-            @Override
-            public void onResult(final ProductResponseInfo result) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(adapter != null && result != null) {
-                            adapter.loadData(result.getProducts());
+        if((products == null || products.isEmpty()) && adapter != null){
+            adapter.loadData(null); //Load empty list
+        }else {
+            RichRelevance.buildProductsRequest(products).setCallback(new Callback<ProductResponseInfo>() {
+                @Override
+                public void onResult(final ProductResponseInfo result) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(adapter != null && result != null) {
+                                adapter.loadData(result.getProducts());
+                            }
+                            if(loadingListener != null) {
+                                loadingListener.stopLoading();
+                            }
                         }
-                        if(loadingListener != null) {
-                            loadingListener.stopLoading();
-                        }
-                    }
-                });
-            }
+                    });
+                }
 
-            @Override
-            public void onError(final com.richrelevance.Error error) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(loadingListener != null) {
-                            loadingListener.stopLoading();
+                @Override
+                public void onError(final com.richrelevance.Error error) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(loadingListener != null) {
+                                loadingListener.stopLoading();
+                            }
+                            Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                         }
-                        Toast.makeText(PreferenceListFragment.this.getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }).execute();
+                    });
+                }
+            }).execute();
+        }
     }
 
     public static class PreferenceAdapter extends RecyclerView.Adapter<PreferenceAdapter.ViewHolder> {

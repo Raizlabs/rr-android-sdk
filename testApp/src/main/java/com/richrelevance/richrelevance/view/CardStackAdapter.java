@@ -7,14 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
-import com.richrelevance.richrelevance.R;
 import com.richrelevance.richrelevance.model.CardModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class CardStackAdapter extends BaseAdapter {
-	private final Context mContext;
+	private final Context context;
 
 	/**
 	 * Lock used to modify the content of {@link #mData}. Any write operation
@@ -24,12 +23,12 @@ public abstract class CardStackAdapter extends BaseAdapter {
 	private ArrayList<CardModel> mData;
 
 	public CardStackAdapter(Context context) {
-		mContext = context;
+		this.context = context;
 		mData = new ArrayList<CardModel>();
 	}
 
 	public CardStackAdapter(Context context, Collection<? extends CardModel> items) {
-		mContext = context;
+		this.context = context;
 		mData = new ArrayList<CardModel>(items);
 	}
 
@@ -37,7 +36,7 @@ public abstract class CardStackAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		FrameLayout innerWrapper;
 		View cardView;
-		innerWrapper = new FrameLayout(mContext);
+		innerWrapper = new FrameLayout(context);
 		innerWrapper.setBackgroundColor(Color.TRANSPARENT);
 		cardView = getCardView(position, getCardModel(position), null, parent);
 		innerWrapper.addView(cardView);
@@ -69,7 +68,7 @@ public abstract class CardStackAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return getCardModel(position);
+		return getCardModel(mData.size() - 1 - position);
 	}
 
 	public CardModel getCardModel(int position) {
@@ -85,10 +84,10 @@ public abstract class CardStackAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return getItem(position).hashCode();
+		return getItem(mData.size() - 1 - position).hashCode();
 	}
 
 	public Context getContext() {
-		return mContext;
+		return context;
 	}
 }

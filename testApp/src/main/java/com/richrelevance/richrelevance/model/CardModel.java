@@ -62,7 +62,6 @@ public class CardModel {
 		this.imgUrl = imgUrl;
 	}
 
-
     public String getPrice() {
         NumberFormat n = NumberFormat.getCurrencyInstance(Locale.US);
         return n.format(price / 100.0);
@@ -71,7 +70,6 @@ public class CardModel {
     public void setPrice(long price) {
         this.price = price;
     }
-
 
     public void setOnCardDismissedListener( OnCardDismissedListener listener ) {
         this.mOnCardDismissedListener = listener;
