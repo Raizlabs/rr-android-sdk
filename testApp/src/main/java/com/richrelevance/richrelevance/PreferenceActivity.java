@@ -17,10 +17,16 @@ import android.widget.Toast;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.RichRelevance;
+import com.richrelevance.userPreference.ActionType;
 import com.richrelevance.userPreference.FieldType;
 import com.richrelevance.userPreference.UserPreferenceResponseInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PreferenceActivity extends ActionBarActivity implements android.support.v7.app.ActionBar.TabListener, PreferenceListFragment.LoadingListener {
+
+    List<String> likedProducts, dislikedProducts;
 
     PreferenceAdapter pagerAdapter;
 
@@ -57,12 +63,6 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
         }
 
         getPreferences(FieldType.PRODUCT);
-
-        getProduct("19218449");
-    }
-
-    private void getProduct(String s) {
-
     }
 
     @Override
@@ -76,7 +76,8 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
         int id = item.getItemId();
 
         switch(id) {
-            case R.id.action_main:
+            case R.id.action_clear:
+                clearProducts();
                 return true;
 
             default:
@@ -113,7 +114,7 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
         }
     }
 
-    void getPreferences(FieldType fieldType) {
+    private void getPreferences(FieldType fieldType) {
         startLoading();
         RichRelevance.buildGetUserPreferences(fieldType).setCallback(new Callback<UserPreferenceResponseInfo>() {
             @Override
@@ -121,11 +122,45 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        if(PreferenceActivity.this != null) {
+                        if(PreferenceActivity.this != null && result != null) {
                             PreferenceAdapter pagerAdapter = PreferenceActivity.this.pagerAdapter;
-                            ((PreferenceListFragment) pagerAdapter.instantiateItem(viewPager, 0)).loadProducts(result.getProducts().getLikes());
-                            ((PreferenceListFragment) pagerAdapter.instantiateItem(viewPager, 1)).loadProducts(result.getProducts().getDislikes());
+                            likedProducts = result.getProducts().getLikes();
+                            dislikedProducts = result.getProducts().getDislikes();
+                            ((PreferenceListFragment) pagerAdapter.instantiateItem(viewPager, 0)).loadProducts(likedProducts);
+                            ((PreferenceListFragment) pagerAdapter.instantiateItem(viewPager, 1)).loadProducts(dislikedProducts);
                             stopLoading();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final Error error) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(PreferenceActivity.this != null) {
+                            stopLoading();
+                            Toast.makeText(PreferenceActivity.this.getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        }).execute();
+    }
+
+    private void clearProducts() {
+        List<String> allProducts = new ArrayList<>();
+        if(likedProducts != null) { allProducts.addAll(likedProducts); }
+        if(dislikedProducts != null) { allProducts.addAll(dislikedProducts); }
+        RichRelevance.buildTrackUserPreference(FieldType.PRODUCT, ActionType.NEUTRAL, allProducts.toArray(new String[allProducts.size()])).setCallback(new Callback<UserPreferenceResponseInfo>() {
+            @Override
+            public void onResult(UserPreferenceResponseInfo result) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(PreferenceActivity.this != null) {
+                            getPreferences(FieldType.PRODUCT);
                         }
                     }
                 });
@@ -148,6 +183,7 @@ public class PreferenceActivity extends ActionBarActivity implements android.sup
 
     public class PreferenceAdapter extends FragmentStatePagerAdapter {
         private final String LIKE = "Likes";
+
         private final String DISLIKE = "Dislikes";
 
         public PreferenceAdapter(FragmentManager fm) {
