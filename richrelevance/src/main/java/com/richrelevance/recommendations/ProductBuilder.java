@@ -13,6 +13,7 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
 
     public static class Keys {
         public static final String PRODUCTID = "productId";
+        public static final String ATTRIBUTES = "attribute";
     }
 
     /**
@@ -38,6 +39,28 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
         } else {
             removeParameter(Keys.PRODUCTID);
         }
+        return this;
+    }
+
+    /**
+     * Retrieves custom attributes provided in the catalog feed. Use * as the parameter value to request all attributes.
+     *
+     * @param attributes The attributes to retrieve.
+     * @return This builder for chaining method calls
+     */
+    public ProductBuilder setCatalogFeedAttributes(String... attributes) {
+        setListParameterFlat(Keys.ATTRIBUTES, attributes);
+        return this;
+    }
+
+    /**
+     * Retrieves custom attributes provided in the catalog feed. Use * as the parameter value to request all attributes.
+     *
+     * @param attributes The attributes to retrieve.
+     * @return This builder for chaining method calls
+     */
+    public ProductBuilder setCatalogFeedAttributes(Collection<String> attributes) {
+        setListParameterFlat(Keys.ATTRIBUTES, attributes);
         return this;
     }
 
