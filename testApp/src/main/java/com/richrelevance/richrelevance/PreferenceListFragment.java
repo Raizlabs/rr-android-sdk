@@ -72,38 +72,44 @@ public class PreferenceListFragment extends Fragment {
         if(loadingListener != null) {
             loadingListener.startLoading();
         }
-        if((products == null || products.isEmpty()) && adapter != null){
+        if((products == null || products.isEmpty()) && adapter != null) {
             adapter.loadData(null); //Load empty list
-        }else {
+        } else {
             RichRelevance.buildProductsRequest(products).setCallback(new Callback<ProductResponseInfo>() {
-                @Override
-                public void onResult(final ProductResponseInfo result) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(adapter != null && result != null) {
-                                adapter.loadData(result.getProducts());
-                            }
-                            if(loadingListener != null) {
-                                loadingListener.stopLoading();
-                            }
-                        }
-                    });
-                }
+                                                                         @Override
+                                                                         public void onResult(final ProductResponseInfo result) {
+                                                                             if(getActivity() != null) {
+                                                                                 getActivity().runOnUiThread(new Runnable() {
+                                                                                     @Override
+                                                                                     public void run() {
+                                                                                         if(adapter != null && result != null) {
+                                                                                             adapter.loadData(result.getProducts());
+                                                                                         }
+                                                                                         if(loadingListener != null) {
+                                                                                             loadingListener.stopLoading();
+                                                                                         }
+                                                                                     }
+                                                                                 });
+                                                                             }
+                                                                         }
 
-                @Override
-                public void onError(final com.richrelevance.Error error) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(loadingListener != null) {
-                                loadingListener.stopLoading();
-                            }
-                            Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }).execute();
+                                                                         @Override
+                                                                         public void onError(final com.richrelevance.Error error) {
+                                                                             if(getActivity() != null) {
+                                                                                 getActivity().runOnUiThread(new Runnable() {
+                                                                                     @Override
+                                                                                     public void run() {
+                                                                                         if(loadingListener != null) {
+                                                                                             loadingListener.stopLoading();
+                                                                                         }
+                                                                                         Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                                                                                     }
+                                                                                 });
+                                                                             }
+                                                                         }
+                                                                     }
+
+            ).execute();
         }
     }
 
@@ -121,7 +127,7 @@ public class PreferenceListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             CompleteProduct product = list.get(position);
-            if(holder.image != null && (product.getImageUrl() != null && product.getImageUrl() != "")){
+            if(holder.image != null && (product.getImageUrl() != null && product.getImageUrl() != "")) {
                 Picasso.with(holder.image.getContext()).load(product.getImageUrl()).into(holder.image);
             }
 
