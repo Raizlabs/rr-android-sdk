@@ -106,7 +106,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
         TypedArray a = getContext().obtainStyledAttributes(attr,
                 R.styleable.CardContainer);
 
-        setGravity(a.getInteger(R.styleable.CardContainer_android_gravity, Gravity.TOP));
+        setGravity(a.getInteger(R.styleable.CardContainer_android_gravity, Gravity.CENTER));
         int orientation = a.getInteger(R.styleable.CardContainer_orientation, 1);
         setOrientation(Orientation.fromIndex(orientation));
 
@@ -231,7 +231,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
         super.onLayout(changed, l, t, r, b);
 
         for (int i = 0; i < getChildCount(); i++) {
-            boundsRect.set(0, 0, getWidth(), getHeight());
+            boundsRect.set(getPaddingLeft(), getPaddingTop(), getWidth() - getPaddingRight(), getHeight() - getPaddingBottom());
 
             View view = getChildAt(i);
             int w, h;
@@ -387,55 +387,6 @@ public class CardContainer extends AdapterView<ListAdapter> {
                     Math.abs(velocityX) > Math.abs(velocityY) &&
                     Math.abs(velocityX) > mFlingSlop * 3) {
 
-
-                //fling(velocityX, velocityY);
-//                float targetX = topCard.getX();
-//                float targetY = topCard.getY();
-//                long duration = 0;
-//
-//                boundsRect.set(0 - topCard.getWidth() - 100, 0 - topCard.getHeight() - 100, getWidth() + 100, getHeight() + 100);
-//
-//                while (boundsRect.contains((int) targetX, (int) targetY)) {
-//                    targetX += velocityX / 10;
-//                    targetY += velocityY / 10;
-//                    duration += 100;
-//                }
-//
-//                duration = Math.min(500, duration);
-//
-//                mTopCard = getChildAt(getChildCount() - 2);
-//                CardModel cardModel = (CardModel)getAdapter().getItem(getChildCount() - 1);
-//
-//                if(mTopCard != null)
-//                    mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
-//
-//                if (cardModel.getOnCardDismissedListener() != null) {
-//                    if ( targetX > 0 ) {
-//                        cardModel.getOnCardDismissedListener().onLike();
-//                    } else {
-//                        cardModel.getOnCardDismissedListener().onDislike();
-//                    }
-//                }
-//
-//                topCard.animate()
-//                        .setDuration(duration)
-//                        .alpha(.75f)
-//                        .setInterpolator(new LinearInterpolator())
-//                        .x(targetX)
-//                        .y(targetY)
-//                        .rotation(Math.copySign(45, velocityX))
-//                        .setListener(new AnimatorListenerAdapter() {
-//                            @Override
-//                            public void onAnimationEnd(Animator animation) {
-//                                removeViewInLayout(topCard);
-//                                ensureFull();
-//                            }
-//
-//                            @Override
-//                            public void onAnimationCancel(Animator animation) {
-//                                onAnimationEnd(animation);
-//                            }
-//                        });
                 fling(velocityX, velocityY);
 
                 return true;
