@@ -15,31 +15,27 @@ import java.util.Collection;
 
 public final class SimpleCardStackAdapter extends CardStackAdapter {
 
-	public SimpleCardStackAdapter(Context mContext) {
-		super(mContext);
-	}
+    public SimpleCardStackAdapter(Context mContext) {
+        super(mContext);
+    }
 
     public SimpleCardStackAdapter(Context mContext, Collection<? extends CardModel> items) {
         super(mContext, items);
     }
 
-	@Override
-	public View getCardView(int position, CardModel product, View convertView, ViewGroup parent) {
-		if(convertView == null) {
-			LayoutInflater inflater = LayoutInflater.from(getContext());
-			convertView = inflater.inflate(R.layout.stack_item, parent, false);
-			assert convertView != null;
-		}
+    @Override
+    public View getCardView(int position, CardModel product, View convertView, ViewGroup parent) {
+        if(convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.stack_item, parent, false);
+            assert convertView != null;
+        }
 
-		Picasso.with(getContext())
-				.load(product.getImgUrl())
-				.placeholder(R.drawable.card_placeholder)
-				.error(R.drawable.card_placeholder)
-				.into((ImageView) convertView.findViewById(R.id.image_content));
-		((TextView) convertView.findViewById(R.id.title)).setText(product.getTitle());
-		((TextView) convertView.findViewById(R.id.brand)).setText(product.getBrand());
-		((TextView) convertView.findViewById(R.id.price)).setText(product.getPrice());
+        Picasso.with(getContext()).load(product.getImgUrl()).placeholder(R.drawable.card_placeholder).error(R.drawable.card_placeholder).into((ImageView) convertView.findViewById(R.id.image_content));
+        ((TextView) convertView.findViewById(R.id.title)).setText(product.getTitle());
+        ((TextView) convertView.findViewById(R.id.brand)).setText(product.getBrand());
+        ((TextView) convertView.findViewById(R.id.price)).setText(product.getPrice());
 
-		return convertView;
-	}
+        return convertView;
+    }
 }

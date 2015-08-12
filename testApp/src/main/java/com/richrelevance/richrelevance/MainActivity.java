@@ -153,6 +153,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void dislike(View view) {
-            cardContainer.dislikeFling();
+        cardContainer.dislikeFling();
     }
 }

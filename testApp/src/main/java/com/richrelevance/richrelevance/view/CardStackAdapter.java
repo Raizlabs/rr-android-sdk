@@ -13,81 +13,82 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class CardStackAdapter extends BaseAdapter {
-	private final Context context;
+    private final Context context;
 
-	/**
-	 * Lock used to modify the content of {@link #mData}. Any write operation
-	 * performed on the deque should be synchronized on this lock.
-	 */
-	private final Object mLock = new Object();
-	private ArrayList<CardModel> mData;
+    /**
+     * Lock used to modify the content of {@link #mData}. Any write operation performed on the deque should be
+     * synchronized on this lock.
+     */
+    private final Object mLock = new Object();
 
-	public CardStackAdapter(Context context) {
-		this.context = context;
-		mData = new ArrayList<CardModel>();
-	}
+    private ArrayList<CardModel> mData;
 
-	public CardStackAdapter(Context context, Collection<? extends CardModel> items) {
-		this.context = context;
-		mData = new ArrayList<CardModel>(items);
-	}
+    public CardStackAdapter(Context context) {
+        this.context = context;
+        mData = new ArrayList<CardModel>();
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		FrameLayout innerWrapper;
-		View cardView;
-		innerWrapper = new FrameLayout(context);
-		innerWrapper.setBackgroundColor(Color.TRANSPARENT);
-		cardView = getCardView(position, getCardModel(position), null, parent);
-		innerWrapper.addView(cardView);
+    public CardStackAdapter(Context context, Collection<? extends CardModel> items) {
+        this.context = context;
+        mData = new ArrayList<CardModel>(items);
+    }
 
-		return cardView;
-	}
+    public Context getContext() {
+        return context;
+    }
 
-	protected abstract View getCardView(int position, CardModel model, View convertView, ViewGroup parent);
+    @Override
+    public int getCount() {
+        return mData.size();
+    }
 
-	public boolean shouldFillCardBackground() {
-		return true;
-	}
+    @Override
+    public Object getItem(int position) {
+        return getCardModel(mData.size() - 1 - position);
+    }
 
-	public void add(CardModel item) {
-		synchronized (mLock) {
-			mData.add(item);
-		}
-		notifyDataSetChanged();
-	}
+    @Override
+    public long getItemId(int position) {
+        return getItem(mData.size() - 1 - position).hashCode();
+    }
 
-	public CardModel pop() {
-		CardModel model;
-		synchronized (mLock) {
-			model = mData.remove(mData.size() - 1);
-		}
-		notifyDataSetChanged();
-		return model;
-	}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        FrameLayout innerWrapper;
+        View cardView;
+        innerWrapper = new FrameLayout(context);
+        innerWrapper.setBackgroundColor(Color.TRANSPARENT);
+        cardView = getCardView(position, getCardModel(position), null, parent);
+        innerWrapper.addView(cardView);
 
-	@Override
-	public Object getItem(int position) {
-		return getCardModel(mData.size() - 1 - position);
-	}
+        return cardView;
+    }
 
-	public CardModel getCardModel(int position) {
-		synchronized (mLock) {
-			return mData.get(mData.size() - 1 - position);
-		}
-	}
+    protected abstract View getCardView(int position, CardModel model, View convertView, ViewGroup parent);
 
-	@Override
-	public int getCount() {
-		return mData.size();
-	}
+    public boolean shouldFillCardBackground() {
+        return true;
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return getItem(mData.size() - 1 - position).hashCode();
-	}
+    public void add(CardModel item) {
+        synchronized(mLock) {
+            mData.add(item);
+        }
+        notifyDataSetChanged();
+    }
 
-	public Context getContext() {
-		return context;
-	}
+    public CardModel pop() {
+        CardModel model;
+        synchronized(mLock) {
+            model = mData.remove(mData.size() - 1);
+        }
+        notifyDataSetChanged();
+        return model;
+    }
+
+    public CardModel getCardModel(int position) {
+        synchronized(mLock) {
+            return mData.get(mData.size() - 1 - position);
+        }
+    }
 }
