@@ -114,11 +114,14 @@ This class must be initialized before the SDK is used by calling ```RichRelevanc
 All API requests are constructed using an implementation of the builder pattern. There are several request builders that provide API endpoint abstractions. The builders are as follow:
 
  * ```RequestBuilder```: base class for all builders. Includes common functionality as well as the ability to add any arbitrary key/value pairs to a request.  
+ * ```PlacementsBuilder```: intermediate class for PlacementRecommendationsBuilder and PlacementPersonalizeBuilder. Includes common functionality.
+ * ```PlacementPersonalizeBuilder```: "personalize" builder
  * ```PlacementRecommendationsBuilder```: "recsForPlacements" builder
+ * ```ProductBuilder```: "getProducts" builder
  * ```StrategyRecommendationsBuilder```: "recsUsingStrategy" builder
  * ```UserPreferenceBuilder```: "user/preferences" read/write builder
  * ```UserProfileBuilder```: "UserProfile" builder
-
+ 
 Each builder has type-safe methods for setting relevant values, the ability to add a completion listener, and an ```execute()``` method which performs the request via the set client (by default this is set to the SDK's default client). There are also helper methods for common use-cases that create pre-configured builders (see next section). Internally, the builders are also responsible for parsing the result of the web request into domain specific objects.
 
 ### Builder “Helper” Methods
