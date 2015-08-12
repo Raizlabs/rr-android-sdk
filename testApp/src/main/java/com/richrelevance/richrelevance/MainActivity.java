@@ -143,4 +143,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).execute();
     }
+
+    public void like(View view) {
+        cardContainer.likeFling();
+    }
+
+    public void dislike(View view) {
+            cardContainer.dislikeFling();
+    }
 }

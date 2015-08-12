@@ -17,4 +17,28 @@
         android:indeterminate="true"
         android:visibility="gone"/>
 
+    <ImageButton
+        android:id="@+id/dislike"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="75dp"
+        android:layout_marginBottom="60dp"
+        android:scaleType="fitCenter"
+        android:background="@drawable/round_button"
+        android:src="@drawable/dislike"
+        android:onClick="dislike"/>
+
+    <ImageButton
+        android:id="@+id/like"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="75dp"
+        android:layout_marginBottom="60dp"
+        android:scaleType="fitCenter"
+        android:background="@drawable/round_button"
+        android:src="@drawable/like"
+        android:onClick="like"/>
+
 </FrameLayout>
