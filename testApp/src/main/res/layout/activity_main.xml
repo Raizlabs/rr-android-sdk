@@ -3,6 +3,20 @@
     android:layout_height="match_parent"
     android:background="@color/Primary.Light.Sub">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image_rr"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/rr_logo"/>
+    </RelativeLayout>
+
     <com.richrelevance.richrelevance.view.CardContainer
         android:id="@+id/cardLayoutView"
         android:layout_width="match_parent"

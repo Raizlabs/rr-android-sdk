@@ -9,6 +9,8 @@ import com.richrelevance.TestClient;
 import com.richrelevance.userPreference.ActionType;
 import com.richrelevance.userPreference.FieldType;
 
+import java.util.Arrays;
+
 public class ProductsBuilderTests extends BaseTestCase {
     private RichRelevanceClient client;
 
@@ -52,5 +54,14 @@ public class ProductsBuilderTests extends BaseTestCase {
         RequestBuilder<?> builder = new ProductBuilder().setProducts("11111");
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
         assertEquals("11111", accessor.getParamValue(ProductBuilder.Keys.PRODUCTID));
+    }
+
+    public void testSetCatalogFeedAttributes() {
+        ProductBuilder builder = new ProductBuilder();
+        RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
+
+        String[] attributes = new String[] { "A", "B", "3" };
+        builder.setCatalogFeedAttributes(attributes);
+        assertEquals(Arrays.asList(attributes), accessor.getAllParamValues(ProductBuilder.Keys.ATTRIBUTES));
     }
 }
