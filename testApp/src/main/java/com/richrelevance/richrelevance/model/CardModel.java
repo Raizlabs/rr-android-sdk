@@ -11,6 +11,8 @@ public class CardModel {
         void onLike();
 
         void onDislike();
+
+        void onNeutral();
     }
 
     public interface OnClickListener {

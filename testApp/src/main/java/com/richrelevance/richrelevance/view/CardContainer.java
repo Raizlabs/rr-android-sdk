@@ -395,28 +395,36 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 mTopCard = getChildAt(getChildCount() - 2);
                 CardModel cardModel = (CardModel) getAdapter().getItem(0);
 
-                if(mTopCard != null) { mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null); }
+                if (mTopCard != null) { mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null); }
 
-                if(cardModel.getOnCardDismissedListener() != null) {
-                    if(targetX < 0) {
-                        cardModel.getOnCardDismissedListener().onDislike();
+                if (cardModel.getOnCardDismissedListener() != null) {
+                    boolean neautralMovement = (targetX != 0 && Math.abs(targetY/targetX) > 1) || (targetX == 0 && targetY != 0);
+
+                    if (neautralMovement) {
+                        cardModel.getOnCardDismissedListener().onNeutral();
                     } else {
-                        cardModel.getOnCardDismissedListener().onLike();
+                        if (targetX < 0) {
+                            cardModel.getOnCardDismissedListener().onDislike();
+                        } else {
+                            cardModel.getOnCardDismissedListener().onLike();
+                        }
                     }
                 }
 
-                topCard.animate().setDuration(duration).alpha(.75f).setInterpolator(new LinearInterpolator()).x(targetX).y(targetY).rotation(Math.copySign(45, velocityX)).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        onAnimationEnd(animation);
-                    }
+                topCard.animate().setDuration(duration).alpha(.75f).setInterpolator(
+                        new LinearInterpolator()).x(targetX).y(targetY).rotation(Math.copySign(45, velocityX))
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+                                onAnimationEnd(animation);
+                            }
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        removeViewInLayout(topCard);
-                        ensureFull();
-                    }
-                });
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                removeViewInLayout(topCard);
+                                ensureFull();
+                            }
+                        });
             }
         }
     }
@@ -449,7 +457,6 @@ public class CardContainer extends AdapterView<ListAdapter> {
             final View topCard = mTopCard;
             float dx = e2.getX() - e1.getX();
             if(Math.abs(dx) > mTouchSlop &&
-                    Math.abs(velocityX) > Math.abs(velocityY) &&
                     Math.abs(velocityX) > mFlingSlop * 3) {
 
                 fling(velocityX, velocityY);

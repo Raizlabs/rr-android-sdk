@@ -117,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
                                     public void onDislike() {
                                         RichRelevance.buildTrackUserPreference(FieldType.PRODUCT, ActionType.DISLIKE, recommendedProduct.getId()).execute();
                                     }
+
+                                    @Override
+                                    public void onNeutral() {
+                                        RichRelevance.buildTrackUserPreference(FieldType.PRODUCT, ActionType.NEUTRAL, recommendedProduct.getId()).execute();
+                                    }
                                 });
                                 cards.add(card);
                             }
