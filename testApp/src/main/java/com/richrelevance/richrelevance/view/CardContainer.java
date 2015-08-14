@@ -188,7 +188,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     @Override
     public View getSelectedView() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     @Override
