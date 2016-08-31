@@ -53,3 +53,10 @@ dependencies {
 }
 
 apply from: 'https://raw.githubusercontent.com/Raizlabs/maven-releases/bintrayScriptV2.0/bintray.gradle'
+
+bintray {
+    pkg {
+        licenses = [BINTRAY_PKG_LICENSE]
+        vcsUrl = GIT_URL
+    }
+}

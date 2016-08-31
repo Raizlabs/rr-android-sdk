@@ -190,11 +190,12 @@ The release process to bintray is automated with the command ```./gradle bintray
 
 Public properties for bintray such groupId, artifact name, version... are specified in the gradle.properties file.
 
+**NOTE:** verify all the values on gradle.properties before release
+
 To upload files to bintray it is necessary to add user/key properties to the local.properties file like:
 ```
 bintray_user=
 bintray_key=
 ```
-
 
 
