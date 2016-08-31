@@ -183,3 +183,19 @@ All assumptions regarding SDK inputs (arguments passed to SDK methods by the par
 ## Security
 
 All SDK requests are performed over HTTPS by default and include API authentication parameters to ensure the maximum level of security. In situations where the API supports it, OAuth 1.0 is used to sign requests. The SDK does not store any data to disk, therefore on-disk encryption is not a concern at this time. 
+
+## Release to Bintray
+
+The release process to bintray is automated with the command ```./gradle bintrayUpload```.
+
+Public properties for bintray such groupId, artifact name, version... are specified in the gradle.properties file.
+
+**NOTE:** verify all the values on gradle.properties before release
+
+To upload files to bintray it is necessary to add user/key properties to the local.properties file like:
+```
+bintray_user=
+bintray_key=
+```
+
+
