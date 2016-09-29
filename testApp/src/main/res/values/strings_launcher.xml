@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="launcher.title">RichRelevance</string>
+    <string name="launcher.preferences_button">Launch Preferences Demo</string>
+    <string name="launcher.find_button">Launch Find Demo</string>
+    <string name="launcher.clientKeyHint">Enter Client API Key</string>
+    <string name="launcher.clientNameHint">Enter Client Name</string>
+</resources>
