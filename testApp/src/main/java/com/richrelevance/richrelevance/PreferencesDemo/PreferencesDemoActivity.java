@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,16 +16,15 @@ import android.widget.Toast;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.RichRelevance;
-import com.richrelevance.find.AutoCompleteResponseInfo;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
 import com.richrelevance.recommendations.RecommendedProduct;
-import com.richrelevance.richrelevance.R;
 import com.richrelevance.richrelevance.PreferencesDemo.model.CardModel;
 import com.richrelevance.richrelevance.PreferencesDemo.model.Orientations;
 import com.richrelevance.richrelevance.PreferencesDemo.view.CardContainer;
 import com.richrelevance.richrelevance.PreferencesDemo.view.SimpleCardStackAdapter;
+import com.richrelevance.richrelevance.R;
 import com.richrelevance.userPreference.ActionType;
 import com.richrelevance.userPreference.FieldType;
 
@@ -60,29 +58,6 @@ public class PreferencesDemoActivity extends AppCompatActivity {
         actionBar.setLogo(R.drawable.rr_logo);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-
-        RichRelevance.buildAutoCompleteRequest("bo", 3).setCallback(new Callback<AutoCompleteResponseInfo>() {
-            @Override
-            public void onResult(AutoCompleteResponseInfo result) {
-                String text = "null";
-
-                if(result != null) {
-                    if(result.getRawJson() == null) {
-                        text = "no raw json";
-                    } else {
-                        text = result.getRawJson().toString();
-                    }
-                }
-                Log.e("OMG", "onResult: " + text);
-            }
-
-            @Override
-            public void onError(Error error) {
-                Log.e("OMG", "onError");
-            }
-        }).execute();
-
-        //resetStack(this.getApplication());
     }
 
     @Override
