@@ -216,7 +216,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
      * @param sortOrder either ASCENDING or DESCENDING
      * @return This builder for chaining method calls.
      */
-    public SearchRequestBuilder getSort(Field sortedByField, SortOrder sortOrder) {
+    public SearchRequestBuilder setSort(Field sortedByField, SortOrder sortOrder) {
         setParameter(Keys.SORT, sortOrder.createAPIValueForFeild(sortedByField));
         return this;
     }
@@ -304,7 +304,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
         SearchResultProductParser.parseSearchResponseInfo(json, searchResponseInfo);
     }
 
-    private Collection<String> getFiltersStrings(Collection<Facet.Filter> filters) {
+    public static Collection<String> getFiltersStrings(Collection<Facet.Filter> filters) {
         if(filters != null) {
             List<String> stringFacets = new ArrayList<>(filters.size());
 
