@@ -101,7 +101,7 @@ public class SearchRequestBuildTests extends BaseTestCase {
         SearchRequestBuilder.SortOrder sortOrder = SearchRequestBuilder.SortOrder.ASCENDING;
 
         builder.setSort(field, sortOrder);
-        assertEquals(sortOrder.createAPIValueForFeild(field), accessor.getParamValue(SearchRequestBuilder.Keys.SORT));
+        assertEquals(sortOrder.createAPIValueForField(field), accessor.getParamValue(SearchRequestBuilder.Keys.SORT));
     }
 
     public void testSetChannelId() {

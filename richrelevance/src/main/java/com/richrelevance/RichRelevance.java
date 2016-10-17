@@ -258,19 +258,18 @@ public class RichRelevance {
      * that is provided. This means there are unique row-sized result sets for each placement.
      * <ul><li>The search locale (from which the response language is extrapolated) defaults to the
      * locale of the device, but if further configurable through the builder</li><li>The starting
-     * index for results defaults to 0, but is further configurable through the builder</li><li>SSL
+     * index for results defaults to 0, but is further configurable through the builder</li><li>
+     * The rows defaults to 20, but is further configurable through the builder</li><li>SSL
      * is enabled by default, but is further configurable through the builder</li>
      *
-     *
      * @param query The text to search
-     * @param rows Rows describe how many results to return
      * @param placement The placement for which to find the search results. Only searches for a single
      *                  placement are accepted at this time.
      */
-    public static SearchRequestBuilder buildSearchRequest(String query, int rows, Placement placement) {
+    public static SearchRequestBuilder buildSearchRequest(String query, Placement placement) {
         return new SearchRequestBuilder(rcsSearchTokenListener)
                 .setQuery(query)
-                .setRows(rows)
+                .setRows(20)
                 .setStart(0)
                 .setPlacement(placement)
                 .setChannelId(SearchRequestBuilder.CHANNEL_DEFAULT)

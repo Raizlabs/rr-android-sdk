@@ -36,7 +36,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
         public static final String SSL = "ssl";
     }
 
-    protected enum SortOrder {
+    public enum SortOrder {
         ASCENDING("ASC"),
         DESCENDING("DESC");
 
@@ -50,8 +50,12 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
             return key;
         }
 
-        public String createAPIValueForFeild(Field field) {
+        public String createAPIValueForField(Field field) {
             return field.requestKey + "%%" + key;
+        }
+
+        public String createAPIValueForCustomField(String resuestKey) {
+            return resuestKey + "%%" + key;
         }
     }
 
@@ -217,7 +221,20 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
      * @return This builder for chaining method calls.
      */
     public SearchRequestBuilder setSort(Field sortedByField, SortOrder sortOrder) {
-        setParameter(Keys.SORT, sortOrder.createAPIValueForFeild(sortedByField));
+        setParameter(Keys.SORT, sortOrder.createAPIValueForField(sortedByField));
+        return this;
+    }
+
+    /**
+     * Specify with a custom field request key how you want to sort the products.
+     * The default is a personalized sort. You can instead sort by any 'Field' that you specified in your catalog.
+     *
+     * @param customFieldRequestKey the custom requestKey by which to apply the sort
+     * @param sortOrder either ASCENDING or DESCENDING
+     * @return This builder for chaining method calls.
+     */
+    public SearchRequestBuilder setSort(String customFieldRequestKey, SortOrder sortOrder) {
+        setParameter(Keys.SORT, sortOrder.createAPIValueForCustomField(customFieldRequestKey));
         return this;
     }
 

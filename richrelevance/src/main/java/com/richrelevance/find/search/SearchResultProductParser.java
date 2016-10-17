@@ -26,8 +26,17 @@ public class SearchResultProductParser {
                 // The SDK only currently supports a single placement specification for Search request and single placement handling from the response.
                 JSONObject supportedPlacement = resultPlacements.getJSONObject(0);
                 if (supportedPlacement != null) {
-                    responseInfo.setFacets(JSONHelper.parseJSONArray(supportedPlacement.getJSONArray("facets"), facetResponseParserDelegate));
-                    responseInfo.setProducts(JSONHelper.parseJSONArray(supportedPlacement.getJSONArray("docs"), searchResultProductResponseParserDelegate));
+                    List<Facet> facets = JSONHelper.parseJSONArray(supportedPlacement.getJSONArray("facets"), facetResponseParserDelegate);
+                    responseInfo.setFacets(facets);
+
+                    JSONArray productsArray = supportedPlacement.getJSONArray("docs");
+                    List<SearchResultProduct> products = new ArrayList<>();
+
+                    for (int i = 0; i < productsArray.length(); i++) {
+                        SearchResultProduct product = parseSearchResultProduct(facets, productsArray.getJSONObject(i));
+                        products.add(product);
+                    }
+                    responseInfo.setProducts(products);
                 }
 
 
@@ -71,7 +80,7 @@ public class SearchResultProductParser {
         return filter;
     }
 
-    static SearchResultProduct parseSearchResultProduct(JSONObject json) {
+    static SearchResultProduct parseSearchResultProduct(List<Facet> facets, JSONObject json) {
         SearchResultProduct product = null;
         if (json != null) {
 
@@ -92,6 +101,12 @@ public class SearchResultProductParser {
                 product.setCategoryNames(listify(json.optJSONArray(SearchResultProduct.Keys.CATEGORY_NAMES)));
                 product.setCategoryIds(listify(json.optJSONArray(SearchResultProduct.Keys.CATEGORY_IDS)));
 
+                for (Facet facet : facets) {
+                    if (json.has(facet.getType())) {
+                        product.addFilter(facet, json.get(facet.getType()));
+                    }
+                }
+
             } catch (JSONException e) {
                 Log.e(SearchResultProductParser.class.getSimpleName(), "Unable to parse SearchResultProduct object due to missing expected json response fields");
             }
@@ -108,17 +123,8 @@ public class SearchResultProductParser {
                 }
             };
 
-
-    private static final JSONArrayParserDelegate<SearchResultProduct> searchResultProductResponseParserDelegate =
-            new JSONArrayParserDelegate<SearchResultProduct>() {
-                @Override
-                public SearchResultProduct parseObject(JSONObject json) {
-                    return parseSearchResultProduct(json);
-                }
-            };
-
     private static List<String> listify(JSONArray jsonArray) throws JSONException {
-        if(jsonArray == null) {
+        if (jsonArray == null) {
             return null;
         }
 

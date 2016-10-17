@@ -1,10 +1,11 @@
 package com.richrelevance.find.search;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SearchResultProduct {
-    
+
     public static class Keys {
         public static final String ID = "id";
         public static final String NAME = "name";
@@ -34,7 +35,7 @@ public class SearchResultProduct {
     private int priceCents;
     private int salesPriceCents;
     private String brand;
-    private Map<Facet, String> filters;
+    private Map<Facet, Object> filters = new HashMap<>();
 
     public String getId() {
         return id;
@@ -140,11 +141,16 @@ public class SearchResultProduct {
         this.brand = brand;
     }
 
-    public Map<Facet, String> getFilters() {
+    public Map<Facet, Object> getFilters() {
         return filters;
     }
 
-    public void setFilters(Map<Facet, String> filters) {
-        this.filters = filters;
+    public void addFilter(Facet facet, Object filter) {
+        filters.put(facet, filter);
     }
+
+    public void findAndSetFacet(Facet facet) {
+
+    }
+
 }
