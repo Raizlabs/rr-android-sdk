@@ -39,7 +39,7 @@ public class FindDemoActivity extends Activity {
         clientName.setText(ClientConfigurationManager.getInstance().getClientName());
 
         searchResults = (TextView) findViewById(R.id.search_results);
-        RichRelevance.buildSearchRequest("sh", 10, new Placement(Placement.PlacementType.SEARCH, "find"))
+        RichRelevance.buildSearchRequest("sh", new Placement(Placement.PlacementType.SEARCH, "find"))
                 .setCallback(new Callback<SearchResponseInfo>() {
                     @Override
                     public void onResult(SearchResponseInfo result) {
