@@ -1,10 +1,14 @@
 package com.richrelevance.find.search;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchResultProduct {
+public class SearchResultProduct implements Parcelable {
 
     public static class Keys {
         public static final String ID = "id";
@@ -35,7 +39,9 @@ public class SearchResultProduct {
     private int priceCents;
     private int salesPriceCents;
     private String brand;
-    private Map<Facet, Object> filters = new HashMap<>();
+    private Map<Facet, Object> filtersMap = new HashMap<>();
+
+    public SearchResultProduct() {}
 
     public String getId() {
         return id;
@@ -141,16 +147,98 @@ public class SearchResultProduct {
         this.brand = brand;
     }
 
-    public Map<Facet, Object> getFilters() {
-        return filters;
+    public Map<Facet, Object> getFiltersMap() {
+        return filtersMap;
     }
 
     public void addFilter(Facet facet, Object filter) {
-        filters.put(facet, filter);
+        filtersMap.put(facet, filter);
     }
 
     public void findAndSetFacet(Facet facet) {
 
     }
 
+    // Parcelable methods and classes
+
+    protected SearchResultProduct(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        clickUrl = in.readString();
+        imageId = in.readString();
+        linkId = in.readString();
+        numReviews = in.readInt();
+        description = in.readString();
+        if (in.readByte() == 0x01) {
+            categoryNames = new ArrayList<>();
+            in.readList(categoryNames, String.class.getClassLoader());
+        } else {
+            categoryNames = null;
+        }
+        if (in.readByte() == 0x01) {
+            categoryIds = new ArrayList<>();
+            in.readList(categoryIds, String.class.getClassLoader());
+        } else {
+            categoryIds = null;
+        }
+        score = in.readDouble();
+        priceCents = in.readInt();
+        salesPriceCents = in.readInt();
+
+        // TODO figure out how to parcel this map
+        //initialize your map before
+//        int size = in.readInt();
+//        for(int i = 0; i < size; i++){
+//            Facet facet = in.readParcelable(Facet.class.getClassLoader());
+//            Object value = in.readValue();
+//            filtersMap.put(facet,value);
+//        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(clickUrl);
+        dest.writeString(imageId);
+        dest.writeString(linkId);
+        dest.writeInt(numReviews);
+        dest.writeString(description);
+        if (categoryNames == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(categoryNames);
+        }
+        if (categoryIds == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(categoryIds);
+        }
+        dest.writeDouble(score);
+        dest.writeInt(priceCents);
+        dest.writeInt(salesPriceCents);
+        dest.writeString(brand);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<SearchResultProduct> CREATOR = new Parcelable.Creator<SearchResultProduct>() {
+        @Override
+        public SearchResultProduct createFromParcel(Parcel in) {
+            return new SearchResultProduct(in);
+        }
+
+        @Override
+        public SearchResultProduct[] newArray(int size) {
+            return new SearchResultProduct[size];
+        }
+    };
+
+    // End parcelable methods and classes
 }
