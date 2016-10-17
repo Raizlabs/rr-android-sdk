@@ -19,10 +19,10 @@ import com.richrelevance.recommendations.Placement;
 import com.richrelevance.recommendations.PlacementResponse;
 import com.richrelevance.recommendations.PlacementResponseInfo;
 import com.richrelevance.recommendations.RecommendedProduct;
-import com.richrelevance.richrelevance.model.CardModel;
-import com.richrelevance.richrelevance.model.Orientations;
-import com.richrelevance.richrelevance.view.CardContainer;
-import com.richrelevance.richrelevance.view.SimpleCardStackAdapter;
+import com.richrelevance.richrelevance.PreferencesDemo.model.CardModel;
+import com.richrelevance.richrelevance.PreferencesDemo.model.Orientations;
+import com.richrelevance.richrelevance.PreferencesDemo.view.CardContainer;
+import com.richrelevance.richrelevance.PreferencesDemo.view.SimpleCardStackAdapter;
 import com.richrelevance.userPreference.ActionType;
 import com.richrelevance.userPreference.FieldType;
 

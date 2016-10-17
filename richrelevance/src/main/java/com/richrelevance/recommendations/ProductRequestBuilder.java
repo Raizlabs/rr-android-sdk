@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.Collection;
 
-public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
+public class ProductRequestBuilder extends RequestBuilder<ProductResponseInfo> {
 
     public static class Keys {
         public static final String PRODUCTID = "productId";
@@ -22,7 +22,7 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
      * @param productIds The products to return.
      * @return This builder for chaining method calls.
      */
-    public ProductBuilder setProducts(String... productIds) {
+    public ProductRequestBuilder setProducts(String... productIds) {
         setProducts(Utils.safeAsList(productIds));
         return this;
     }
@@ -33,7 +33,7 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
      * @param productIds The products to return.
      * @return This builder for chaining method calls.
      */
-    public ProductBuilder setProducts(Collection<String> productIds) {
+    public ProductRequestBuilder setProducts(Collection<String> productIds) {
         if(productIds != null) {
             setListParameter(Keys.PRODUCTID, productIds);
         } else {
@@ -48,7 +48,7 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
      * @param attributes The attributes to retrieve.
      * @return This builder for chaining method calls
      */
-    public ProductBuilder setCatalogFeedAttributes(String... attributes) {
+    public ProductRequestBuilder setCatalogFeedAttributes(String... attributes) {
         setListParameterFlat(Keys.ATTRIBUTES, attributes);
         return this;
     }
@@ -59,7 +59,7 @@ public class ProductBuilder extends RequestBuilder<ProductResponseInfo> {
      * @param attributes The attributes to retrieve.
      * @return This builder for chaining method calls
      */
-    public ProductBuilder setCatalogFeedAttributes(Collection<String> attributes) {
+    public ProductRequestBuilder setCatalogFeedAttributes(Collection<String> attributes) {
         setListParameterFlat(Keys.ATTRIBUTES, attributes);
         return this;
     }
