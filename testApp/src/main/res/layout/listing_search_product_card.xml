@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/padding_small"
-    card_view:cardCornerRadius="@dimen/padding_small">
+    android:layout_margin="@dimen/margin.quarter"
+    card_view:cardCornerRadius="@dimen/card_radius">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -23,20 +23,20 @@
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_large"
-            android:paddingRight="@dimen/padding_large"
-            android:paddingTop="@dimen/padding_medium"
+            android:padding="@dimen/margin.half"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_large"
+            android:minLines="2"
+            android:maxLines="2"
+            android:ellipsize="end"
             tools:text="@string/item_name_mockup" />
 
         <TextView
             android:id="@+id/product_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_large"
-            android:paddingRight="@dimen/padding_large"
-            android:paddingTop="@dimen/padding_small"
+            android:paddingLeft="@dimen/margin.half"
+            android:paddingRight="@dimen/margin.half"
             android:textAllCaps="true"
             android:textSize="@dimen/text_medium"
             tools:text="@string/brand_name_mockup" />
@@ -45,11 +45,8 @@
             android:id="@+id/product_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_large"
-            android:paddingRight="@dimen/padding_large"
-            android:paddingTop="@dimen/padding_medium"
-            android:paddingBottom="@dimen/padding_extra_large"
-            android:textColor="@color/price"
+            android:padding="@dimen/margin.half"
+            android:textColor="@color/Accent"
             android:textSize="@dimen/text_large"
             android:textStyle="bold"
             tools:text="@string/price_name_mockup" />
