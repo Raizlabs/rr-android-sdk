@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,12 +18,13 @@ import com.richrelevance.RichRelevance;
 import com.richrelevance.find.search.SearchResponseInfo;
 import com.richrelevance.find.search.SearchResultProduct;
 import com.richrelevance.recommendations.Placement;
+import com.richrelevance.richrelevance.ClientConfigurationManager;
 import com.richrelevance.richrelevance.R;
 
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
 import static com.richrelevance.richrelevance.FindDemo.SearchActivity.createSearchActivityIntent;
 
-public class FindDemoActivity extends Activity {
+public class FindDemoActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
@@ -41,6 +45,13 @@ public class FindDemoActivity extends Activity {
                 startActivity(createCatalogProductDetailActivityIntent(FindDemoActivity.this, product));
             }
         };
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(ClientConfigurationManager.getInstance().getClientName());
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
