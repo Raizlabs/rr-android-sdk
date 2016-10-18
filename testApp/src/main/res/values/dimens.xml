@@ -5,4 +5,13 @@
     <dimen name="ProgressBar.CenteringInset">-7dp</dimen>
 
     <dimen name="margin.standard">16dp</dimen>
+
+    <dimen name="padding_extra_large">20dp</dimen>
+    <dimen name="padding_large">15dp</dimen>
+    <dimen name="padding_medium">10dp</dimen>
+    <dimen name="padding_small">5dp</dimen>
+
+    <dimen name="text_large">26sp</dimen>
+    <dimen name="text_medium">18sp</dimen>
+
 </resources>

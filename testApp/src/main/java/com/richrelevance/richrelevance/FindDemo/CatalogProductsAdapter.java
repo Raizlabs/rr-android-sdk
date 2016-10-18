@@ -81,7 +81,11 @@ public abstract class CatalogProductsAdapter extends RecyclerView.Adapter<Catalo
             Picasso.with(view.getContext()).load(product.getImageId()).into(image);
             name.setText(product.getName());
             brand.setText(product.getBrand());
-            price.setText("cents: " + product.getSalesPriceCents());
+
+            //Todo: check with backend for return value -1
+            if (product.getSalesPriceCents() != -1) {
+                price.setText(String.format("$%s.%s", Integer.toString(product.getSalesPriceCents() / 100), String.format("%-2s", Integer.toString(product.getSalesPriceCents() % 100)).replace(" ", "0")));
+            }
 
             view.setOnClickListener(itemClickListener);
         }
