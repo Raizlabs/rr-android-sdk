@@ -55,6 +55,6 @@ public class CatalogProductDetailActivity extends AppCompatActivity {
         Picasso.with(image.getContext()).load(product.getImageId()).into(image);
         name.setText(product.getName());
         brand.setText(product.getBrand());
-        price.setText("Cents: " + product.getSalesPriceCents());
+        price.setText(String.format("$%s.%-2s", Integer.toString(product.getSalesPriceCents() / 100), Integer.toString(product.getSalesPriceCents() % 100)).replace(" ", "0"));
     }
 }

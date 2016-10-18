@@ -84,7 +84,7 @@ public abstract class CatalogProductsAdapter extends RecyclerView.Adapter<Catalo
 
             //Todo: check with backend for return value -1
             if (product.getSalesPriceCents() != -1) {
-                price.setText(String.format("$%s.%s", Integer.toString(product.getSalesPriceCents() / 100), String.format("%-2s", Integer.toString(product.getSalesPriceCents() % 100)).replace(" ", "0")));
+                price.setText(String.format("$%s.%-2s", Integer.toString(product.getSalesPriceCents() / 100), Integer.toString(product.getSalesPriceCents() % 100)).replace(" ", "0"));
             }
 
             view.setOnClickListener(itemClickListener);

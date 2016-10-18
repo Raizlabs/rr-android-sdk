@@ -3,42 +3,71 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@android:color/white" >
 
         <ImageView
             android:id="@+id/product_image"
             android:layout_width="match_parent"
-            android:layout_height="190dp"
+            android:layout_height="428dp"
+            android:layout_alignParentTop="true"
             tools:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/product_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/item_name_mockup" />
+            android:layout_below="@+id/product_image"
+            android:paddingLeft="@dimen/padding_extra_large"
+            android:paddingRight="@dimen/padding_extra_large"
+            android:paddingTop="@dimen/padding_medium"
+            android:textColor="@android:color/black"
+            android:minLines="2"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginRight="@dimen/padding_extra_extra_large"
+            android:textSize="@dimen/text_extra_large"
+            tools:text="@string/item_name_mockup" />
 
         <TextView
             android:id="@+id/product_brand"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/product_name"
+            android:paddingLeft="@dimen/padding_extra_large"
+            android:paddingRight="@dimen/padding_extra_large"
+            android:paddingTop="@dimen/padding_small"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_medium"
             android:text="@string/brand_name_mockup" />
 
         <TextView
             android:id="@+id/product_price"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/price_name_mockup" />
+            android:layout_below="@id/product_brand"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="@dimen/padding_extra_large"
+            android:paddingRight="@dimen/padding_extra_large"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_extra_extra_large"
+            android:textColor="@color/price"
+            android:textSize="@dimen/text_extra_extra_large"
+            tools:text="@string/price_name_mockup" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginRight="@dimen/padding_extra_large"
+        android:layout_marginTop="400dp"
         android:src="@drawable/rr_logo"
         app:fabSize="normal" />
 
