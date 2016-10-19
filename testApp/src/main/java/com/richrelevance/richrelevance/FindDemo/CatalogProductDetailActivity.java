@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,6 +51,13 @@ public class CatalogProductDetailActivity extends AppCompatActivity {
         price = (TextView) findViewById(R.id.product_price);
 
         loadProduct(getProduct());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
     }
 
     private void loadProduct(SearchResultProduct product) {
