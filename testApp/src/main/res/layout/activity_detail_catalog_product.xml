@@ -1,66 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/product_image"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="428dp"
-        android:layout_alignParentTop="true"
-        tools:src="@mipmap/ic_launcher" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/product_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fabAddToCart"
-        android:layout_marginRight="@dimen/margin.standard"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:minLines="2"
-        android:paddingLeft="@dimen/margin.half"
-        android:paddingBottom="@dimen/margin.half"
-        android:paddingRight="@dimen/margin.half"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_large"
-        tools:text="@string/item_name_mockup" />
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/product_brand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/product_name"
-        android:padding="@dimen/margin.half"
-        android:text="@string/brand_name_mockup"
-        android:textAllCaps="true"
-        android:textSize="@dimen/text_medium" />
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:minLines="2"
+            android:paddingLeft="@dimen/margin.large"
+            android:paddingRight="@dimen/margin.extralarge"
+            android:paddingTop="@dimen/margin.large"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_large"
+            tools:text="@string/item_name_mockup" />
 
-    <TextView
-        android:id="@+id/product_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/product_brand"
-        android:padding="@dimen/margin.half"
-        android:textColor="@color/Accent"
-        android:textSize="@dimen/text_large"
-        android:textStyle="bold"
-        tools:text="@string/price_name_mockup" />
+        <TextView
+            android:id="@+id/product_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin.large"
+            android:paddingRight="@dimen/margin.extralarge"
+            android:paddingTop="@dimen/margin.quarter"
+            android:text="@string/brand_name_mockup"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_small" />
+
+        <TextView
+            android:id="@+id/product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin.large"
+            android:paddingRight="@dimen/margin.extralarge"
+            android:paddingTop="@dimen/margin.half"
+            android:paddingBottom="@dimen/margin.standard"
+            android:textColor="@color/Accent"
+            android:textSize="@dimen/text_extra_large"
+            android:textStyle="bold"
+            tools:text="@string/price_name_mockup" />
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddToCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin.standard"
-        android:layout_marginTop="400dp"
-        android:src="@drawable/rr_logo"
+        android:layout_margin="@dimen/margin.standard"
         android:clickable="true"
+        android:src="@drawable/rr_logo"
         app:elevation="@dimen/margin.quarter"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        app:layout_anchor="@id/product_image"
+        app:layout_anchorGravity="bottom|right|end" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
