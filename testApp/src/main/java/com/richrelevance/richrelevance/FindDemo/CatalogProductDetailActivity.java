@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,9 +53,17 @@ public class CatalogProductDetailActivity extends AppCompatActivity {
     }
 
     private void loadProduct(SearchResultProduct product) {
-        Picasso.with(image.getContext()).load(product.getImageId()).into(image);
+        Picasso.with(image.getContext()).load(product.getImageId()).fit().centerCrop().into(image);
         name.setText(product.getName());
         brand.setText(product.getBrand());
-        price.setText(String.format("$%s.%-2s", Integer.toString(product.getSalesPriceCents() / 100), Integer.toString(product.getSalesPriceCents() % 100)).replace(" ", "0"));
+        price.setText(convertCents(product.getSalesPriceCents()));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(product.getName());
+        }
+    }
+
+    public String convertCents(int cents) {
+        return String.format(getResources().getString(R.string.format), Integer.toString(cents / 100), Integer.toString(cents % 100)).replace(" ", "0");
     }
 }
