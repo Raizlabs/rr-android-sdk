@@ -8,11 +8,11 @@
     <dimen name="margin.half">8dp</dimen>
     <dimen name="margin.standard">16dp</dimen>
 
-    <dimen name="card_size">350dp</dimen>
-    <dimen name="card_image_size">220dp</dimen>
+    <dimen name="card_size">279dp</dimen>
+    <dimen name="card_image_size">172dp</dimen>
 
-    <dimen name="text_large">16sp</dimen>
-    <dimen name="text_medium">12sp</dimen>
+    <dimen name="text_medium">16sp</dimen>
+    <dimen name="text_small">12sp</dimen>
 
     <dimen name="card_radius">5dp</dimen>
 </resources>

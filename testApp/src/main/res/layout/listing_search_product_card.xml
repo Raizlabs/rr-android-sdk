@@ -24,9 +24,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_image"
-            android:padding="@dimen/margin.half"
+            android:paddingLeft="@dimen/margin.half"
+            android:paddingRight="@dimen/margin.half"
+            android:paddingTop="@dimen/margin.half"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_medium"
             android:minLines="2"
             android:maxLines="2"
             android:ellipsize="end"
@@ -37,9 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_name"
-            android:padding="@dimen/margin.half"
+            android:paddingLeft="@dimen/margin.half"
+            android:paddingRight="@dimen/margin.half"
+            android:paddingTop="@dimen/margin.quarter"
             android:textAllCaps="true"
-            android:textSize="@dimen/text_medium"
+            android:textSize="@dimen/text_small"
             tools:text="@string/brand_name_mockup" />
 
         <TextView
@@ -50,7 +54,7 @@
             android:layout_alignParentBottom="true"
             android:padding="@dimen/margin.half"
             android:textColor="@color/Accent"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_medium"
             android:textStyle="bold"
             tools:text="@string/price_name_mockup" />
 
