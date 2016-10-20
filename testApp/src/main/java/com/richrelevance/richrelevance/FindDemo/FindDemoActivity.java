@@ -18,7 +18,6 @@ import com.richrelevance.RichRelevance;
 import com.richrelevance.find.search.SearchResponseInfo;
 import com.richrelevance.find.search.SearchResultProduct;
 import com.richrelevance.recommendations.Placement;
-import com.richrelevance.richrelevance.ClientConfigurationManager;
 import com.richrelevance.richrelevance.R;
 
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
@@ -26,11 +25,18 @@ import static com.richrelevance.richrelevance.FindDemo.SearchActivity.createSear
 
 public class FindDemoActivity extends AppCompatActivity {
 
+    private static final String KEY_CLIENT_NAME = "KEY_CLIENT_NAME";
+
     private RecyclerView recyclerView;
 
-    public static Intent createFindDemoActivityIntent(Activity activity) {
+    public static Intent createFindDemoActivityIntent(Activity activity, String clientName) {
         Intent intent = new Intent(activity, FindDemoActivity.class);
+        intent.putExtra(KEY_CLIENT_NAME, clientName);
         return intent;
+    }
+
+    public String getClientName() {
+        return getIntent().getStringExtra(KEY_CLIENT_NAME);
     }
 
     @Override
@@ -52,7 +58,7 @@ public class FindDemoActivity extends AppCompatActivity {
         };
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(ClientConfigurationManager.getInstance().getClientName());
+        toolbar.setTitle(getClientName());
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -70,6 +76,7 @@ public class FindDemoActivity extends AppCompatActivity {
             }
         });
 
+        //This is an arbitrary search result to put items on the landing screen of the find demo
         RichRelevance.buildSearchRequest("sh", new Placement(Placement.PlacementType.SEARCH, "find"))
                 .setCallback(new Callback<SearchResponseInfo>() {
                     @Override

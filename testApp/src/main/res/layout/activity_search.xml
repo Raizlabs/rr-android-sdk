@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#37474f">
-     <!--TODO implement dynamic coloring -->
+    <!--TODO implement dynamic coloring -->
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,16 +17,22 @@
         <ViewFlipper
             android:id="@+id/viewFlipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="60dp">
+            android:layout_height="match_parent">
 
-            <include layout="@layout/empty_state_search"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="60dp">
+
+                <include layout="@layout/empty_state_search" />
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false" />
+                android:clipToPadding="false"
+                android:paddingTop="60dp" />
         </ViewFlipper>
 
         <com.arlib.floatingsearchview.FloatingSearchView

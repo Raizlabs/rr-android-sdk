@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
+        android:src="@drawable/icn_search"
         app:layout_anchor="@+id/recyclerView"
         app:layout_anchorGravity="bottom|right|end" />
 
