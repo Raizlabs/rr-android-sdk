@@ -17,7 +17,8 @@
         <ViewFlipper
             android:id="@+id/viewFlipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingTop="60dp">
 
             <include layout="@layout/empty_state_search"/>
 
@@ -25,8 +26,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingTop="60dp" />
+                android:clipToPadding="false" />
         </ViewFlipper>
 
         <com.arlib.floatingsearchview.FloatingSearchView
