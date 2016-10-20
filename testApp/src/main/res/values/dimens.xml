@@ -10,8 +10,10 @@
     <dimen name="margin.large">24dp</dimen>
     <dimen name="margin.extralarge">48dp</dimen>
 
+    <dimen name="appBar.height">160dp</dimen>
     <dimen name="card_size">279dp</dimen>
     <dimen name="card_image_size">172dp</dimen>
+    <dimen name="find.emptyState.card.height">280dp</dimen>
 
     <dimen name="text_extra_large">24sp</dimen>
     <dimen name="text_large">20sp</dimen>

@@ -4,15 +4,16 @@ package com.richrelevance.richrelevance.FindDemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.RichRelevance;
@@ -23,11 +24,13 @@ import com.richrelevance.richrelevance.R;
 
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
 
-public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class SearchActivity extends AppCompatActivity { //implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+
+    private FloatingSearchView searchView;
 
     private CatalogProductsAdapter adapter;
 
-    private RecyclerView recyclerView;
+    private ViewFlipper viewFlipper;
 
     public static Intent createSearchActivityIntent(Activity activity) {
         return new Intent(activity, SearchActivity.class);
@@ -38,40 +41,66 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        if(getSupportActionBar() != null) {
+            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        }
+
+        searchView = (FloatingSearchView) findViewById(R.id.searchView);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        final View emptyState = findViewById(R.id.emptyState);
+
+        setUpSearchView();
+
         adapter = new CatalogProductsAdapter() {
+            private boolean hasProducts = false;
+
             @Override
             public void onProductClicked(SearchResultProduct product) {
                 startActivity(createCatalogProductDetailActivityIntent(SearchActivity.this, product));
             }
+
+            @Override
+            protected void onNotifiedDataSetChanged(boolean hasProducts) {
+                if(this.hasProducts != hasProducts) {
+                    viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(hasProducts ? recyclerView : emptyState));
+                    this.hasProducts = hasProducts;
+                }
+            }
         };
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(adapter);
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+    private void setUpSearchView() {
+        searchView.setCloseSearchOnKeyboardDismiss(true);
 
-        MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
-        MenuItemCompat.expandActionView(searchItem);
-        return true;
-    }
+        searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, final String newQuery) {
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        executeSearch(query);
-        return false;
-    }
+                executeSearch(newQuery);
+                //get suggestions based on newQuery
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        //TODO implement 3 second wait and auto-query
-        //TODO implement autocomplete suggestions
+                //pass them on to the search view
+                //searchView.swapSuggestions(newSuggestions);
+            }
+        });
 
-        return false;
+        searchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+            @Override
+            public void onActionMenuItemSelected(MenuItem item) {
+
+            }
+        });
+
+        searchView.setOnHomeActionClickListener(new FloatingSearchView.OnHomeActionClickListener() {
+            @Override
+            public void onHomeClicked() {
+                onBackPressed();
+            }
+        });
     }
 
     private void executeSearch(String query) {
@@ -79,12 +108,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 .setCallback(new Callback<SearchResponseInfo>() {
                     @Override
                     public void onResult(final SearchResponseInfo result) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.setProducts(result.getProducts());
-                            }
-                        });
+                        if(result != null) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setProducts(result.getProducts());
+                                }
+                            });
+                        }
                     }
 
                     @Override

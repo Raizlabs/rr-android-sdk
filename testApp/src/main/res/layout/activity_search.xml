@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#37474f">
+     <!--TODO implement dynamic coloring -->
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/parent_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="60dp">
+
+            <include layout="@layout/empty_state_search"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false" />
+        </ViewFlipper>
+
+        <com.arlib.floatingsearchview.FloatingSearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:floatingSearch_close_search_on_keyboard_dismiss="true"
+            app:floatingSearch_leftActionMode="showHome"
+            app:floatingSearch_searchBarMarginLeft="@dimen/margin.quarter"
+            app:floatingSearch_searchBarMarginRight="@dimen/margin.quarter"
+            app:floatingSearch_searchBarMarginTop="@dimen/margin.quarter"
+            app:floatingSearch_searchHint="Search..."
+            app:floatingSearch_showSearchKey="false"
+            app:floatingSearch_suggestionsListAnimDuration="250" />
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
