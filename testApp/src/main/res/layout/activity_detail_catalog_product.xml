@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin.standard"
         android:clickable="true"
-        android:src="@drawable/icn_cart"
+        android:src="@drawable/icn_add_to_cart"
         android:onClick="addToCart"
         app:elevation="@dimen/margin.quarter"
         app:fabSize="normal"
