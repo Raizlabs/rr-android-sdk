@@ -65,6 +65,7 @@
         android:layout_margin="@dimen/margin.standard"
         android:clickable="true"
         android:src="@drawable/icn_cart"
+        android:onClick="addToCart"
         app:elevation="@dimen/margin.quarter"
         app:fabSize="normal"
         app:layout_anchor="@id/product_image"
