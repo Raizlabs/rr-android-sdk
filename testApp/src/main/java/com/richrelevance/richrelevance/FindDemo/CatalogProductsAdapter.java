@@ -1,6 +1,7 @@
 package com.richrelevance.richrelevance.FindDemo;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,13 @@ public abstract class CatalogProductsAdapter extends RecyclerView.Adapter<Catalo
     private List<SearchResultProduct> products = new ArrayList<>();
 
     public abstract void onProductClicked(SearchResultProduct product);
+    private static Context context;
 
     @Override
     public SearchProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(SearchProductViewHolder.LAYOUT_RESOURCE, parent, false);
         SearchProductViewHolder viewHolder = new SearchProductViewHolder(view);
+        context = parent.getContext();
         return viewHolder;
     }
 
@@ -78,16 +81,19 @@ public abstract class CatalogProductsAdapter extends RecyclerView.Adapter<Catalo
         }
 
         public void bind(SearchResultProduct product, View.OnClickListener itemClickListener) {
-            Picasso.with(view.getContext()).load(product.getImageId()).into(image);
-            name.setText(product.getName());
-            brand.setText(product.getBrand());
-
             //Todo: check with backend for return value -1
             if (product.getSalesPriceCents() != -1) {
-                price.setText(String.format("$%s.%s", Integer.toString(product.getSalesPriceCents() / 100), String.format("%-2s", Integer.toString(product.getSalesPriceCents() % 100)).replace(" ", "0")));
+                Picasso.with(view.getContext()).load(product.getImageId()).fit().centerCrop().into(image);
+                name.setText(product.getName());
+                brand.setText(product.getBrand());
+                price.setText(convertCents(product.getSalesPriceCents()));
             }
 
             view.setOnClickListener(itemClickListener);
+        }
+
+        public String convertCents(int cents) {
+            return String.format(context.getResources().getString(R.string.format), Integer.toString(cents / 100), Integer.toString(cents % 100)).replace(" ", "0");
         }
     }
 }
