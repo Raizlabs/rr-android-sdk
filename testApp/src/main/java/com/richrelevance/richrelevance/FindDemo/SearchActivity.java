@@ -4,6 +4,7 @@ package com.richrelevance.richrelevance.FindDemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,8 @@ public class SearchActivity extends AppCompatActivity { //implements SearchView.
 
     private ViewFlipper viewFlipper;
 
+    private FloatingActionButton fabSortFilter;
+
     public static Intent createSearchActivityIntent(Activity activity) {
         return new Intent(activity, SearchActivity.class);
     }
@@ -49,6 +52,8 @@ public class SearchActivity extends AppCompatActivity { //implements SearchView.
         viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         final View emptyState = findViewById(R.id.emptyState);
+
+        fabSortFilter = (FloatingActionButton) findViewById(R.id.fabSortFilter);
 
         setUpSearchView();
 
@@ -113,6 +118,10 @@ public class SearchActivity extends AppCompatActivity { //implements SearchView.
                                 @Override
                                 public void run() {
                                     adapter.setProducts(result.getProducts());
+                                    // show fab only if results are present
+                                    if (!result.getProducts().isEmpty()) {
+                                        fabSortFilter.setVisibility(View.VISIBLE);
+                                    } else fabSortFilter.setVisibility(View.GONE);
                                 }
                             });
                         }
@@ -123,5 +132,10 @@ public class SearchActivity extends AppCompatActivity { //implements SearchView.
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }).execute();
+    }
+
+    public void sortFilter(View view) {
+
+        // Todo: launch the sort/filter activities
     }
 }
