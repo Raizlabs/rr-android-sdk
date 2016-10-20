@@ -33,9 +33,9 @@ import java.util.List;
 
 public class PreferencesDemoActivity extends AppCompatActivity {
 
-    CardContainer cardContainer;
+    private CardContainer cardContainer;
 
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
 
 
     public static Intent createPreferencesDemoActivityIntent(Activity activity) {
