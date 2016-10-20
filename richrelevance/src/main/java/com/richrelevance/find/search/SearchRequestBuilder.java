@@ -308,7 +308,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
 
     @Override
     protected String getEndpointPath(ClientConfiguration configuration) {
-        return String.format("rrserver/api/find/v1/%s", "199c81c05e473265"); //TODO replace with the API key from the config
+        return String.format("rrserver/api/find/v1/%s", configuration.getApiClientKey());
     }
 
     @Override
