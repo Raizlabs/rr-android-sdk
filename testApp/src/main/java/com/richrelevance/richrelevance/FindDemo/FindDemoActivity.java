@@ -44,6 +44,11 @@ public class FindDemoActivity extends AppCompatActivity {
             public void onProductClicked(SearchResultProduct product) {
                 startActivity(createCatalogProductDetailActivityIntent(FindDemoActivity.this, product));
             }
+
+            @Override
+            protected void onNotifiedDataSetChanged(boolean hasProducts) {
+                // Do nothing
+            }
         };
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

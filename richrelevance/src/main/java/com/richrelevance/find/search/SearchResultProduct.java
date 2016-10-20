@@ -184,6 +184,7 @@ public class SearchResultProduct implements Parcelable {
         score = in.readDouble();
         priceCents = in.readInt();
         salesPriceCents = in.readInt();
+        brand = in.readString();
 
         // TODO figure out how to parcel this map
         //initialize your map before

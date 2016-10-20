@@ -17,6 +17,8 @@ import java.util.List;
 
 public abstract class CatalogProductsAdapter extends RecyclerView.Adapter<CatalogProductsAdapter.SearchProductViewHolder> {
 
+    protected abstract void onNotifiedDataSetChanged(boolean hasProducts);
+
     private List<SearchResultProduct> products = new ArrayList<>();
 
     public abstract void onProductClicked(SearchResultProduct product);
@@ -50,11 +52,13 @@ public abstract class CatalogProductsAdapter extends RecyclerView.Adapter<Catalo
         }
         this.products = products;
         notifyDataSetChanged();
+        onNotifiedDataSetChanged(getItemCount() > 0);
     }
 
     public void addProducts(List<SearchResultProduct> products) {
         this.products.addAll(products);
         notifyDataSetChanged();
+        onNotifiedDataSetChanged(getItemCount() > 0);
     }
 
     public static class SearchProductViewHolder extends RecyclerView.ViewHolder {

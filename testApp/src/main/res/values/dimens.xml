@@ -8,6 +8,9 @@
     <dimen name="margin.half">8dp</dimen>
     <dimen name="margin.standard">16dp</dimen>
 
+    <dimen name="appBar.height">160dp</dimen>
+    <dimen name="find.emptyState.card.height">280dp</dimen>
+
     <dimen name="text_large">16sp</dimen>
     <dimen name="text_medium">12sp</dimen>
 
