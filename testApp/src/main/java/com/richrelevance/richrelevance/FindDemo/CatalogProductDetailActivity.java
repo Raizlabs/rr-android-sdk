@@ -3,12 +3,8 @@ package com.richrelevance.richrelevance.FindDemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,7 +15,7 @@ import com.richrelevance.find.search.SearchResultProduct;
 import com.richrelevance.richrelevance.R;
 import com.squareup.picasso.Picasso;
 
-public class CatalogProductDetailActivity extends AppCompatActivity {
+public class CatalogProductDetailActivity extends FindBaseActivity {
 
     private static final String KEY_PRODUCT = "KEY_PRODUCT";
 
@@ -45,9 +41,7 @@ public class CatalogProductDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void loadActivity() {
         setContentView(R.layout.activity_detail_catalog_product);
 
         image = (ImageView) findViewById(R.id.product_image);
@@ -57,12 +51,6 @@ public class CatalogProductDetailActivity extends AppCompatActivity {
         fabAddToCart = (FloatingActionButton) findViewById(R.id.fabAddToCart);
 
         loadProduct(getProduct());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
-        return true;
     }
 
     private void loadProduct(SearchResultProduct product) {

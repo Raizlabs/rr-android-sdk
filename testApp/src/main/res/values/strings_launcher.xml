@@ -7,4 +7,5 @@
     <string name="launcher.clientNameHint">Enter Client Name</string>
     <string name="launcher.userIdEditText">Enter UserId (Optional for Find Demo)</string>
 
+    <string name="chooseUser">Choose User</string>
 </resources>

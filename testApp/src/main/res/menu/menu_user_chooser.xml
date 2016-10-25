@@ -1,15 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/profile"
-        android:icon="@drawable/icn_user"
+        android:id="@+id/done"
         app:showAsAction="ifRoom"
-        android:title="Profile">
+        android:title="DONE">
     </item>
+
     <item
-        android:id="@+id/miCart"
-        android:icon="@drawable/icn_cart"
+        android:id="@+id/addUser"
         app:showAsAction="ifRoom"
-        android:title="Shopping cart">
+        android:title="Add">
     </item>
 </menu>

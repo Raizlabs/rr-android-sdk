@@ -10,12 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.richrelevance.ClientConfiguration;
-import com.richrelevance.RichRelevance;
-
-import java.util.UUID;
-
-import static com.richrelevance.richrelevance.FindDemo.FindDemoActivity.createFindDemoActivityIntent;
+import static com.richrelevance.richrelevance.FindDemo.FindMainActivity.createFindDemoActivityIntent;
 import static com.richrelevance.richrelevance.PreferencesDemo.PreferencesDemoActivity.createPreferencesDemoActivityIntent;
 
 public class DemoLauncherActivity extends Activity {
@@ -107,12 +102,9 @@ public class DemoLauncherActivity extends Activity {
     private boolean setClientConfiguration() {
         String clientAPIKey = clientAPIKeyEditText.getText().toString();
         if(clientAPIKey != null && !clientAPIKey.isEmpty()) {
-            ClientConfiguration config = new ClientConfiguration(SampleApplication.API_KEY, clientAPIKeyEditText.getText().toString());
-            config.setApiClientSecret(SampleApplication.API_CLIENT_SECRET);
-            config.setUserId(SampleApplication.DEFAULT_USER_ID);
-            config.setSessionId(UUID.randomUUID().toString());
-
-            RichRelevance.init(getApplicationContext(), config);
+            ClientConfigurationManager.getInstance()
+                    .setClientApiKey(getApplicationContext(),
+                            clientAPIKeyEditText.getText().toString());
             return true;
         } else {
             Toast.makeText(this, "Invalid Client Configuration", Toast.LENGTH_SHORT);
