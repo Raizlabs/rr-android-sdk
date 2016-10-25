@@ -21,7 +21,10 @@ import com.richrelevance.find.search.SearchResultProduct;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.richrelevance.R;
 
+import java.util.ArrayList;
+
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
+import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.createSearchSortFilterActivityIntent;
 
 public class SearchActivity extends FindBaseActivity {
 
@@ -41,7 +44,7 @@ public class SearchActivity extends FindBaseActivity {
     protected void loadActivity() {
         setContentView(R.layout.activity_search);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         }
 
@@ -51,6 +54,27 @@ public class SearchActivity extends FindBaseActivity {
         final View emptyState = findViewById(R.id.emptyState);
 
         fabSortFilter = (FloatingActionButton) findViewById(R.id.fabSortFilter);
+        fabSortFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO this is temporary. Need to hook up real data.
+                ArrayList<String> sortedBy = new ArrayList<>();
+                sortedBy.add("sortBy1");
+                sortedBy.add("sortBy2");
+                sortedBy.add("sortBy3");
+                sortedBy.add("sortBy4");
+
+                ArrayList<String> filterBy = new ArrayList<>();
+                filterBy.add("filterBy1");
+                filterBy.add("filterBy2");
+                filterBy.add("filterBy3");
+                filterBy.add("filterBy4");
+                filterBy.add("filterBy5");
+                filterBy.add("filterBy6");
+
+                startActivity(createSearchSortFilterActivityIntent(SearchActivity.this, sortedBy, filterBy));
+            }
+        });
 
         setUpSearchView();
 
@@ -64,7 +88,7 @@ public class SearchActivity extends FindBaseActivity {
 
             @Override
             protected void onNotifiedDataSetChanged(boolean hasProducts) {
-                if(this.hasProducts != hasProducts) {
+                if (this.hasProducts != hasProducts) {
                     viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(hasProducts ? recyclerView : emptyState));
                     this.hasProducts = hasProducts;
                 }
@@ -109,7 +133,7 @@ public class SearchActivity extends FindBaseActivity {
                 .setCallback(new Callback<SearchResponseInfo>() {
                     @Override
                     public void onResult(final SearchResponseInfo result) {
-                        if(result != null) {
+                        if (result != null) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -117,7 +141,9 @@ public class SearchActivity extends FindBaseActivity {
                                     // show fab only if results are present
                                     if (!result.getProducts().isEmpty()) {
                                         fabSortFilter.setVisibility(View.VISIBLE);
-                                    } else fabSortFilter.setVisibility(View.GONE);
+                                    } else {
+                                        fabSortFilter.setVisibility(View.GONE);
+                                    }
                                 }
                             });
                         }

@@ -12,10 +12,18 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <meta-data android:name="DATABASE" android:value="testApp.db" />
-        <meta-data android:name="VERSION" android:value="2" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.richrelevance.richrelevance" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="testApp.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="2" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.richrelevance.richrelevance" />
 
         <activity
             android:name=".DemoLauncherActivity"
@@ -28,16 +36,22 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".UserChooserActivity"
+        <activity
+            android:name=".UserChooserActivity"
             android:label="@string/chooseUser"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".FindDemo.SearchSortFilterActivity"
+            android:label="@string/sortFilter"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".FindDemo.FindMainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".FindDemo.SearchActivity"
@@ -59,7 +73,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:parentActivityName=".FindDemo.FindMainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".PreferencesDemo.PreferenceListActivity"
