@@ -3,9 +3,7 @@ package com.richrelevance.richrelevance.FindDemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +23,7 @@ import com.richrelevance.richrelevance.R;
 
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
 
-public class SearchActivity extends AppCompatActivity { //implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+public class SearchActivity extends FindBaseActivity {
 
     private FloatingSearchView searchView;
 
@@ -40,8 +38,7 @@ public class SearchActivity extends AppCompatActivity { //implements SearchView.
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void loadActivity() {
         setContentView(R.layout.activity_search);
 
         if(getSupportActionBar() != null) {
@@ -75,7 +72,6 @@ public class SearchActivity extends AppCompatActivity { //implements SearchView.
         };
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(adapter);
-
     }
 
     private void setUpSearchView() {

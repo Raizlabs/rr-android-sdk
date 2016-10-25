@@ -2,10 +2,8 @@ package com.richrelevance.richrelevance.FindDemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,14 +21,14 @@ import com.richrelevance.richrelevance.R;
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
 import static com.richrelevance.richrelevance.FindDemo.SearchActivity.createSearchActivityIntent;
 
-public class FindDemoActivity extends AppCompatActivity {
+public class FindMainActivity extends FindBaseActivity {
 
     private static final String KEY_CLIENT_NAME = "KEY_CLIENT_NAME";
 
     private RecyclerView recyclerView;
 
     public static Intent createFindDemoActivityIntent(Activity activity, String clientName) {
-        Intent intent = new Intent(activity, FindDemoActivity.class);
+        Intent intent = new Intent(activity, FindMainActivity.class);
         intent.putExtra(KEY_CLIENT_NAME, clientName);
         return intent;
     }
@@ -39,16 +37,15 @@ public class FindDemoActivity extends AppCompatActivity {
         return getIntent().getStringExtra(KEY_CLIENT_NAME);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+    @Override
+    protected void loadActivity() {
         setContentView(R.layout.activity_find);
 
         final CatalogProductsAdapter adapter = new CatalogProductsAdapter() {
             @Override
             public void onProductClicked(SearchResultProduct product) {
-                startActivity(createCatalogProductDetailActivityIntent(FindDemoActivity.this, product));
+                startActivity(createCatalogProductDetailActivityIntent(FindMainActivity.this, product));
             }
 
             @Override
@@ -72,7 +69,7 @@ public class FindDemoActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(createSearchActivityIntent(FindDemoActivity.this));
+                startActivity(createSearchActivityIntent(FindMainActivity.this));
             }
         });
 
@@ -90,9 +87,13 @@ public class FindDemoActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onError(Error error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
+                    public void onError(final Error error) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });                    }
                 }).execute();
     }
 }
