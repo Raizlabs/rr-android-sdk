@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sort By" />
+        android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/sortListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin.standard"
+            android:text="SORT BY"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Filter By" />
+        <ListView
+            android:id="@+id/sortListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:listSelector="@color/dark_gray"/>
 
-    <ListView
-        android:id="@+id/filterListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin.standard"
+            android:text="FILTER BY"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/filterListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="multipleChoice"
+            android:listSelector="@color/dark_gray" />
+    </LinearLayout>
+</ScrollView>

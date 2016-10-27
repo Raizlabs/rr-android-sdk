@@ -23,14 +23,19 @@ public class ClientConfigurationManager {
 
     public static final String API_CLIENT_SECRET = "r5j50mlag06593401nd4kt734i";
 
+    public static final String DEFAULT_CLIENT_NAME = "Rich Relevance";
+
     public static final String DEFAULT_USER_ID = "RZTestUserTest";
 
     private String clientApiKey;
 
+    private String clientName = DEFAULT_CLIENT_NAME;
+
     private User user;
 
-    public void setConfig(Context context, String clientApiKey, User user) {
+    public void setConfig(Context context, String clientApiKey, String clientName, User user) {
         this.clientApiKey = clientApiKey;
+        setClientName(clientName);
         this.user = user;
         createConfiguration(context);
     }
@@ -40,13 +45,20 @@ public class ClientConfigurationManager {
         createConfiguration(context);
     }
 
+    public void setClientName(String clientName) {
+        this.clientName = (clientName == null || clientName.isEmpty()) ? DEFAULT_CLIENT_NAME : clientName;
+    }
+
     public void setUser(Context context, User user) {
         this.user = user;
         createConfiguration(context);
     }
 
-    public User getSelectedUser() {
+    public String getClientName() {
+        return clientName;
+    }
 
+    public User getSelectedUser() {
         return user;
     }
 

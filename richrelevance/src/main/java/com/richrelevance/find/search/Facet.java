@@ -6,7 +6,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Facet implements Parcelable {
 
@@ -18,7 +17,8 @@ public class Facet implements Parcelable {
     private String type;
     private List<Filter> filters;
 
-    public Facet() {}
+    public Facet() {
+    }
 
     public String getType() {
         return type;
@@ -38,68 +38,12 @@ public class Facet implements Parcelable {
 
     protected Facet(Parcel in) {
         type = in.readString();
+        filters = new ArrayList<>();
+
         if (in.readByte() == 0x01) {
-            filters = new ArrayList<>();
             in.readList(filters, Filter.class.getClassLoader());
-        } else {
-            filters = null;
         }
     }
-
-    // Inner classes
-
-    public class Filter {
-
-        // TODO make Filter Parcelable
-
-        public class Keys {
-            public static final String VALUE = "value";
-            public static final String COUNT = "count";
-            public static final String FILTER = "filter";
-        }
-
-        private String filter;
-        private int count;
-        private String value;
-
-        public Filter() {}
-
-        public String getFilter() {
-            return filter;
-        }
-
-        public void setFilter(String filter) {
-            this.filter = filter;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public String getApiValue() {
-            return String.format(Locale.US, "%s.%s", getType(), getValue());
-        }
-
-        protected Filter(Parcel in) {
-            filter = in.readString();
-            count = in.readInt();
-            value = in.readString();
-        }
-    }
-
-    // End Inner classes
 
     // Parcelable methods and classes
 

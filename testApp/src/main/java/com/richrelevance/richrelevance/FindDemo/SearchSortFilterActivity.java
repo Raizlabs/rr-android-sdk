@@ -7,37 +7,45 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.richrelevance.find.search.Facet;
+import com.richrelevance.find.search.Filter;
+import com.richrelevance.find.search.SearchRequestBuilder;
 import com.richrelevance.richrelevance.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchSortFilterActivity extends AppCompatActivity {
 
-    private static final String KEY_SORTED_BY_LIST = "KEY_SORTED_BY_LIST";
-    private static final String KEY_FILTER_BY_LIST = "KEY_FILTER_BY_LIST";
+    private static final String KEY_FACET_LIST = "KEY_FACET_LIST";
+    public static final String KEY_SELECTED_SORTED_BY = "KEY_SELECTED_SORTED_BY";
+    public static final String KEY_SELECTED_FILTER_BY = "KEY_SELECTED_FILTER_BY";
 
-    private ArrayAdapter<String> sortedAdapter;
+    private SearchRequestBuilder.Field sortBy;
+    private Filter filterBy;
+
+    private ArrayAdapter<SearchRequestBuilder.Field> sortedAdapter;
     private ArrayAdapter<String> filterAdapter;
 
-    public static Intent createSearchSortFilterActivityIntent(Activity activity, ArrayList<String> sortedBys, ArrayList<String> filterBys) {
+    public static Intent createSearchSortFilterActivityIntent(Activity activity, ArrayList<Facet> facets) {
         Intent intent = new Intent(activity, SearchSortFilterActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(KEY_SORTED_BY_LIST, sortedBys);
-        bundle.putStringArrayList(KEY_FILTER_BY_LIST, filterBys);
+        bundle.putParcelableArrayList(KEY_FACET_LIST, facets);
         intent.putExtras(bundle);
         return intent;
     }
 
-    private List<String> getSortedBys() {
-        return getIntent().getStringArrayListExtra(KEY_SORTED_BY_LIST);
-    }
-
-    private List<String> getFilterBys() {
-        return getIntent().getStringArrayListExtra(KEY_FILTER_BY_LIST);
+    private List<Facet> getFacets() {
+        return getIntent().getParcelableArrayListExtra(KEY_FACET_LIST);
     }
 
     @Override
@@ -47,11 +55,37 @@ public class SearchSortFilterActivity extends AppCompatActivity {
 
         ListView sortListView = (ListView) findViewById(R.id.sortListView);
         ListView filterListView = (ListView) findViewById(R.id.filterListView);
-        sortedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getSortedBys());
-        filterAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getFilterBys());
+
+        sortedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, SearchRequestBuilder.Field.values());
+
+        final Map<String, Filter> tempList = new HashMap<>();
+        for(Facet facet : getFacets()) {
+            for(Filter filter : facet.getFilters()) {
+                tempList.put(filter.getValue(), filter);
+            }
+        }
+
+        filterAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>(tempList.keySet()));
         sortListView.setAdapter(sortedAdapter);
         filterListView.setAdapter(filterAdapter);
 
+
+        sortListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                sortBy = sortedAdapter.getItem(position);
+            }
+        });
+
+        filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                filterBy = tempList.get(filterAdapter.getItem(position));
+            }
+        });
+
+        ListUtils.setDynamicHeight(sortListView);
+        ListUtils.setDynamicHeight(filterListView);
     }
 
     @Override
@@ -66,14 +100,39 @@ public class SearchSortFilterActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.done:
-                sendFilterSortSettingsResult(null, null); //TODO get the selections
+                sendFilterSortSettingsResult(sortBy, filterBy);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void sendFilterSortSettingsResult(List<String> selectedSortedBys, List<String> selectedFilterBys) {
+    private void sendFilterSortSettingsResult(SearchRequestBuilder.Field selectedSortedBys, Filter selectedFilterBys) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(KEY_SELECTED_SORTED_BY, selectedSortedBys);
+        returnIntent.putExtra(KEY_SELECTED_FILTER_BY, selectedFilterBys);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
 
+    public static class ListUtils {
+        public static void setDynamicHeight(ListView mListView) {
+            ListAdapter mListAdapter = mListView.getAdapter();
+            if (mListAdapter == null) {
+                // when adapter is null
+                return;
+            }
+            int height = 0;
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(mListView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            for (int i = 0; i < mListAdapter.getCount(); i++) {
+                View listItem = mListAdapter.getView(i, null, mListView);
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                height += listItem.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = mListView.getLayoutParams();
+            params.height = height + (mListView.getDividerHeight() * (mListAdapter.getCount() - 1));
+            mListView.setLayoutParams(params);
+            mListView.requestLayout();
+        }
     }
 }
