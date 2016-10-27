@@ -16,6 +16,7 @@ import com.richrelevance.RichRelevance;
 import com.richrelevance.find.search.SearchResponseInfo;
 import com.richrelevance.find.search.SearchResultProduct;
 import com.richrelevance.recommendations.Placement;
+import com.richrelevance.richrelevance.ClientConfigurationManager;
 import com.richrelevance.richrelevance.R;
 
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
@@ -23,20 +24,12 @@ import static com.richrelevance.richrelevance.FindDemo.SearchActivity.createSear
 
 public class FindMainActivity extends FindBaseActivity {
 
-    private static final String KEY_CLIENT_NAME = "KEY_CLIENT_NAME";
-
     private RecyclerView recyclerView;
 
-    public static Intent createFindDemoActivityIntent(Activity activity, String clientName) {
+    public static Intent createFindDemoActivityIntent(Activity activity) {
         Intent intent = new Intent(activity, FindMainActivity.class);
-        intent.putExtra(KEY_CLIENT_NAME, clientName);
         return intent;
     }
-
-    public String getClientName() {
-        return getIntent().getStringExtra(KEY_CLIENT_NAME);
-    }
-
 
     @Override
     protected void loadActivity() {
@@ -55,7 +48,7 @@ public class FindMainActivity extends FindBaseActivity {
         };
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getClientName());
+        toolbar.setTitle(ClientConfigurationManager.getInstance().getClientName());
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();

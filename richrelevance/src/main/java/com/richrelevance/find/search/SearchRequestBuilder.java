@@ -51,11 +51,11 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
         }
 
         public String createAPIValueForField(Field field) {
-            return field.requestKey + "%%" + key;
+            return field.requestKey + "%20" + key;
         }
 
         public String createAPIValueForCustomField(String resuestKey) {
-            return resuestKey + "%%" + key;
+            return resuestKey + "%20" + key;
         }
     }
 
@@ -196,7 +196,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
      * @param filters The filters to apply.
      * @return This builder for chaining method calls.
      */
-    public SearchRequestBuilder setFilters(Facet.Filter... filters) {
+    public SearchRequestBuilder setFilters(Filter... filters) {
         setListParameter(Keys.FILTER, getFiltersStrings(Utils.safeAsList(filters)));
         return this;
     }
@@ -207,7 +207,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
      * @param filters The filters to apply.
      * @return This builder for chaining method calls.
      */
-    public SearchRequestBuilder setFilters(Collection<Facet.Filter> filters) {
+    public SearchRequestBuilder setFilters(Collection<Filter> filters) {
         setListParameter(Keys.FILTER, getFiltersStrings(filters));
         return this;
     }
@@ -321,11 +321,11 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
         SearchResultProductParser.parseSearchResponseInfo(json, searchResponseInfo);
     }
 
-    public static Collection<String> getFiltersStrings(Collection<Facet.Filter> filters) {
+    public static Collection<String> getFiltersStrings(Collection<Filter> filters) {
         if(filters != null) {
             List<String> stringFacets = new ArrayList<>(filters.size());
 
-            for(Facet.Filter filter : filters) {
+            for(Filter filter : filters) {
                 if(filter != null) {
                     stringFacets.add(filter.getApiValue());
                 }

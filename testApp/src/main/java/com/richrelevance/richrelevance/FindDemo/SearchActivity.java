@@ -16,14 +16,24 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.RichRelevance;
+import com.richrelevance.find.search.Facet;
+import com.richrelevance.find.search.Filter;
+import com.richrelevance.find.search.SearchRequestBuilder;
 import com.richrelevance.find.search.SearchResponseInfo;
 import com.richrelevance.find.search.SearchResultProduct;
 import com.richrelevance.recommendations.Placement;
 import com.richrelevance.richrelevance.R;
 
+import java.util.ArrayList;
+
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
+import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.KEY_SELECTED_FILTER_BY;
+import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.KEY_SELECTED_SORTED_BY;
+import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.createSearchSortFilterActivityIntent;
 
 public class SearchActivity extends FindBaseActivity {
+
+    private static final int SELECT_SORT_FILTER_RESULT = 199;
 
     private FloatingSearchView searchView;
 
@@ -33,6 +43,8 @@ public class SearchActivity extends FindBaseActivity {
 
     private FloatingActionButton fabSortFilter;
 
+    private ArrayList<Facet> facets = new ArrayList<>();
+
     public static Intent createSearchActivityIntent(Activity activity) {
         return new Intent(activity, SearchActivity.class);
     }
@@ -41,7 +53,7 @@ public class SearchActivity extends FindBaseActivity {
     protected void loadActivity() {
         setContentView(R.layout.activity_search);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         }
 
@@ -51,6 +63,12 @@ public class SearchActivity extends FindBaseActivity {
         final View emptyState = findViewById(R.id.emptyState);
 
         fabSortFilter = (FloatingActionButton) findViewById(R.id.fabSortFilter);
+        fabSortFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(createSearchSortFilterActivityIntent(SearchActivity.this, facets), SELECT_SORT_FILTER_RESULT);
+            }
+        });
 
         setUpSearchView();
 
@@ -64,7 +82,7 @@ public class SearchActivity extends FindBaseActivity {
 
             @Override
             protected void onNotifiedDataSetChanged(boolean hasProducts) {
-                if(this.hasProducts != hasProducts) {
+                if (this.hasProducts != hasProducts) {
                     viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(hasProducts ? recyclerView : emptyState));
                     this.hasProducts = hasProducts;
                 }
@@ -105,33 +123,70 @@ public class SearchActivity extends FindBaseActivity {
     }
 
     private void executeSearch(String query) {
-        RichRelevance.buildSearchRequest(query, new Placement(Placement.PlacementType.SEARCH, "find"))
-                .setCallback(new Callback<SearchResponseInfo>() {
-                    @Override
-                    public void onResult(final SearchResponseInfo result) {
-                        if(result != null) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.setProducts(result.getProducts());
-                                    // show fab only if results are present
-                                    if (!result.getProducts().isEmpty()) {
-                                        fabSortFilter.setVisibility(View.VISIBLE);
-                                    } else fabSortFilter.setVisibility(View.GONE);
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onError(Error error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }).execute();
+        executeSearch(query, null, null, null);
     }
 
-    public void sortFilter(View view) {
+    private void executeSearch(String query, SearchRequestBuilder.Field sortBy, SearchRequestBuilder.SortOrder sortOrder, final Filter filter) {
+        SearchRequestBuilder builder = RichRelevance.buildSearchRequest(query, new Placement(Placement.PlacementType.SEARCH, "find"));
+        if (sortBy != null && sortOrder != null) {
+            builder.setSort(sortBy, sortOrder);
+        }
+        if (filter != null) {
+            builder.setFilters(filter);
+        }
+        builder.setCallback(new Callback<SearchResponseInfo>() {
+                                @Override
+                                public void onResult(final SearchResponseInfo result) {
 
-        // Todo: launch the sort/filter activities
+                                    runOnUiThread(new Runnable() {
+                                                      @Override
+                                                      public void run() {
+                                                          if (result == null) {
+                                                              adapter.setProducts(new ArrayList<SearchResultProduct>());
+                                                              facets = new ArrayList<>();
+                                                              fabSortFilter.setVisibility(View.GONE);
+                                                          } else {
+
+                                                              adapter.setProducts(result.getProducts());
+                                                              facets = new ArrayList<>(result.getFacets());
+
+                                                              // show fab only if results are present
+                                                              if (!result.getProducts().isEmpty()) {
+                                                                  fabSortFilter.setVisibility(View.VISIBLE);
+                                                              } else {
+                                                                  fabSortFilter.setVisibility(View.GONE);
+                                                              }
+                                                          }
+                                                      }
+                                                  }
+
+                                    );
+
+                                }
+
+                                @Override
+                                public void onError(Error error) {
+                                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+        );
+        builder.execute();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SELECT_SORT_FILTER_RESULT) {
+
+            if (resultCode == Activity.RESULT_OK) {
+                SearchRequestBuilder.Field sort = (SearchRequestBuilder.Field) data.getSerializableExtra(KEY_SELECTED_SORTED_BY);
+                Filter filter = data.getParcelableExtra(KEY_SELECTED_FILTER_BY);
+                if (searchView.getQuery() != null && !searchView.getQuery().isEmpty()) {
+                    executeSearch(searchView.getQuery(), sort, SearchRequestBuilder.SortOrder.ASCENDING, filter);
+                }
+            }
+        }
     }
 }

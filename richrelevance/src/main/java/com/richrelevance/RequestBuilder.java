@@ -1,6 +1,7 @@
 package com.richrelevance;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.richrelevance.internal.net.HttpMethod;
 import com.richrelevance.internal.net.WebRequest;
@@ -375,6 +376,8 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
                         getConfiguration().getApiClientKey(),
                         getConfiguration().getApiClientSecret()));
             }
+
+            Log.e("OMG", "webRequestBuilder: " + webRequestBuilder.getFullUrl()); //TODO take out before ship
             return webRequestBuilder;
         }
 

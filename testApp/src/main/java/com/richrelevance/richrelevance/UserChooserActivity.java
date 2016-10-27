@@ -59,7 +59,7 @@ public class UserChooserActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_user_chooser, menu);
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
 

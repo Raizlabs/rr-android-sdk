@@ -53,9 +53,9 @@ public class SearchResultProductParser {
 
         final Facet facet = new Facet();
         facet.setType(json.optString(Facet.Keys.TYPE));
-        facet.setFilters(JSONHelper.parseJSONArray(json, Facet.Keys.FITERS, new JSONArrayParserDelegate<Facet.Filter>() {
+        facet.setFilters(JSONHelper.parseJSONArray(json, Facet.Keys.FITERS, new JSONArrayParserDelegate<Filter>() {
                     @Override
-                    public Facet.Filter parseObject(JSONObject json) {
+                    public Filter parseObject(JSONObject json) {
                         return parseFilter(facet, json);
                     }
                 })
@@ -64,14 +64,14 @@ public class SearchResultProductParser {
         return facet;
     }
 
-    static Facet.Filter parseFilter(Facet facet, JSONObject json) {
-        Facet.Filter filter = null;
+    static Filter parseFilter(Facet facet, JSONObject json) {
+        Filter filter = null;
         if (json != null) {
             try {
-                filter = facet.new Filter();
-                filter.setCount(json.getInt(Facet.Filter.Keys.COUNT));
-                filter.setFilter(json.getString(Facet.Filter.Keys.FILTER));
-                filter.setValue(json.getString(Facet.Filter.Keys.VALUE));
+                filter = new Filter(facet);
+                filter.setCount(json.getInt(Filter.Keys.COUNT));
+                filter.setFilter(json.getString(Filter.Keys.FILTER));
+                filter.setValue(json.getString(Filter.Keys.VALUE));
 
             } catch (JSONException e) {
                 Log.e(SearchResultProductParser.class.getSimpleName(), "Unable to parse Filter object due to missing expected json response fields");

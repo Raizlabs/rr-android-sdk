@@ -85,7 +85,7 @@ public class DemoLauncherActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(setClientConfiguration()) {
-                    startActivity(createFindDemoActivityIntent(DemoLauncherActivity.this, clientNameEditText.getText().toString()));
+                    startActivity(createFindDemoActivityIntent(DemoLauncherActivity.this));
                 }
             }
         });
@@ -101,10 +101,15 @@ public class DemoLauncherActivity extends Activity {
 
     private boolean setClientConfiguration() {
         String clientAPIKey = clientAPIKeyEditText.getText().toString();
+        String clientName = clientNameEditText.getText().toString();
         if(clientAPIKey != null && !clientAPIKey.isEmpty()) {
             ClientConfigurationManager.getInstance()
                     .setClientApiKey(getApplicationContext(),
                             clientAPIKeyEditText.getText().toString());
+
+            if(clientName != null && !clientName.isEmpty()) {
+                ClientConfigurationManager.getInstance().setClientName(clientName);
+            }
             return true;
         } else {
             Toast.makeText(this, "Invalid Client Configuration", Toast.LENGTH_SHORT);
