@@ -220,7 +220,4 @@ public class SearchActivity extends FindBaseActivity {
             }
         }
     }
-
-    //https://qa.richrelevance.com/rrserver/api/find/v1/autocomplete/199c81c05e473265?lang=en&query=D&rows=20&start=0
-    //https://qa.richrelevance.com/find/v1/autocomplete/showcaseparent?query=s&rows=20&lang=en&start=0&apiKey=showcaseparent&apiClientKey=199c81c05e473265&userId=RZTestUserTest&sessionId=8c092127-3ea7-417d-ba96-18acbf8e3c1c
 }
