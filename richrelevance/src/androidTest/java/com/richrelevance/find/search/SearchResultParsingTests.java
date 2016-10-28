@@ -49,10 +49,9 @@ public class SearchResultParsingTests extends AndroidTestCase {
                 assertEquals("releaseDate", facet.getType());
                 assertEquals(100, facet.getFilters().size());
 
-                Facet.Filter filter = facet.getFilters().get(0);
+                Filter filter = facet.getFilters().get(0);
                 assertEquals("1465628400000", filter.getValue());
                 assertEquals("product_release_date:1465628400000", filter.getFilter());
-                assertEquals("releaseDate.1465628400000", filter.getApiValue());
                 assertEquals(46, filter.getCount());
             }
         };
