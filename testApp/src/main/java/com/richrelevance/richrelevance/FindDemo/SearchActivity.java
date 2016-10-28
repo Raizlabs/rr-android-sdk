@@ -73,6 +73,8 @@ public class SearchActivity extends FindBaseActivity {
 
     private ArrayList<Facet> facets = new ArrayList<>();
 
+    private String addToCartParam;
+
     public static Intent createSearchActivityIntent(Activity activity) {
         return new Intent(activity, SearchActivity.class);
     }
@@ -105,7 +107,7 @@ public class SearchActivity extends FindBaseActivity {
 
             @Override
             public void onProductClicked(SearchResultProduct product) {
-                startActivity(createCatalogProductDetailActivityIntent(SearchActivity.this, product));
+                startActivity(createCatalogProductDetailActivityIntent(SearchActivity.this, product, addToCartParam));
             }
 
             @Override
@@ -175,6 +177,7 @@ public class SearchActivity extends FindBaseActivity {
         sortBy = null;
         sortOrder = null;
         filters = new ArrayList<>();
+        addToCartParam = null;
         disablePaginationButton(backButton);
         enablePaginationButton(nextButton);
     }
@@ -279,18 +282,19 @@ public class SearchActivity extends FindBaseActivity {
                                     runOnUiThread(new Runnable() {
                                                       @Override
                                                       public void run() {
-                                                          if (result == null) {
+                                                          if (result == null || result.getProducts() == null || result.getFacets() == null) {
                                                               adapter.setProducts(new ArrayList<SearchResultProduct>());
                                                               facets = new ArrayList<>();
                                                               showEmptyState();
                                                           } else {
+                                                              addToCartParam = result.getAddToCartParams();
                                                               adapter.setProducts(result.getProducts());
                                                               facets = new ArrayList<>(result.getFacets());
 
                                                               if (!result.getProducts().isEmpty()) {
                                                                   showValidResults();
                                                               } else {
-                                                                  if(offSet > 0) {
+                                                                  if (offSet > 0) {
                                                                       disablePaginationButton(nextButton);
                                                                   } else {
                                                                       showEmptyState();

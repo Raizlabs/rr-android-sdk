@@ -204,15 +204,6 @@ public class SearchResultProduct implements Parcelable {
         priceCents = in.readInt();
         salesPriceCents = in.readInt();
         brand = in.readString();
-
-        // TODO figure out how to parcel this map
-        //initialize your map before
-//        int size = in.readInt();
-//        for(int i = 0; i < size; i++){
-//            Facet facet = in.readParcelable(Facet.class.getClassLoader());
-//            Object value = in.readValue();
-//            filtersMap.put(facet,value);
-//        }
     }
 
     @Override

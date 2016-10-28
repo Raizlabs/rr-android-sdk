@@ -30,36 +30,40 @@ public class ClientConfigurationManager {
 
     public static final String DEFAULT_USER_ID = "RZTestUserTest";
 
+    private String apiKey;
+
     private String clientApiKey;
 
     private String clientName = DEFAULT_CLIENT_NAME;
 
     private User user;
 
-    public void setConfig(Context context, String clientApiKey, String clientName, User user, String endpoint) {
+    private String endpoint = DEFAULT_ENDPOINT;
+
+    public void setConfig(String clientApiKey, String clientName, User user, String endpoint) {
         this.clientApiKey = clientApiKey;
         setClientName(clientName);
         this.user = user;
-        createConfiguration(context, endpoint);
     }
 
-    public void setClientApiKey(Context context, String clientApiKey) {
-        this.clientApiKey = clientApiKey;
-        createConfiguration(context, Endpoint.PRODUCTION);
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 
-    public void setClientApiKey(Context context, String clientApiKey, String endpoint) {
+    public void setClientApiKey(String clientApiKey) {
         this.clientApiKey = clientApiKey;
-        createConfiguration(context, endpoint);
+    }
+
+    public void setClientApiKey(String clientApiKey, String endpoint) {
+        this.clientApiKey = clientApiKey;
     }
 
     public void setClientName(String clientName) {
         this.clientName = (clientName == null || clientName.isEmpty()) ? DEFAULT_CLIENT_NAME : clientName;
     }
 
-    public void setUser(Context context, User user) {
+    public void setUser(User user) {
         this.user = user;
-        createConfiguration(context);
     }
 
     public String getClientName() {
@@ -70,12 +74,13 @@ public class ClientConfigurationManager {
         return user;
     }
 
-    private void createConfiguration(Context context) {
-        createConfiguration(context, Endpoint.PRODUCTION);
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
-    private void createConfiguration(Context context, String endpoint) {
-        ClientConfiguration config = new ClientConfiguration(ClientConfigurationManager.API_KEY,
+    public void createConfiguration(Context context) {
+        ClientConfiguration config = new ClientConfiguration(
+                apiKey == null ? ClientConfigurationManager.API_KEY : apiKey,
                 ((clientApiKey == null || clientApiKey.isEmpty()) ? DEFAULT_CLIENT_API_KEY : clientApiKey));
         config.setApiClientSecret(ClientConfigurationManager.API_CLIENT_SECRET);
         config.setUserId((user == null) ? ClientConfigurationManager.DEFAULT_USER_ID : user.getUserID());

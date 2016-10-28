@@ -7,6 +7,15 @@
     android:orientation="vertical">
 
     <EditText
+        android:id="@+id/apiKeyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:text="showcaseparent"
+        android:hint="@string/launcher.apiKeyHint"/>
+
+    <EditText
         android:id="@+id/clientKeyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,14 +31,6 @@
         android:imeOptions="actionNext"
         android:singleLine="true"
         android:hint="@string/launcher.clientNameHint"/>
-
-    <EditText
-        android:id="@+id/userIdTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:hint="@string/launcher.userIdEditText"/>
 
     <Button
         android:id="@+id/preferencesDemoButton"

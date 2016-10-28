@@ -52,7 +52,8 @@ public abstract class FindBaseActivity extends AppCompatActivity {
         if (requestCode == SELECT_USER_RESULT) {
             if (resultCode == Activity.RESULT_OK) {
                 User selectedUser = data.getParcelableExtra(UserChooserActivity.KEY_SELECTED_USER);
-                ClientConfigurationManager.getInstance().setUser(this, selectedUser);
+                ClientConfigurationManager.getInstance().setUser(selectedUser);
+                ClientConfigurationManager.getInstance().createConfiguration(this);
                 loadActivity();
             }
         }
