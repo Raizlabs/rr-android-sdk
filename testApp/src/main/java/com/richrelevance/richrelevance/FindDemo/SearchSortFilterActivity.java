@@ -1,9 +1,12 @@
 package com.richrelevance.richrelevance.FindDemo;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
@@ -32,10 +35,12 @@ public class SearchSortFilterActivity extends AppCompatActivity {
 
     private static final String KEY_FACET_LIST = "KEY_FACET_LIST";
     public static final String KEY_SELECTED_SORTED_BY = "KEY_SELECTED_SORTED_BY";
+    public static final String KEY_SELECTED_SORT_ORDER = "KEY_SELECTED_SORT_ORDER";
     public static final String KEY_SELECTED_FILTER_BY = "KEY_SELECTED_FILTER_BY";
 
     private SearchResultProduct.Field sortBy;
-    private Filter filterBy;
+    private SearchRequestBuilder.SortOrder sortOrder;
+    private List<Filter> filterBys = new ArrayList<>();
 
     private ArrayAdapter<SearchResultProduct.Field> sortedAdapter;
     private ArrayAdapter<String> filterAdapter;
@@ -67,9 +72,11 @@ public class SearchSortFilterActivity extends AppCompatActivity {
                 if (on) {
                     //Do something when Switch button is on/checked
                     sortOrderLabel.setText(SearchRequestBuilder.SortOrder.ASCENDING.toString());
+                    sortOrder = SearchRequestBuilder.SortOrder.ASCENDING;
                 } else {
                     //Do something when Switch is off/unchecked
                     sortOrderLabel.setText(SearchRequestBuilder.SortOrder.DESCENDING.toString());
+                    sortOrder = SearchRequestBuilder.SortOrder.DESCENDING;
                 }
             }
         });
@@ -80,14 +87,12 @@ public class SearchSortFilterActivity extends AppCompatActivity {
 
         sortedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, SearchResultProduct.Field.values());
 
-        final Map<String, Filter> tempList = new HashMap<>();
+        final Map<String, Facet> facetsMap = new HashMap<>();
         for (Facet facet : getFacets()) {
-            for (Filter filter : facet.getFilters()) {
-                tempList.put(facet.getType() + ": " + filter.getValue(), filter);
-            }
+            facetsMap.put(facet.getType(), facet);
         }
 
-        filterAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>(tempList.keySet()));
+        filterAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>(facetsMap.keySet()));
         sortListView.setAdapter(sortedAdapter);
         filterListView.setAdapter(filterAdapter);
 
@@ -102,7 +107,7 @@ public class SearchSortFilterActivity extends AppCompatActivity {
         filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                filterBy = tempList.get(filterAdapter.getItem(position));
+                launchFilterSelector(facetsMap.get(filterAdapter.getItem(position)));
             }
         });
 
@@ -122,17 +127,62 @@ public class SearchSortFilterActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.done:
-                sendFilterSortSettingsResult(sortBy, filterBy);
+                sendFilterSortSettingsResult(sortBy, filterBys);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void sendFilterSortSettingsResult(SearchResultProduct.Field selectedSortedBys, Filter selectedFilterBys) {
+    public void launchFilterSelector(Facet facet) {
+        if(facet != null && facet.getFilters() != null && !facet.getFilters().isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            final List<Filter> facetFilters = facet.getFilters();
+            final List<String> facetFilterStrings = new ArrayList<>();
+            final boolean[] selectedFilters = new boolean[facet.getFilters().size()];
+            for(int i = 0; i < facetFilters.size(); i++) {
+                facetFilterStrings.add(facetFilters.get(i).getValue());
+                if(filterBys.contains(facetFilters.get(i))) {
+                    selectedFilters[i] = true;
+                } else {
+                    selectedFilters[i] = false;
+                }
+            }
+
+            CharSequence[] filterStrings = facetFilterStrings.toArray(new CharSequence[facetFilterStrings.size()]);
+
+            builder.setTitle(facet.getType());
+            builder.setMultiChoiceItems(filterStrings,
+                    selectedFilters,
+                    new DialogInterface.OnMultiChoiceClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {
+
+                            Filter filter = facetFilters.get(whichButton);
+
+                            if (filterBys.contains(filter)) {
+                                filterBys.remove(filter);
+                            } else {
+                                filterBys.add(filter);
+                            }
+                        }
+                    });
+            builder.setPositiveButton("Done",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
+            builder.show();
+        }
+    }
+
+    private void sendFilterSortSettingsResult(SearchResultProduct.Field selectedSortedBys, List<Filter> selectedFilterBys) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(KEY_SELECTED_SORTED_BY, selectedSortedBys);
-        returnIntent.putExtra(KEY_SELECTED_FILTER_BY, selectedFilterBys);
+        returnIntent.putParcelableArrayListExtra(KEY_SELECTED_FILTER_BY, new ArrayList<Parcelable>(selectedFilterBys));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_SELECTED_SORT_ORDER, sortOrder);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

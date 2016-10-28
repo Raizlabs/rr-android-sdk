@@ -55,8 +55,6 @@
         <ListView
             android:id="@+id/filterListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:choiceMode="multipleChoice"
-            android:listSelector="@color/dark_gray" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>
