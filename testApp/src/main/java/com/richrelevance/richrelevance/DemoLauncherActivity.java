@@ -112,7 +112,7 @@ public class DemoLauncherActivity extends Activity {
             }
             return true;
         } else {
-            Toast.makeText(this, "Invalid Client Configuration", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Invalid Client Configuration", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
