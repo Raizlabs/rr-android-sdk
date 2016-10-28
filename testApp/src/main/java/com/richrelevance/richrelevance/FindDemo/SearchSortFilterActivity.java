@@ -5,18 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.richrelevance.find.search.Facet;
 import com.richrelevance.find.search.Filter;
 import com.richrelevance.find.search.SearchRequestBuilder;
+import com.richrelevance.find.search.SearchResultProduct;
 import com.richrelevance.richrelevance.R;
 
 import java.util.ArrayList;
@@ -30,10 +34,10 @@ public class SearchSortFilterActivity extends AppCompatActivity {
     public static final String KEY_SELECTED_SORTED_BY = "KEY_SELECTED_SORTED_BY";
     public static final String KEY_SELECTED_FILTER_BY = "KEY_SELECTED_FILTER_BY";
 
-    private SearchRequestBuilder.Field sortBy;
+    private SearchResultProduct.Field sortBy;
     private Filter filterBy;
 
-    private ArrayAdapter<SearchRequestBuilder.Field> sortedAdapter;
+    private ArrayAdapter<SearchResultProduct.Field> sortedAdapter;
     private ArrayAdapter<String> filterAdapter;
 
     public static Intent createSearchSortFilterActivityIntent(Activity activity, ArrayList<Facet> facets) {
@@ -53,15 +57,33 @@ public class SearchSortFilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_filter);
 
+        final TextView sortOrderLabel = (TextView) findViewById(R.id.ascDescTextView);
+        SwitchCompat sortOrderButton = (SwitchCompat) findViewById(R.id.ascDescSwitch);
+
+        assert sortOrderButton != null;
+        sortOrderButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton cb, boolean on) {
+                if (on) {
+                    //Do something when Switch button is on/checked
+                    sortOrderLabel.setText(SearchRequestBuilder.SortOrder.ASCENDING.toString());
+                } else {
+                    //Do something when Switch is off/unchecked
+                    sortOrderLabel.setText(SearchRequestBuilder.SortOrder.DESCENDING.toString());
+                }
+            }
+        });
+        sortOrderButton.setChecked(true);
+
         ListView sortListView = (ListView) findViewById(R.id.sortListView);
         ListView filterListView = (ListView) findViewById(R.id.filterListView);
 
-        sortedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, SearchRequestBuilder.Field.values());
+        sortedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, SearchResultProduct.Field.values());
 
         final Map<String, Filter> tempList = new HashMap<>();
-        for(Facet facet : getFacets()) {
-            for(Filter filter : facet.getFilters()) {
-                tempList.put(filter.getValue(), filter);
+        for (Facet facet : getFacets()) {
+            for (Filter filter : facet.getFilters()) {
+                tempList.put(facet.getType() + ": " + filter.getValue(), filter);
             }
         }
 
@@ -107,7 +129,7 @@ public class SearchSortFilterActivity extends AppCompatActivity {
         }
     }
 
-    private void sendFilterSortSettingsResult(SearchRequestBuilder.Field selectedSortedBys, Filter selectedFilterBys) {
+    private void sendFilterSortSettingsResult(SearchResultProduct.Field selectedSortedBys, Filter selectedFilterBys) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(KEY_SELECTED_SORTED_BY, selectedSortedBys);
         returnIntent.putExtra(KEY_SELECTED_FILTER_BY, selectedFilterBys);

@@ -23,7 +23,30 @@ public class SearchResultProduct implements Parcelable {
         public static final String PRICE_CENTS = "priceCents";
         public static final String SALES_PRICE_CENTS = "salePriceCents";
         public static final String BRAND = "brand";
-        public static final String CATEGORY_IDS = "categoryId";
+        public static final String CATEGORY_IDS = "salePriceCents";
+    }
+
+    public enum Field {
+        ID(Keys.ID.toLowerCase()),
+        NAME(Keys.NAME.toLowerCase()),
+        BRAND(Keys.BRAND.toLowerCase()),
+        CATEGORY_ID(Keys.CATEGORY_IDS.toLowerCase()),
+        CATEGORY_NAME(Keys.CATEGORY_NAMES.toLowerCase()),
+        DESCRIPTION(Keys.DESCRIPTION.toLowerCase()),
+        RATING("rating"),
+        NUM_REVIEWS(Keys.NUM_REVIEWS.toLowerCase()),
+        PRICE_CENTS(Keys.PRICE_CENTS.toLowerCase()),
+        RELEASE_DATE("release_date");
+
+        private String requestKey;
+
+        Field(String requestKey) {
+            this.requestKey = requestKey;
+        }
+
+        public String getRequestKey() {
+            return requestKey;
+        }
     }
 
     private String id;
@@ -153,10 +176,6 @@ public class SearchResultProduct implements Parcelable {
 
     public void addFilter(Facet facet, Object filter) {
         filtersMap.put(facet, filter);
-    }
-
-    public void findAndSetFacet(Facet facet) {
-
     }
 
     // Parcelable methods and classes

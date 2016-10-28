@@ -3,6 +3,7 @@ package com.richrelevance;
 import android.content.Context;
 
 import com.richrelevance.find.search.SearchRequestBuilder;
+import com.richrelevance.find.autocomplete.AutoCompleteBuilder;
 import com.richrelevance.internal.net.WebRequestManager;
 import com.richrelevance.recommendations.Creative;
 import com.richrelevance.recommendations.Placement;
@@ -262,7 +263,7 @@ public class RichRelevance {
      * The rows defaults to 20, but is further configurable through the builder</li><li>SSL
      * is enabled by default, but is further configurable through the builder</li>
      *
-     * @param query The text to search
+     * @param query     The text to search
      * @param placement The placement for which to find the search results. Only searches for a single
      *                  placement are accepted at this time.
      */
@@ -274,6 +275,24 @@ public class RichRelevance {
                 .setPlacement(placement)
                 .setChannelId(SearchRequestBuilder.CHANNEL_DEFAULT)
                 .setLanguage(Locale.getDefault());
+    }
+
+    /**
+     * Creates a builder which requests auto-complete query suggestions for a given string.
+     * Pagination start is 0 by default, but can be set for pagincation.
+     * Locale for the language of results is by default the locale of the device, but can be set to another locale.
+     *
+     * @param query      The query to auto-commplete.
+     * @param numResults The number items to include in the result set
+     * @return The created builder.
+     */
+
+    public static AutoCompleteBuilder buildAutoCompleteRequest(String query, int numResults) {
+        return new AutoCompleteBuilder()
+                .setQuery(query)
+                .setNumRows(numResults)
+                .setLocale(Locale.ENGLISH)
+                .setStartIndex(0);
     }
 
     // endregion Fetching

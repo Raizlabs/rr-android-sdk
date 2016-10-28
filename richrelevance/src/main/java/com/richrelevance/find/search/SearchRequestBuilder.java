@@ -50,29 +50,12 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
             return key;
         }
 
-        public String createAPIValueForField(Field field) {
-            return field.requestKey + "%20" + key;
+        public String createAPIValueForField(SearchResultProduct.Field field) {
+            return "product_" + field.getRequestKey() + " " + key;
         }
 
         public String createAPIValueForCustomField(String resuestKey) {
-            return resuestKey + "%20" + key;
-        }
-    }
-
-    public enum Field {
-        NAME("product_name"),
-        BRAND("product_brand"),
-        CATEGORY("product_category"),
-        RATING("product_rating"),
-        NUM_REVIEWS("product_num_reviews"),
-        PRICE_CENTS("product_price_cents"),
-        RELEASE_DATE("product_release_date"),
-        SALE_PRICE_CENTS("product_sale_price_cents");
-
-        private String requestKey;
-
-        Field(String requestKey) {
-            this.requestKey = requestKey;
+            return "product_" + resuestKey + " " + key;
         }
     }
 
@@ -220,7 +203,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
      * @param sortOrder either ASCENDING or DESCENDING
      * @return This builder for chaining method calls.
      */
-    public SearchRequestBuilder setSort(Field sortedByField, SortOrder sortOrder) {
+    public SearchRequestBuilder setSort(SearchResultProduct.Field sortedByField, SortOrder sortOrder) {
         setParameter(Keys.SORT, sortOrder.createAPIValueForField(sortedByField));
         return this;
     }

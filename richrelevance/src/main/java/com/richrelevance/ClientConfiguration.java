@@ -23,7 +23,7 @@ public class ClientConfiguration {
     public ClientConfiguration(String apiKey, String apiClientKey) {
         setApiKey(apiKey);
         setApiClientKey(apiClientKey);
-        setEndpoint(Endpoints.PRODUCTION, true);
+        setEndpoint(Endpoint.PRODUCTION, true);
     }
 
     /**

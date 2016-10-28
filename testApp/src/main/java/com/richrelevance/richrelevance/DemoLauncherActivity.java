@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.richrelevance.Endpoint;
+
 import static com.richrelevance.richrelevance.FindDemo.FindMainActivity.createFindDemoActivityIntent;
 import static com.richrelevance.richrelevance.PreferencesDemo.PreferencesDemoActivity.createPreferencesDemoActivityIntent;
 
@@ -75,7 +77,7 @@ public class DemoLauncherActivity extends Activity {
         preferencesDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(setClientConfiguration()) {
+                if(setClientConfiguration(Endpoint.PRODUCTION)) {
                     startActivity(createPreferencesDemoActivityIntent(DemoLauncherActivity.this));
                 }
             }
@@ -84,7 +86,7 @@ public class DemoLauncherActivity extends Activity {
         findDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(setClientConfiguration()) {
+                if(setClientConfiguration(Endpoint.QA)) {
                     startActivity(createFindDemoActivityIntent(DemoLauncherActivity.this));
                 }
             }
@@ -99,13 +101,11 @@ public class DemoLauncherActivity extends Activity {
         savedInstanceState.putString(STATE_CLIENT_NAME, clientNameEditText.getText().toString());
     }
 
-    private boolean setClientConfiguration() {
+    private boolean setClientConfiguration(String endpoint) {
         String clientAPIKey = clientAPIKeyEditText.getText().toString();
         String clientName = clientNameEditText.getText().toString();
         if(clientAPIKey != null && !clientAPIKey.isEmpty()) {
-            ClientConfigurationManager.getInstance()
-                    .setClientApiKey(getApplicationContext(),
-                            clientAPIKeyEditText.getText().toString());
+            ClientConfigurationManager.getInstance().setClientApiKey(getApplicationContext(), clientAPIKeyEditText.getText().toString(), endpoint);
 
             if(clientName != null && !clientName.isEmpty()) {
                 ClientConfigurationManager.getInstance().setClientName(clientName);
