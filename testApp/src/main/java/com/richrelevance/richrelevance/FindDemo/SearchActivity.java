@@ -4,16 +4,18 @@ package com.richrelevance.richrelevance.FindDemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.RichRelevance;
@@ -34,6 +36,7 @@ import java.util.List;
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
 import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.KEY_SELECTED_FILTER_BY;
 import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.KEY_SELECTED_SORTED_BY;
+import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.KEY_SELECTED_SORT_ORDER;
 import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.createSearchSortFilterActivityIntent;
 
 public class SearchActivity extends FindBaseActivity {
@@ -46,7 +49,27 @@ public class SearchActivity extends FindBaseActivity {
 
     private ViewFlipper viewFlipper;
 
+    private View emptyState;
+
+    private RecyclerView recyclerView;
+
     private FloatingActionButton fabSortFilter;
+
+    private Button backButton;
+
+    private Button nextButton;
+
+    private String query;
+
+    private SearchResultProduct.Field sortBy;
+
+    private SearchRequestBuilder.SortOrder sortOrder;
+
+    private List<Filter> filters = new ArrayList<>();
+
+    private int offSet = 0;
+
+    private final int RESULT_SIZE = 20;
 
     private ArrayList<Facet> facets = new ArrayList<>();
 
@@ -64,8 +87,8 @@ public class SearchActivity extends FindBaseActivity {
 
         searchView = (FloatingSearchView) findViewById(R.id.searchView);
         viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        final View emptyState = findViewById(R.id.emptyState);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        emptyState = findViewById(R.id.emptyState);
 
         fabSortFilter = (FloatingActionButton) findViewById(R.id.fabSortFilter);
         fabSortFilter.setOnClickListener(new View.OnClickListener() {
@@ -88,13 +111,26 @@ public class SearchActivity extends FindBaseActivity {
             @Override
             protected void onNotifiedDataSetChanged(boolean hasProducts) {
                 if (this.hasProducts != hasProducts) {
-                    viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(hasProducts ? recyclerView : emptyState));
+                    if (hasProducts) {
+                        showValidResults();
+                        enablePaginationButton(nextButton);
+                    } else {
+                        if (offSet > 0) {
+                            showPagination();
+                            disablePaginationButton(nextButton);
+                        } else {
+                            showEmptyState();
+                        }
+                    }
                     this.hasProducts = hasProducts;
                 }
             }
         };
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(adapter);
+
+        backButton = (Button) findViewById(R.id.back);
+        nextButton = (Button) findViewById(R.id.next);
     }
 
     private void setUpSearchView() {
@@ -103,16 +139,26 @@ public class SearchActivity extends FindBaseActivity {
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, final String newQuery) {
-
-                executeSearch(newQuery);
-                executeAutoComplete(newQuery);
+                query = newQuery;
+                resetSearch();
+                executeSearch();
+                executeAutoComplete();
             }
         });
 
-        searchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+        searchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override
-            public void onActionMenuItemSelected(MenuItem item) {
+            public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
+                query = searchSuggestion.getBody();
+                resetSearch();
+                executeSearch();
+            }
 
+            @Override
+            public void onSearchAction(String currentQuery) {
+                query = currentQuery;
+                resetSearch();
+                executeSearch();
             }
         });
 
@@ -124,7 +170,70 @@ public class SearchActivity extends FindBaseActivity {
         });
     }
 
-    private void executeAutoComplete(String query) {
+    private void resetSearch() {
+        offSet = 0;
+        sortBy = null;
+        sortOrder = null;
+        filters = new ArrayList<>();
+        disablePaginationButton(backButton);
+        enablePaginationButton(nextButton);
+    }
+
+    public void onBackClicked(View view) {
+        if (offSet >= RESULT_SIZE) {
+            offSet -= RESULT_SIZE;
+        } else {
+            offSet = 0;
+        }
+
+        if (offSet == 0) {
+            disablePaginationButton(backButton);
+        }
+        executeSearch();
+    }
+
+    public void onNextClicked(View view) {
+        offSet += RESULT_SIZE;
+
+        if (offSet > 0) {
+            enablePaginationButton(backButton);
+        }
+        executeSearch();
+    }
+
+    private void disablePaginationButton(Button button) {
+        button.setClickable(false);
+        button.setTextColor(button.getDrawingCacheBackgroundColor());
+    }
+
+    private void enablePaginationButton(Button button) {
+        button.setClickable(true);
+        button.setTextColor(ContextCompat.getColor(this, R.color.Primary_Light_Main));
+    }
+
+    public void showPagination() {
+        backButton.setVisibility(View.VISIBLE);
+        nextButton.setVisibility(View.VISIBLE);
+    }
+
+    public void hidePagination() {
+        backButton.setVisibility(View.GONE);
+        nextButton.setVisibility(View.GONE);
+    }
+
+    private void showEmptyState() {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(emptyState));
+        fabSortFilter.setVisibility(View.GONE);
+        hidePagination();
+    }
+
+    private void showValidResults() {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
+        fabSortFilter.setVisibility(View.VISIBLE);
+        showPagination();
+    }
+
+    private void executeAutoComplete() {
         AutoCompleteBuilder builder = RichRelevance.buildAutoCompleteRequest(query, 20);
         builder.setCallback(new Callback<AutoCompleteResponseInfo>() {
             @Override
@@ -132,7 +241,7 @@ public class SearchActivity extends FindBaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(result != null) {
+                        if (result != null) {
                             List<AutoCompleteSearchSuggestion> searchSuggestions = new ArrayList<>();
                             for (AutoCompleteSuggestion suggestion : result.getSuggestions()) {
                                 searchSuggestions.add(new AutoCompleteSearchSuggestion(suggestion));
@@ -153,18 +262,16 @@ public class SearchActivity extends FindBaseActivity {
         builder.execute();
     }
 
-    private void executeSearch(String query) {
-        executeSearch(query, null, null, null);
-    }
-
-    private void executeSearch(String query, SearchResultProduct.Field sortBy, SearchRequestBuilder.SortOrder sortOrder, final Filter filter) {
+    private void executeSearch() {
         SearchRequestBuilder builder = RichRelevance.buildSearchRequest(query, new Placement(Placement.PlacementType.SEARCH, "find"));
         if (sortBy != null && sortOrder != null) {
             builder.setSort(sortBy, sortOrder);
         }
-        if (filter != null) {
-            builder.setFilters(filter);
+        if (filters != null) {
+            builder.setFilters(filters);
         }
+        builder.setRows(RESULT_SIZE);
+        builder.setStart(offSet);
         builder.setCallback(new Callback<SearchResponseInfo>() {
                                 @Override
                                 public void onResult(final SearchResponseInfo result) {
@@ -175,17 +282,19 @@ public class SearchActivity extends FindBaseActivity {
                                                           if (result == null) {
                                                               adapter.setProducts(new ArrayList<SearchResultProduct>());
                                                               facets = new ArrayList<>();
-                                                              fabSortFilter.setVisibility(View.GONE);
+                                                              showEmptyState();
                                                           } else {
-
                                                               adapter.setProducts(result.getProducts());
                                                               facets = new ArrayList<>(result.getFacets());
 
-                                                              // show fab only if results are present
                                                               if (!result.getProducts().isEmpty()) {
-                                                                  fabSortFilter.setVisibility(View.VISIBLE);
+                                                                  showValidResults();
                                                               } else {
-                                                                  fabSortFilter.setVisibility(View.GONE);
+                                                                  if(offSet > 0) {
+                                                                      disablePaginationButton(nextButton);
+                                                                  } else {
+                                                                      showEmptyState();
+                                                                  }
                                                               }
                                                           }
                                                       }
@@ -212,10 +321,15 @@ public class SearchActivity extends FindBaseActivity {
         if (requestCode == SELECT_SORT_FILTER_RESULT) {
 
             if (resultCode == Activity.RESULT_OK) {
-                SearchResultProduct.Field sort = (SearchResultProduct.Field) data.getSerializableExtra(KEY_SELECTED_SORTED_BY);
-                Filter filter = data.getParcelableExtra(KEY_SELECTED_FILTER_BY);
+                SearchResultProduct.Field sortBy = (SearchResultProduct.Field) data.getSerializableExtra(KEY_SELECTED_SORTED_BY);
+                SearchRequestBuilder.SortOrder sortOrder = (SearchRequestBuilder.SortOrder) data.getSerializableExtra(KEY_SELECTED_SORT_ORDER);
+                List<Filter> filters = data.getParcelableArrayListExtra(KEY_SELECTED_FILTER_BY);
                 if (searchView.getQuery() != null && !searchView.getQuery().isEmpty()) {
-                    executeSearch(searchView.getQuery(), sort, SearchRequestBuilder.SortOrder.ASCENDING, filter);
+                    this.query = searchView.getQuery();
+                    this.sortBy = sortBy;
+                    this.sortOrder = sortOrder;
+                    this.filters = filters;
+                    executeSearch();
                 }
             }
         }

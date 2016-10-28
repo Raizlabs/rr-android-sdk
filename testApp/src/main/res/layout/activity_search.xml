@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#37474f">
-    <!--TODO implement dynamic coloring -->
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,7 +16,8 @@
         <ViewFlipper
             android:id="@+id/viewFlipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/back">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,6 +47,41 @@
             app:floatingSearch_searchHint="Search..."
             app:floatingSearch_showSearchKey="false"
             app:floatingSearch_suggestionsListAnimDuration="250" />
+
+        <View android:id="@+id/fakeView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"/>
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/fakeView"
+            android:background="@color/dark_gray"
+            android:padding="@dimen/margin.half"
+            android:text="BACK"
+            android:textAlignment="center"
+            android:onClick="onBackClicked"
+            android:visibility="gone"
+            android:textColor="@color/dark_gray" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignLeft="@+id/fakeView"
+            android:background="@color/dark_gray"
+            android:padding="@dimen/margin.half"
+            android:text="NEXT"
+            android:textAlignment="center"
+            android:onClick="onNextClicked"
+            android:visibility="gone"
+            android:textColor="@color/Primary.Light.Main" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -54,12 +89,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin.standard"
-        android:visibility="gone"
         android:clickable="true"
         android:src="@drawable/icn_menu"
+        android:visibility="gone"
         app:elevation="@dimen/margin.quarter"
         app:fabSize="normal"
         app:layout_anchor="@id/recyclerView"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>
