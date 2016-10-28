@@ -11,6 +11,8 @@ public class SearchResponseInfo extends ResponseInfo {
 
     private List<SearchResultProduct> products;
 
+    private String addToCartParams;
+
     public List<Facet> getFacets() {
         return facets;
     }
@@ -25,5 +27,13 @@ public class SearchResponseInfo extends ResponseInfo {
 
     public void setProducts(List<SearchResultProduct> products) {
         this.products = products;
+    }
+
+    public String getAddToCartParams() {
+        return addToCartParams;
+    }
+
+    public void setAddToCartParams(String addToCartParams) {
+        this.addToCartParams = addToCartParams;
     }
 }

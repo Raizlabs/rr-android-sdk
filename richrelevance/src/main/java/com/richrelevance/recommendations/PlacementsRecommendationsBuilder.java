@@ -58,6 +58,8 @@ public class PlacementsRecommendationsBuilder extends PlacementsBuilder<Placemen
 
     private boolean addTimestampEnabled = true;
 
+    private String addToCartParams;
+
     public PlacementsRecommendationsBuilder() {
         excludeHtml(true);
     }
@@ -529,11 +531,20 @@ public class PlacementsRecommendationsBuilder extends PlacementsBuilder<Placemen
         return this;
     }
 
+    public PlacementsRecommendationsBuilder setAddToCartParams(String addToCartParams) {
+        this.addToCartParams = "&" + addToCartParams.replace("query", "searchTerm");
+        return this;
+    }
+
     @Override
     protected void onBuild(WebRequestBuilder builder) {
         super.onBuild(builder);
         if (addTimestampEnabled) {
             builder.setParam(Keys.TIMESTAMP, System.currentTimeMillis());
+        }
+
+        if(addToCartParams != null) {
+            builder.addAppend(addToCartParams);
         }
     }
 

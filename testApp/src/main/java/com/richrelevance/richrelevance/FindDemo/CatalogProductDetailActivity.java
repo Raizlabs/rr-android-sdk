@@ -11,17 +11,21 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.richrelevance.RichRelevance;
 import com.richrelevance.find.search.SearchResultProduct;
+import com.richrelevance.recommendations.Placement;
 import com.richrelevance.richrelevance.R;
 import com.squareup.picasso.Picasso;
 
 public class CatalogProductDetailActivity extends FindBaseActivity {
 
     private static final String KEY_PRODUCT = "KEY_PRODUCT";
+    private static final String KEY_ADD_TO_CART_PARAMS = "KEY_ADD_TO_CART_PARAMS";
 
-    public static Intent createCatalogProductDetailActivityIntent(Activity activity, SearchResultProduct product) {
+    public static Intent createCatalogProductDetailActivityIntent(Activity activity, SearchResultProduct product, String addToCartParams) {
         Intent intent = new Intent(activity, CatalogProductDetailActivity.class);
         intent.putExtra(KEY_PRODUCT, product);
+        intent.putExtra(KEY_ADD_TO_CART_PARAMS, addToCartParams);
         return intent;
     }
 
@@ -38,6 +42,10 @@ public class CatalogProductDetailActivity extends FindBaseActivity {
             product = getIntent().getParcelableExtra(KEY_PRODUCT);
         }
         return product;
+    }
+
+    private String getAddToCartParams() {
+        return getIntent().getStringExtra(KEY_ADD_TO_CART_PARAMS);
     }
 
     @Override
@@ -78,6 +86,10 @@ public class CatalogProductDetailActivity extends FindBaseActivity {
             @Override
             public void onAnimationStart(Animation animation) {
                 fabAddToCart.setClickable(false);
+                RichRelevance.buildRecommendationsForPlacements()
+                        .setPlacements(new Placement(Placement.PlacementType.ADD_TO_CART, "add_to_cart"))
+                        .setAddToCartParams(getAddToCartParams())
+                        .execute();
             }
 
             @Override

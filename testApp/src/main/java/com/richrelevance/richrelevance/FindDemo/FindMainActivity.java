@@ -28,6 +28,8 @@ public class FindMainActivity extends FindBaseActivity {
 
     private RecyclerView recyclerView;
 
+    private String addToCartParam;
+
     public static Intent createFindDemoActivityIntent(Activity activity) {
         Intent intent = new Intent(activity, FindMainActivity.class);
         return intent;
@@ -40,7 +42,7 @@ public class FindMainActivity extends FindBaseActivity {
         final CatalogProductsAdapter adapter = new CatalogProductsAdapter() {
             @Override
             public void onProductClicked(SearchResultProduct product) {
-                startActivity(createCatalogProductDetailActivityIntent(FindMainActivity.this, product));
+                startActivity(createCatalogProductDetailActivityIntent(FindMainActivity.this, product, addToCartParam));
             }
 
             @Override
@@ -76,10 +78,11 @@ public class FindMainActivity extends FindBaseActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(result == null) {
+                                if(result == null || result.getProducts() == null) {
                                     adapter.setProducts(new ArrayList<SearchResultProduct>());
                                 } else {
                                     adapter.setProducts(result.getProducts());
+                                    addToCartParam = result.getAddToCartParams();
                                 }
                             }
                         });

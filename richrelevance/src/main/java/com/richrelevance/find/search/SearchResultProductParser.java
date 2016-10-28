@@ -29,6 +29,8 @@ public class SearchResultProductParser {
                     List<Facet> facets = JSONHelper.parseJSONArray(supportedPlacement.getJSONArray("facets"), facetResponseParserDelegate);
                     responseInfo.setFacets(facets);
 
+                    responseInfo.setAddToCartParams(supportedPlacement.optString("addtoCartParams"));
+
                     JSONArray productsArray = supportedPlacement.getJSONArray("docs");
                     List<SearchResultProduct> products = new ArrayList<>();
 
@@ -38,8 +40,6 @@ public class SearchResultProductParser {
                     }
                     responseInfo.setProducts(products);
                 }
-
-
             }
         } catch (JSONException e) {
             e.printStackTrace();

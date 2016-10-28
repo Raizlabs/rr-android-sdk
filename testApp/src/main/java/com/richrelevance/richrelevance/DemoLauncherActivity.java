@@ -21,6 +21,8 @@ public class DemoLauncherActivity extends Activity {
 
     private final String STATE_CLIENT_NAME = "STATE_CLIENT_NAME";
 
+    private EditText apiKeyEditText;
+
     private EditText clientAPIKeyEditText;
 
     private EditText clientNameEditText;
@@ -36,11 +38,11 @@ public class DemoLauncherActivity extends Activity {
 
         setContentView(R.layout.activity_demo_launcher);
 
+        apiKeyEditText = (EditText) findViewById(R.id.apiKeyEditText);
         clientAPIKeyEditText = (EditText) findViewById(R.id.clientKeyEditText);
         clientNameEditText = (EditText) findViewById(R.id.clientNameEditText);
         preferencesDemoButton = (Button) findViewById(R.id.preferencesDemoButton);
         findDemoButton = (Button) findViewById(R.id.findDemoButton);
-
 
         TextWatcher clientConfigurationComplete = new TextWatcher() {
             @Override
@@ -49,8 +51,14 @@ public class DemoLauncherActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                preferencesDemoButton.setVisibility(View.VISIBLE);
-                findDemoButton.setVisibility(View.VISIBLE);
+                if ((apiKeyEditText.getText() != null && !apiKeyEditText.getText().toString().isEmpty())
+                        && (clientAPIKeyEditText.getText() != null && !clientAPIKeyEditText.getText().toString().isEmpty())) {
+                    preferencesDemoButton.setVisibility(View.VISIBLE);
+                    findDemoButton.setVisibility(View.VISIBLE);
+                } else {
+                    preferencesDemoButton.setVisibility(View.GONE);
+                    findDemoButton.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -58,6 +66,7 @@ public class DemoLauncherActivity extends Activity {
             }
         };
 
+        apiKeyEditText.addTextChangedListener(clientConfigurationComplete);
         clientAPIKeyEditText.addTextChangedListener(clientConfigurationComplete);
         clientNameEditText.addTextChangedListener(clientConfigurationComplete);
 
@@ -77,7 +86,7 @@ public class DemoLauncherActivity extends Activity {
         preferencesDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(setClientConfiguration(Endpoint.PRODUCTION)) {
+                if (setClientConfiguration(Endpoint.PRODUCTION)) {
                     startActivity(createPreferencesDemoActivityIntent(DemoLauncherActivity.this));
                 }
             }
@@ -86,7 +95,7 @@ public class DemoLauncherActivity extends Activity {
         findDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(setClientConfiguration(Endpoint.QA)) {
+                if (setClientConfiguration(Endpoint.QA)) {
                     startActivity(createFindDemoActivityIntent(DemoLauncherActivity.this));
                 }
             }
@@ -104,12 +113,16 @@ public class DemoLauncherActivity extends Activity {
     private boolean setClientConfiguration(String endpoint) {
         String clientAPIKey = clientAPIKeyEditText.getText().toString();
         String clientName = clientNameEditText.getText().toString();
-        if(clientAPIKey != null && !clientAPIKey.isEmpty()) {
-            ClientConfigurationManager.getInstance().setClientApiKey(getApplicationContext(), clientAPIKeyEditText.getText().toString(), endpoint);
+        if (clientAPIKey != null && !clientAPIKey.isEmpty()) {
+            ClientConfigurationManager.getInstance().setApiKey(apiKeyEditText.getText().toString());
+            ClientConfigurationManager.getInstance().setClientApiKey(clientAPIKeyEditText.getText().toString());
 
-            if(clientName != null && !clientName.isEmpty()) {
+            if (clientName != null && !clientName.isEmpty()) {
                 ClientConfigurationManager.getInstance().setClientName(clientName);
             }
+            ClientConfigurationManager.getInstance().setEndpoint(endpoint);
+            ClientConfigurationManager.getInstance().createConfiguration(this);
+
             return true;
         } else {
             Toast.makeText(this, "Invalid Client Configuration", Toast.LENGTH_SHORT).show();
