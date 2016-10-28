@@ -29,6 +29,7 @@
             android:name=".DemoLauncherActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -76,13 +77,19 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".PreferencesDemo.PreferencesDemoActivity"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
             android:name=".PreferencesDemo.PreferenceListActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".PreferencesDemo.PreferencesDemoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".PreferencesDemo.PreferencesDemoActivity"/>
         </activity>
+
     </application>
 
 </manifest>

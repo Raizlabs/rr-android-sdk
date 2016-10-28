@@ -24,7 +24,6 @@
         android:visibility="gone"
         android:clickable="true"
         android:src="@drawable/icn_menu"
-        android:onClick="sortFilter"
         app:elevation="@dimen/margin.quarter"
         app:fabSize="normal"
         app:layout_anchor="@id/recyclerView"

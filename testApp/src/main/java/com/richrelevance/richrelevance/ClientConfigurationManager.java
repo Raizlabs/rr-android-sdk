@@ -4,6 +4,7 @@ package com.richrelevance.richrelevance;
 import android.content.Context;
 
 import com.richrelevance.ClientConfiguration;
+import com.richrelevance.Endpoint;
 import com.richrelevance.RRLog;
 import com.richrelevance.RichRelevance;
 
@@ -16,6 +17,8 @@ public class ClientConfigurationManager {
     public static ClientConfigurationManager getInstance() {
         return INSTANCE;
     }
+
+    public static final String DEFAULT_ENDPOINT = Endpoint.PRODUCTION;
 
     public static final String API_KEY = "showcaseparent";
 
@@ -33,16 +36,21 @@ public class ClientConfigurationManager {
 
     private User user;
 
-    public void setConfig(Context context, String clientApiKey, String clientName, User user) {
+    public void setConfig(Context context, String clientApiKey, String clientName, User user, String endpoint) {
         this.clientApiKey = clientApiKey;
         setClientName(clientName);
         this.user = user;
-        createConfiguration(context);
+        createConfiguration(context, endpoint);
     }
 
     public void setClientApiKey(Context context, String clientApiKey) {
         this.clientApiKey = clientApiKey;
-        createConfiguration(context);
+        createConfiguration(context, Endpoint.PRODUCTION);
+    }
+
+    public void setClientApiKey(Context context, String clientApiKey, String endpoint) {
+        this.clientApiKey = clientApiKey;
+        createConfiguration(context, endpoint);
     }
 
     public void setClientName(String clientName) {
@@ -63,11 +71,16 @@ public class ClientConfigurationManager {
     }
 
     private void createConfiguration(Context context) {
+        createConfiguration(context, Endpoint.PRODUCTION);
+    }
+
+    private void createConfiguration(Context context, String endpoint) {
         ClientConfiguration config = new ClientConfiguration(ClientConfigurationManager.API_KEY,
                 ((clientApiKey == null || clientApiKey.isEmpty()) ? DEFAULT_CLIENT_API_KEY : clientApiKey));
         config.setApiClientSecret(ClientConfigurationManager.API_CLIENT_SECRET);
         config.setUserId((user == null) ? ClientConfigurationManager.DEFAULT_USER_ID : user.getUserID());
         config.setSessionId(UUID.randomUUID().toString());
+        config.setEndpoint(endpoint, true);
 
         RichRelevance.init(context.getApplicationContext(), config);
 

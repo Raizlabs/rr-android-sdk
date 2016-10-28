@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +17,9 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.richrelevance.Callback;
 import com.richrelevance.Error;
 import com.richrelevance.RichRelevance;
+import com.richrelevance.find.autocomplete.AutoCompleteBuilder;
+import com.richrelevance.find.autocomplete.AutoCompleteResponseInfo;
+import com.richrelevance.find.autocomplete.AutoCompleteSuggestion;
 import com.richrelevance.find.search.Facet;
 import com.richrelevance.find.search.Filter;
 import com.richrelevance.find.search.SearchRequestBuilder;
@@ -25,6 +29,7 @@ import com.richrelevance.recommendations.Placement;
 import com.richrelevance.richrelevance.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
 import static com.richrelevance.richrelevance.FindDemo.SearchSortFilterActivity.KEY_SELECTED_FILTER_BY;
@@ -100,10 +105,7 @@ public class SearchActivity extends FindBaseActivity {
             public void onSearchTextChanged(String oldQuery, final String newQuery) {
 
                 executeSearch(newQuery);
-                //get suggestions based on newQuery
-
-                //pass them on to the search view
-                //searchView.swapSuggestions(newSuggestions);
+                executeAutoComplete(newQuery);
             }
         });
 
@@ -122,11 +124,40 @@ public class SearchActivity extends FindBaseActivity {
         });
     }
 
+    private void executeAutoComplete(String query) {
+        AutoCompleteBuilder builder = RichRelevance.buildAutoCompleteRequest(query, 20);
+        builder.setCallback(new Callback<AutoCompleteResponseInfo>() {
+            @Override
+            public void onResult(final AutoCompleteResponseInfo result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(result != null) {
+                            List<AutoCompleteSearchSuggestion> searchSuggestions = new ArrayList<>();
+                            for (AutoCompleteSuggestion suggestion : result.getSuggestions()) {
+                                searchSuggestions.add(new AutoCompleteSearchSuggestion(suggestion));
+                            }
+                            searchView.swapSuggestions(searchSuggestions);
+                        } else {
+                            searchView.clearSuggestions();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Error error) {
+                Log.e(SearchActivity.class.getSimpleName(), "Error response from autocomplete request.");
+            }
+        });
+        builder.execute();
+    }
+
     private void executeSearch(String query) {
         executeSearch(query, null, null, null);
     }
 
-    private void executeSearch(String query, SearchRequestBuilder.Field sortBy, SearchRequestBuilder.SortOrder sortOrder, final Filter filter) {
+    private void executeSearch(String query, SearchResultProduct.Field sortBy, SearchRequestBuilder.SortOrder sortOrder, final Filter filter) {
         SearchRequestBuilder builder = RichRelevance.buildSearchRequest(query, new Placement(Placement.PlacementType.SEARCH, "find"));
         if (sortBy != null && sortOrder != null) {
             builder.setSort(sortBy, sortOrder);
@@ -181,7 +212,7 @@ public class SearchActivity extends FindBaseActivity {
         if (requestCode == SELECT_SORT_FILTER_RESULT) {
 
             if (resultCode == Activity.RESULT_OK) {
-                SearchRequestBuilder.Field sort = (SearchRequestBuilder.Field) data.getSerializableExtra(KEY_SELECTED_SORTED_BY);
+                SearchResultProduct.Field sort = (SearchResultProduct.Field) data.getSerializableExtra(KEY_SELECTED_SORTED_BY);
                 Filter filter = data.getParcelableExtra(KEY_SELECTED_FILTER_BY);
                 if (searchView.getQuery() != null && !searchView.getQuery().isEmpty()) {
                     executeSearch(searchView.getQuery(), sort, SearchRequestBuilder.SortOrder.ASCENDING, filter);

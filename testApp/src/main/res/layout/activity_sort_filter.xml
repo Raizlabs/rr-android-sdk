@@ -10,13 +10,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin.standard"
-            android:text="SORT BY"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin.standard"
+                android:text="SORT BY"
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/ascDescSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"/>
+
+            <TextView
+                android:id="@+id/ascDescTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin.standard"
+                android:layout_gravity="center_vertical|end" />
+        </LinearLayout>
 
         <ListView
             android:id="@+id/sortListView"

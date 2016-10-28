@@ -19,6 +19,8 @@ import com.richrelevance.recommendations.Placement;
 import com.richrelevance.richrelevance.ClientConfigurationManager;
 import com.richrelevance.richrelevance.R;
 
+import java.util.ArrayList;
+
 import static com.richrelevance.richrelevance.FindDemo.CatalogProductDetailActivity.createCatalogProductDetailActivityIntent;
 import static com.richrelevance.richrelevance.FindDemo.SearchActivity.createSearchActivityIntent;
 
@@ -74,7 +76,11 @@ public class FindMainActivity extends FindBaseActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                adapter.setProducts(result.getProducts());
+                                if(result == null) {
+                                    adapter.setProducts(new ArrayList<SearchResultProduct>());
+                                } else {
+                                    adapter.setProducts(result.getProducts());
+                                }
                             }
                         });
                     }

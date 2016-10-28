@@ -97,7 +97,7 @@ public class SearchRequestBuildTests extends BaseTestCase {
         SearchRequestBuilder builder = new SearchRequestBuilder(rcsSearchTokenListener);
         RequestBuilderAccessor accessor = new RequestBuilderAccessor(builder);
 
-        SearchRequestBuilder.Field field = SearchRequestBuilder.Field.BRAND;
+        SearchResultProduct.Field field = SearchResultProduct.Field.BRAND;
         SearchRequestBuilder.SortOrder sortOrder = SearchRequestBuilder.SortOrder.ASCENDING;
 
         builder.setSort(field, sortOrder);

@@ -46,7 +46,7 @@ public class ApiIntegrationTests extends BaseTestCase {
         super.setUp();
 
         ClientConfiguration config = new ClientConfiguration(Constants.TestApiKeys.API_KEY, Constants.TestApiKeys.API_CLIENT_KEY);
-        config.setEndpoint(Endpoints.PRODUCTION, false);
+        config.setEndpoint(Endpoint.PRODUCTION, false);
         config.setUserId("AndroidTestUser");
         config.setSessionId(UUID.randomUUID().toString());
 
@@ -54,7 +54,7 @@ public class ApiIntegrationTests extends BaseTestCase {
         client.setConfiguration(config);
 
         ClientConfiguration oAuthConfig = new ClientConfiguration(Constants.TestApiKeys.API_KEY, Constants.TestApiKeys.API_CLIENT_KEY);
-        oAuthConfig.setEndpoint(Endpoints.PRODUCTION, true);
+        oAuthConfig.setEndpoint(Endpoint.PRODUCTION, true);
         oAuthConfig.setUserId("RZTestUser");
         oAuthConfig.setSessionId(UUID.randomUUID().toString());
         oAuthConfig.setApiClientSecret(Constants.TestApiKeys.API_CLIENT_SECRET);
