@@ -86,7 +86,7 @@ public class DemoLauncherActivity extends Activity {
         preferencesDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (setClientConfiguration(Endpoint.PRODUCTION)) {
+                if (setClientConfiguration()) {
                     startActivity(createPreferencesDemoActivityIntent(DemoLauncherActivity.this));
                 }
             }
@@ -95,7 +95,7 @@ public class DemoLauncherActivity extends Activity {
         findDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (setClientConfiguration(Endpoint.QA)) {
+                if (setClientConfiguration()) {
                     startActivity(createFindDemoActivityIntent(DemoLauncherActivity.this));
                 }
             }
@@ -110,7 +110,7 @@ public class DemoLauncherActivity extends Activity {
         savedInstanceState.putString(STATE_CLIENT_NAME, clientNameEditText.getText().toString());
     }
 
-    private boolean setClientConfiguration(String endpoint) {
+    private boolean setClientConfiguration() {
         String clientAPIKey = clientAPIKeyEditText.getText().toString();
         String clientName = clientNameEditText.getText().toString();
         if (clientAPIKey != null && !clientAPIKey.isEmpty()) {
@@ -120,7 +120,6 @@ public class DemoLauncherActivity extends Activity {
             if (clientName != null && !clientName.isEmpty()) {
                 ClientConfigurationManager.getInstance().setClientName(clientName);
             }
-            ClientConfigurationManager.getInstance().setEndpoint(endpoint);
             ClientConfigurationManager.getInstance().createConfiguration(this);
 
             return true;

@@ -83,7 +83,7 @@ public class AutoCompleteBuilder extends RequestBuilder<AutoCompleteResponseInfo
     @Override
     protected String getEndpointPath(ClientConfiguration configuration) {
         final String format = "rrserver/api/find/v1/autocomplete/%s";
-        String string = String.format(format, configuration.getApiClientKey());
+        String string = String.format(format, configuration.getApiKey());
         return string;
     }
 

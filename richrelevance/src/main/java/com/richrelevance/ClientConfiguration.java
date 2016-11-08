@@ -27,7 +27,7 @@ public class ClientConfiguration {
     }
 
     /**
-     * @return The specified endpoint.
+     * @return The primary endpoint.
      */
     public String getEndpoint() {
         return endpoint;

@@ -291,7 +291,7 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
 
     @Override
     protected String getEndpointPath(ClientConfiguration configuration) {
-        return String.format("rrserver/api/find/v1/%s", configuration.getApiClientKey());
+        return String.format("rrserver/api/find/v1/%s", configuration.getApiKey());
     }
 
     @Override
