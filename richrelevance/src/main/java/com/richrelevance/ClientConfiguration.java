@@ -7,6 +7,7 @@ package com.richrelevance;
 public class ClientConfiguration {
 
     private String endpoint;
+    private String endpointV2;
     private boolean useHttps;
 
     private String apiKey;
@@ -27,10 +28,17 @@ public class ClientConfiguration {
     }
 
     /**
-     * @return The specified endpoint.
+     * @return The primary endpoint.
      */
     public String getEndpoint() {
         return endpoint;
+    }
+
+    /**
+     * @return The endpoint for V2 APIs.
+     */
+    public String getEndpointV2() {
+        return endpointV2;
     }
 
     /**
@@ -48,6 +56,7 @@ public class ClientConfiguration {
      */
     public void setEndpoint(String endpoint, boolean useHttps) {
         this.endpoint = endpoint;
+        this.endpointV2 = (endpoint == Endpoint.PRODUCTION ? Endpoint.SERVICE : Endpoint.QA);
         this.useHttps = useHttps;
     }
 
