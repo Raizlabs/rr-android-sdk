@@ -295,11 +295,6 @@ public class SearchRequestBuilder extends RequestBuilder<SearchResponseInfo> {
     }
 
     @Override
-    protected String getServerEndpoint(ClientConfiguration configuration) {
-        return configuration.getEndpointV2();
-    }
-
-    @Override
     protected void populateResponse(WebResponse response, JSONObject json, SearchResponseInfo searchResponseInfo) {
         String rcsSearchToken = json.optString(Keys.RCS);
         if(rcsSearchToken != null) {

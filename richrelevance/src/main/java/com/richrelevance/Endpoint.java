@@ -8,5 +8,4 @@ public class Endpoint {
     public static final String INTEGRATION = "integration.richrelevance.com";
 
     public static final String QA = "qa.richrelevance.com";
-    public static final String SERVICE = "service.richrelevance.com";
 }

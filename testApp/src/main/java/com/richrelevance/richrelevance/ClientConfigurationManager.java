@@ -77,7 +77,7 @@ public class ClientConfigurationManager {
         config.setApiClientSecret(ClientConfigurationManager.API_CLIENT_SECRET);
         config.setUserId((user == null) ? ClientConfigurationManager.DEFAULT_USER_ID : user.getUserID());
         config.setSessionId(UUID.randomUUID().toString());
-        config.setEndpoint(Endpoint.INTEGRATION, true);
+        config.setEndpoint(Endpoint.PRODUCTION, true);
 
         RichRelevance.init(context.getApplicationContext(), config);
 

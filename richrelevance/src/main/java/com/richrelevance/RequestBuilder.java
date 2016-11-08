@@ -414,7 +414,7 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
         }
 
         String scheme = configuration.useHttps() ? "https" : "http";
-        String endpoint = getServerEndpoint(configuration);
+        String endpoint = configuration.getEndpoint();
 
         return String.format(Locale.US, "%s://%s/%s", scheme, endpoint, path);
     }
@@ -489,16 +489,6 @@ public abstract class RequestBuilder<Result extends ResponseInfo> {
      * @return The path of the endpoint.
      */
     protected abstract String getEndpointPath(ClientConfiguration configuration);
-
-    /**
-     * Called to obtain the host for the endpoint to hit.
-     *
-     * @param configuration The configuration being used.
-     * @return The path of the endpoint.
-     */
-    protected String getServerEndpoint(ClientConfiguration configuration) {
-        return configuration.getEndpoint();
-    }
 
     /**
      * Called to parse the given response data into the appropriate result type after it has been determined to be a

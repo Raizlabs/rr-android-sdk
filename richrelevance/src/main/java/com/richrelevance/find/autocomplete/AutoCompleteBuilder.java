@@ -88,11 +88,6 @@ public class AutoCompleteBuilder extends RequestBuilder<AutoCompleteResponseInfo
     }
 
     @Override
-    protected String getServerEndpoint(ClientConfiguration configuration) {
-        return configuration.getEndpointV2();
-    }
-
-    @Override
     protected void populateResponse(WebResponse response, JSONObject json, AutoCompleteResponseInfo autoCompleteResponseInfo) {
         Log.e(AutoCompleteBuilder.class.getSimpleName(), "Unable to popoulated response for AutoComplete request. Please use populate response for JSONArray");
     }
