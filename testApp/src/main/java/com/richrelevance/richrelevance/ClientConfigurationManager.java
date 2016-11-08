@@ -18,11 +18,9 @@ public class ClientConfigurationManager {
         return INSTANCE;
     }
 
-    public static final String DEFAULT_ENDPOINT = Endpoint.PRODUCTION;
+    public static final String API_KEY = "199c81c05e473265";
 
-    public static final String API_KEY = "showcaseparent";
-
-    public static final String DEFAULT_CLIENT_API_KEY = "bccfa17d092268c0";
+    public static final String DEFAULT_CLIENT_API_KEY = "ff7665ca55280538";
 
     public static final String API_CLIENT_SECRET = "r5j50mlag06593401nd4kt734i";
 
@@ -37,8 +35,6 @@ public class ClientConfigurationManager {
     private String clientName = DEFAULT_CLIENT_NAME;
 
     private User user;
-
-    private String endpoint = DEFAULT_ENDPOINT;
 
     public void setConfig(String clientApiKey, String clientName, User user, String endpoint) {
         this.clientApiKey = clientApiKey;
@@ -74,10 +70,6 @@ public class ClientConfigurationManager {
         return user;
     }
 
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
     public void createConfiguration(Context context) {
         ClientConfiguration config = new ClientConfiguration(
                 apiKey == null ? ClientConfigurationManager.API_KEY : apiKey,
@@ -85,7 +77,7 @@ public class ClientConfigurationManager {
         config.setApiClientSecret(ClientConfigurationManager.API_CLIENT_SECRET);
         config.setUserId((user == null) ? ClientConfigurationManager.DEFAULT_USER_ID : user.getUserID());
         config.setSessionId(UUID.randomUUID().toString());
-        config.setEndpoint(endpoint, true);
+        config.setEndpoint(Endpoint.INTEGRATION, true);
 
         RichRelevance.init(context.getApplicationContext(), config);
 

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:imeOptions="actionNext"
         android:singleLine="true"
-        android:text="showcaseparent"
+        android:text="199c81c05e473265"
         android:hint="@string/launcher.apiKeyHint"/>
 
     <EditText
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:imeOptions="actionNext"
         android:singleLine="true"
-        android:text="199c81c05e473265"
+        android:text="ff7665ca55280538"
         android:hint="@string/launcher.clientKeyHint"/>
 
     <EditText
